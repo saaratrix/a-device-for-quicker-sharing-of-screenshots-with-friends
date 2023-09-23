@@ -1,0 +1,19 @@
+{
+  "name": "a-device-for-quicker-sharing-of-screenshots-with-friends",
+  "author": "",
+  "version": "1.0.0",
+  "description": "Easy way to upload files and share.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start:dev": "concurrently \"npm run tsc:watch\" \"npm run sass:watch\"",
+    "tsc:watch": "tsc -w -p public/tsconfig.json",
+    "sass:watch": "sass --watch ."
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.1",
+    "sass": "^1.68.0",
+    "typescript": "^5.2.2"
+  }
+}
