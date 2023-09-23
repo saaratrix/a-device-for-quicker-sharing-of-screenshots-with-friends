@@ -1,2 +1,2 @@
-# a-device-for-quicker-sharing-of-screenshots-with-friends
+# A device for quicker sharing Of screenshots with friends
 Playing around with easily uploading images and then sharing them.
