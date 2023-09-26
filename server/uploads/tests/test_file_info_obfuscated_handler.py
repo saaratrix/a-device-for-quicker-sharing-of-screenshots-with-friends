@@ -1,32 +1,12 @@
 import os
 import unittest
-import base64
 from datetime import datetime
 
-from ..file_handler import FileHandler
+from ..file_info_obfuscated_handler import FileInfoObfuscatedHandler
+
 
 class TestFileHandler(unittest.TestCase):
     test_files_folder = "test_files"
-
-    def test_get_file_extension(self):
-        pass
-        # # Define a mock object with a filename attribute
-        # class MockFile:
-        #     pass
-        #
-        # # Positive test case
-        # mock_file = MockFile()
-        # mock_file.filename = "m333o3ou666666u.txt"
-        # self.assertEqual(FileHandler.get_file_extension(mock_file), ".txt")
-        #
-        # # Negative test case
-        # mock_file.filename = "test"
-        # self.assertEqual(FileHandler.get_file_extension(mock_file), "")
-        #
-        # # No filename attribute
-        # mock_file = MockFile()
-        # with self.assertRaises(AttributeError):
-        #     FileHandler.get_file_extension(mock_file)
 
     file_info_tests = [
         (datetime(2000, 1, 1, 0, 0, 0), "muu", os.path.join("00", "01", "01"), "m333o3ou666666u"),
@@ -39,7 +19,7 @@ class TestFileHandler(unittest.TestCase):
 
     def test_get_file_infos(self):
         for date, random_chars, expected_folder, expected_resource_name in self.file_info_tests:
-            folder_path, resource_name = FileHandler.get_file_infos(date, random_chars)
+            folder_path, resource_name = FileInfoObfuscatedHandler.get_file_infos(date, random_chars)
             self.assertEquals(folder_path, expected_folder)
             self.assertEquals(resource_name, expected_resource_name)
 
@@ -49,12 +29,12 @@ class TestFileHandler(unittest.TestCase):
 
         date, random_chars, expected_folder, uri = self.file_info_tests[0]
         expected_path = os.path.join(self.test_files_folder, expected_folder, f"{uri}.txt")
-        path = FileHandler.get_filepath_from_uri(uri, root)
+        path = FileInfoObfuscatedHandler.get_filepath_from_uri(uri, root)
         self.assertTrue(path.endswith(expected_path))
 
         date, random_chars, expected_folder, uri = self.file_info_tests[5]
         expected_path = os.path.join(self.test_files_folder, expected_folder, uri)
-        path = FileHandler.get_filepath_from_uri(uri, root)
+        path = FileInfoObfuscatedHandler.get_filepath_from_uri(uri, root)
         self.assertTrue(path.endswith(expected_path))
 
 
