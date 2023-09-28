@@ -5,6 +5,9 @@
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/server/.pytest_cache" />
+      <excludeFolder url="file://$MODULE_DIR$/server/uploads/tests/.pytest_cache" />
+      <excludeFolder url="file://$MODULE_DIR$/server/venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.11 (a-device-for-quicker-sharing-of-screenshots-with-friends)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

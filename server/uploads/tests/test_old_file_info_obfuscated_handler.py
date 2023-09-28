@@ -2,10 +2,10 @@ import os
 import unittest
 from datetime import datetime
 
-from ..file_info_obfuscated_handler import FileInfoObfuscatedHandler
+from ..old_file_info_obfuscated_handler import OldFileInfoObfuscatedHandler
 
 
-class TestFileHandler(unittest.TestCase):
+class TestOldFileObfuscatedHandler(unittest.TestCase):
     test_files_folder = "test_files"
 
     file_info_tests = [
@@ -19,7 +19,7 @@ class TestFileHandler(unittest.TestCase):
 
     def test_get_file_infos(self):
         for date, random_chars, expected_folder, expected_resource_name in self.file_info_tests:
-            folder_path, resource_name = FileInfoObfuscatedHandler.get_file_infos(date, random_chars)
+            folder_path, resource_name = OldFileInfoObfuscatedHandler.get_file_infos(date, random_chars)
             self.assertEquals(folder_path, expected_folder)
             self.assertEquals(resource_name, expected_resource_name)
 
@@ -29,12 +29,12 @@ class TestFileHandler(unittest.TestCase):
 
         date, random_chars, expected_folder, uri = self.file_info_tests[0]
         expected_path = os.path.join(self.test_files_folder, expected_folder, f"{uri}.txt")
-        path = FileInfoObfuscatedHandler.get_filepath_from_uri(uri, root)
+        path = OldFileInfoObfuscatedHandler.get_filepath_from_uri(uri, root)
         self.assertTrue(path.endswith(expected_path))
 
         date, random_chars, expected_folder, uri = self.file_info_tests[5]
         expected_path = os.path.join(self.test_files_folder, expected_folder, uri)
-        path = FileInfoObfuscatedHandler.get_filepath_from_uri(uri, root)
+        path = OldFileInfoObfuscatedHandler.get_filepath_from_uri(uri, root)
         self.assertTrue(path.endswith(expected_path))
 
 

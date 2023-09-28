@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from werkzeug.datastructures import FileStorage
 
 
-class FileInfoObfuscatedHandler:
+class OldFileInfoObfuscatedHandler:
     _DATE_CIPHER = str.maketrans(
         '0123456789',
         '3ou57rg1wf'
@@ -27,7 +27,7 @@ class FileInfoObfuscatedHandler:
     )
 
     @staticmethod
-    def get_upload_info(file: 'FileStorage', root: str = FileUtility.ROOT) -> Tuple[str, str]:
+    def get_upload_info(file: 'FileStorage', root: str) -> Tuple[str, str]:
         """
         Get the upload path information so, we can store the file correctly.
         :param file: The uploaded file
@@ -35,13 +35,13 @@ class FileInfoObfuscatedHandler:
         :return: Resource name without extension and full upload path.
         """
         now = datetime.datetime.now()
-        folder_path, resource_name = FileInfoObfuscatedHandler.get_file_infos(now)
-        extension = FileInfoObfuscatedHandler.get_file_extension(file.filename)
+        folder_path, resource_name = OldFileInfoObfuscatedHandler.get_file_infos(now)
+        extension = FileUtility.get_file_extension(file.filename)
         upload_path = os.path.join(root, folder_path, resource_name + extension)
 
         return resource_name, upload_path
 
-    def get_filepath_from_uri(uri: str, root: str = FileUtility.ROOT) -> str:
+    def get_filepath_from_uri(uri: str, root: str) -> str:
         """
         Get the filepath from the uri.
         Uri format is in XDDDDDDXXXXXXXX.
@@ -54,10 +54,10 @@ class FileInfoObfuscatedHandler:
 
         date_encoded = uri[1:7]
 
-        date_decoded = date_encoded.translate(FileInfoObfuscatedHandler._DATE_CIPHER_REVERSE)
-        folder_path = FileInfoObfuscatedHandler.get_folder_name(date_decoded)
+        date_decoded = date_encoded.translate(OldFileInfoObfuscatedHandler._DATE_CIPHER_REVERSE)
+        folder_path = OldFileInfoObfuscatedHandler.get_folder_name(date_decoded)
         path = os.path.join(root, folder_path, uri)
-        extension = FileInfoObfuscatedHandler.find_file_extension(path)
+        extension = OldFileInfoObfuscatedHandler.find_file_extension(path)
         return f"{path}{extension}"
 
     @staticmethod
@@ -68,7 +68,7 @@ class FileInfoObfuscatedHandler:
 
         # If there are matching files, return the first one found
         if files:
-            return FileInfoObfuscatedHandler.get_file_extension(files[0])
+            return FileUtility.get_file_extension(files[0])
         else:
             return ""
 
@@ -85,10 +85,10 @@ class FileInfoObfuscatedHandler:
 
         date_formatted = date.strftime("%y%m%d")
         datetime_formatted = date.strftime('%H%M%S')
-        date_encoded = FileInfoObfuscatedHandler.get_encoded_date(date_formatted)
-        timestamp_encoded = FileInfoObfuscatedHandler.get_encoded_name(datetime_formatted)
+        date_encoded = OldFileInfoObfuscatedHandler.get_encoded_date(date_formatted)
+        timestamp_encoded = OldFileInfoObfuscatedHandler.get_encoded_name(datetime_formatted)
         resource_name = f"{random_chars[0]}{date_encoded}{random_chars[1]}{timestamp_encoded}{random_chars[2]}"
-        folder_path = FileInfoObfuscatedHandler.get_folder_name(date_formatted)
+        folder_path = OldFileInfoObfuscatedHandler.get_folder_name(date_formatted)
         return folder_path, resource_name
 
     @staticmethod
@@ -97,10 +97,10 @@ class FileInfoObfuscatedHandler:
 
     @staticmethod
     def get_encoded_date(date: str) -> str:
-        return date.translate(FileInfoObfuscatedHandler._DATE_CIPHER)
+        return date.translate(OldFileInfoObfuscatedHandler._DATE_CIPHER)
 
     @staticmethod
     def get_encoded_name(value: str) -> str:
-        return value.translate(FileInfoObfuscatedHandler._NAME_CIPHER)
+        return value.translate(OldFileInfoObfuscatedHandler._NAME_CIPHER)
 
 

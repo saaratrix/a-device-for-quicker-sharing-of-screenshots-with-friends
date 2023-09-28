@@ -10,3 +10,8 @@ class FileUtility:
             return pathlib.Path(path).suffix
         except Exception:
             return ''
+
+    @staticmethod
+    def sanitize_path(path):
+        sanitized = path.replace("..", "").replace("/", "").replace("\\", "")
+        return sanitized

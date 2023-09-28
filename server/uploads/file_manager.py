@@ -1,9 +1,6 @@
 import os.path
 from typing import TYPE_CHECKING
 
-from .file_info_obfuscated_handler import FileInfoObfuscatedHandler
-from .file_utility import FileUtility
-
 if TYPE_CHECKING:
     from werkzeug.datastructures import FileStorage
 
@@ -26,7 +23,7 @@ class FileManager:
         return True
 
     @staticmethod
-    def delete_month(year, month, root=FileUtility.ROOT):
+    def delete_month(year: str, month: str, root: str):
         pass
 
     @staticmethod
