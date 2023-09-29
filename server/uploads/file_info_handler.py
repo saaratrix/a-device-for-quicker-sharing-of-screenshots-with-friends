@@ -11,12 +11,11 @@ class FileInfoHandler:
     HASH_RANDOM_LENGTH = 8
 
     @staticmethod
-    def get_upload_path(original_filename: str, key: str, root: str) -> str:
+    def get_upload_path(original_filename: str, user_key: str, root: str) -> str:
         now = datetime.datetime.now()
         time = now.time()
         hash_key = FileInfoHandler.generate_hash(time)
         date_formatted, date_folder = FileInfoHandler.get_date_folder_name(now)
-        user_key = FileInfoHandler.adjust_user_key(key)
         filename = f"{hash_key}_{original_filename}"
 
         uri_path = FileInfoHandler.get_uri_path(date_formatted, user_key, filename)
@@ -55,18 +54,3 @@ class FileInfoHandler:
         combined_hash = ''.join(a + b for a, b in zip(hash_part, random_part))
 
         return combined_hash
-
-
-
-    @staticmethod
-    def adjust_user_key(userKey: str) -> str:
-        """
-        Removes periods so it can't be mistaken for a file.
-        Since maximum length is 10 it also can't collide with an extensionless file.
-        """
-
-        max_length = FileInfoHandler.HASH_LENGTH + FileInfoHandler.HASH_RANDOM_LENGTH
-        if len(userKey) > max_length:
-            return userKey[:max_length]
-
-        return userKey

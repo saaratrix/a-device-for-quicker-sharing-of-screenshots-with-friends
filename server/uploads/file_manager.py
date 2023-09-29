@@ -1,6 +1,8 @@
 import os.path
 from typing import TYPE_CHECKING
 
+from .file_utility import FileUtility
+
 if TYPE_CHECKING:
     from werkzeug.datastructures import FileStorage
 
@@ -9,8 +11,11 @@ class FileManager:
 
     @staticmethod
     def upload_file(file: 'FileStorage', upload_path: str):
+        if not FileUtility.is_file_allowed(upload_path):
+            raise ValueError(f"Fileformat is not allowed. {upload_path}")
+
         if os.path.exists(upload_path):
-            raise Exception(f"File already exists {upload_path}")
+            raise FileExistsError(f"File already exists {upload_path}")
 
         FileManager.ensure_directory_exists(upload_path)
         file.save(upload_path)

@@ -32,16 +32,24 @@ class TestFileManager(unittest.TestCase):
         f = open(path, 'rb')
         return f, FileStorage(f, filename=name)
 
+    def test_upload_file_throws_if_blocked_filetype(self):
+        file_name = '.htaccess'
+        upload_path = os.path.join(self.test_folder, file_name)
+
+        with self.assertRaises(ValueError):
+            FileManager.upload_file(None, upload_path)
+
+
     def test_upload_file_throws_if_file_exists(self):
         file_name = 'test.txt'
         upload_path = os.path.join(self.test_folder, file_name)
         self.create_test_file(file_name)
 
-        with pytest.raises(Exception):
+        with pytest.raises(FileExistsError):
             FileManager.upload_file(None, upload_path)
 
     def test_upload_file_should_upload(self):
-        mock_file_name = "mock"
+        mock_file_name = "mock.png"
         mock_path = os.path.join(self.test_folder, mock_file_name)
         handle, mock_file = self.create_mock_upload_file(mock_file_name)
 
