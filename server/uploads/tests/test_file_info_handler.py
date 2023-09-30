@@ -100,11 +100,13 @@ class TestFileInfoHandler(unittest.TestCase):
         key = "mouse"
         prefix = "abcdef"
         filename = "file.txt"
-        result = FileInfoHandler.get_filepath_from_request(year, month, day, prefix, key, filename, root)
+        result_path, result_filename = FileInfoHandler.get_filepath_from_request(year, month, day, prefix, key, filename, root)
 
         # Construct the expected path
-        expected_path = os.path.join(root, year, month, day, key, f"{prefix}_{filename}")
-        self.assertEqual(result, expected_path)
+        expected_filename = f"{prefix}_{filename}"
+        expected_path = os.path.join(root, year, month, day, key)
+        self.assertEqual(result_path, expected_path)
+        self.assertEqual(result_filename, expected_filename)
 
 
 if __name__ == '__main__':

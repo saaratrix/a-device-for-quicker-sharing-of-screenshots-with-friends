@@ -32,7 +32,8 @@ class FileInfoHandler:
     @staticmethod
     def get_filepath_from_request(year: str, month: str, day: str, prefix: str, key: str, filename: str, root: str):
         filename = f"{prefix}_{filename}"
-        return os.path.join(root, year, month, day, key, filename)
+        path = os.path.join(root, year, month, day, key)
+        return path, filename
 
     @staticmethod
     def get_date_folder_name(date: datetime) -> Tuple[str, str]:

@@ -1,3 +1,5 @@
+import os.path
+
 from flask import Flask, request, send_from_directory, make_response, jsonify
 from flask_cors import CORS
 from werkzeug.exceptions import RequestEntityTooLarge
@@ -15,11 +17,11 @@ app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024 * 1
 
 
 @app.route("/upload-info", methods=["GET"])
-def get_allowed_extensions():
+def get_upload_info():
     return jsonify(
         extensions=FileUtility.ALLOWED_EXTENSIONS,
-        maxlength_file=FileValidation.MAXLENGTH_FILENAME,
-        maxlength_user=FileValidation.MAXLENGTH_USER_KEY
+        maxlengthFile=FileValidation.MAXLENGTH_FILENAME,
+        maxlengthUser=FileValidation.MAXLENGTH_USER_KEY
     )
 
 
@@ -69,29 +71,31 @@ def upload_file():
 # View with & without key.
 @app.route('/v/<year>/<month>/<day>/<prefix>/<key>/<filename>', methods=['GET'])
 @app.route('/v/<year>/<month>/<day>/<prefix>/<filename>/', methods=['GET'], defaults={'key': None})
-def serve_file(year: str, month: str, day: str, prefix: str, key: str, filename: str) -> None:
-    try:
-        path = get_file_path(year, month, day, prefix, key, filename)
-    except:
-        return "Invalid uri.", 400
-    return send_from_directory(path, filename, as_attachment=False)
+def view_file(year: str, month: str, day: str, prefix: str, key: str, filename: str) -> None:
+    return send_file(year, month, day, prefix, key, filename, False)
 
 
 # Downloads with & without key
 @app.route('/d/<year>/<month>/<day>/<prefix>/<key>/<filename>', methods=['GET'])
 @app.route('/d/<year>/<month>/<day>/<prefix>/<filename>/', methods=['GET'], defaults={'key': None})
 def download_file(year: str, month: str, day: str, prefix: str, key: str, filename: str) -> None:
-    try:
-        path = get_file_path(year, month, day, prefix, key, filename)
-    except:
-        return "Invalid uri.", 400
-
-    return send_from_directory(path, filename, as_attachment=True)
+    return send_file(year, month, day, prefix, key, filename, True)
 
 
 @app.errorhandler(RequestEntityTooLarge)
 def handle_file_too_large(e):
     return "File size exceeds the allowed limit.", 413
+
+
+def send_file(year: str, month: str, day: str, prefix: str, key: str, filename: str, as_attachment):
+    try:
+        path, full_filename = get_file_path(year, month, day, prefix, key, filename)
+        if not os.path.exists(path):
+            raise FileExistsError("File not found.")
+    except:
+        return "Invalid uri.", 400
+
+    return send_from_directory(path, full_filename, as_attachment=as_attachment)
 
 
 def get_file_path(year: str, month: str, day: str, prefix: str, key: str, filename: str) -> str:
@@ -117,4 +121,5 @@ def get_file_path(year: str, month: str, day: str, prefix: str, key: str, filena
 
 
 if __name__ == '__main__':
-    CORS(app.run(debug=True, port=5001), origins=["http://localhost:63342"])
+    CORS(app, origins=["http://localhost:63342"])
+    app.run(debug=True, port=5001)
