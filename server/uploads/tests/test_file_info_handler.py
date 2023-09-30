@@ -27,16 +27,16 @@ class TestFileInfoHandler(unittest.TestCase):
 
     def test_get_uri_path(self):
         test_data = [
-            ("000101", "", "file.txt", "00/01/01/file.txt"),
-            ("220923", "user123", "pic.png", "22/09/23/user123/pic.png"),
-            ("991231", "moomins", "holiday.jpg", "99/12/31/moomins/holiday.jpg"),
-            ("210312", "john_doe", "document.pdf", "21/03/12/john_doe/document.pdf"),
-            ("190505", "", "notes.md", "19/05/05/notes.md"),
+            ("000101", "pref12314", "", "file.txt", "00/01/01/pref12314/file.txt"),
+            ("220923", "prefix1", "user123", "pic.png", "22/09/23/prefix1/user123/pic.png"),
+            ("991231", "prefix", "moomins", "holiday.jpg", "99/12/31/prefix/moomins/holiday.jpg"),
+            ("210312", "prefix", "john_doe", "document.pdf", "21/03/12/prefix/john_doe/document.pdf"),
+            ("190505", "01234abcde", "", "notes.md", "19/05/05/01234abcde/notes.md"),
         ]
 
-        for date_formatted, user_key, filename, expected_uri in test_data:
-            with self.subTest(date_formatted=date_formatted, user_key=user_key, filename=filename, expected_uri=expected_uri):
-                result = FileInfoHandler.get_uri_path(date_formatted, user_key, filename)
+        for date_formatted, prefix, user_key, filename, expected_uri in test_data:
+            with self.subTest(date_formatted=date_formatted, prefix=prefix, user_key=user_key, filename=filename, expected_uri=expected_uri):
+                result = FileInfoHandler.get_uri_path(date_formatted, prefix, user_key, filename)
                 self.assertEqual(result, expected_uri)
 
     def test_get_date_folder_name(self):

@@ -6,6 +6,10 @@ export interface UploadInfo {
   maxlengthUser: number;
 }
 
+export interface UploadResponse {
+  url: string;
+}
+
 export class FileUploader {
     private uploadInfo: UploadInfo | undefined;
     canUpload = false;
@@ -16,8 +20,18 @@ export class FileUploader {
   constructor() {
     window.addEventListener(fileInputEvent, (event) => this.onFileInput(event as CustomEvent<FileInputEvent>));
 
+    document.getElementById('upload-btn')?.addEventListener('click', () => this.onSubmit());
+    const secretsElement = document.getElementById('secret') as HTMLInputElement;
+    secretsElement.addEventListener('input', (event) => {
+      this.selectedKey = (event.target as HTMLInputElement).value;
+      try {
+        localStorage.setItem('key', this.selectedKey);
+      } catch {}
+    });
+
     try {
       this.selectedKey = localStorage.getItem('key') ?? '';
+      secretsElement.value = this.selectedKey;
     } catch { }
 
     this.getUploadInfo(0).then((uploadInfo) => {
@@ -77,4 +91,21 @@ export class FileUploader {
   }
 
 
+  private async onSubmit() {
+    if (!this.selectedFile || !this.canUpload) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.set('file', this.selectedFile);
+    formData.set('key', this.selectedKey);
+
+    const request = fetch('http://localhost:5001/upload', {
+      method: 'PUT',
+      body: formData,
+    });
+    const response = await request;
+    const json = await response.json() as UploadResponse;
+    console.log(json);
+  }
 }

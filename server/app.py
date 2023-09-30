@@ -30,7 +30,7 @@ def upload_file():
     if 'file' not in request.files:
         return 'No file part', 400
     file = request.files['file']
-    sanitized_filename = file.strip()
+    sanitized_filename = file.filename.strip()
     try:
         FileUtility.validate_path(
             sanitized_filename,
@@ -38,7 +38,7 @@ def upload_file():
             FileValidation.ALLOW_EMPTY_DEFAULT,
         )
         FileUtility.validate_path(
-            request.key,
+            request.form.get('key'),
             FileValidation.MAXLENGTH_USER_KEY,
             FileValidation.ALLOW_EMPTY_USER_KEY,
         )
@@ -54,18 +54,16 @@ def upload_file():
     try:
         uri_path, upload_path = FileInfoHandler.get_upload_path(
             sanitized_filename,
-            request.key,
+            request.form.get('key'),
             app.config["UPLOAD_FOLDER"]
         )
         FileManager.upload_file(file, upload_path)
     except Exception as e:
         return 'Failed uploading', 500
 
-    response = make_response({
-        "url": f"v/{uri_path}"
-    })
-    response.headers["Content-Type"] = "application/json"
-    return response, 200
+    return jsonify(
+        url=f"v/{uri_path}"
+    )
 
 
 # View with & without key.
