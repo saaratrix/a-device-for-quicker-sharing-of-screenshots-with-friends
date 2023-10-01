@@ -21,7 +21,7 @@ def get_upload_info():
     return jsonify(
         extensions=FileUtility.ALLOWED_EXTENSIONS,
         maxlengthFile=FileValidation.MAXLENGTH_FILENAME,
-        maxlengthUser=FileValidation.MAXLENGTH_USER_KEY
+        maxlengthSecret=FileValidation.MAXLENGTH_SECRET_KEY
     )
 
 
@@ -30,7 +30,7 @@ def upload_file():
     if 'file' not in request.files:
         return 'No file part', 400
     file = request.files['file']
-    sanitized_filename = file.filename.strip()
+    sanitized_filename = request.form.get('filename').strip()
     try:
         FileUtility.validate_path(
             sanitized_filename,
@@ -39,7 +39,7 @@ def upload_file():
         )
         FileUtility.validate_path(
             request.form.get('key'),
-            FileValidation.MAXLENGTH_USER_KEY,
+            FileValidation.MAXLENGTH_SECRET_KEY,
             FileValidation.ALLOW_EMPTY_USER_KEY,
         )
     except:

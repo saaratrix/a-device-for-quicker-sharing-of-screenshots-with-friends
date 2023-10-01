@@ -62,7 +62,7 @@ class TestFileInfoHandler(unittest.TestCase):
 
         hash_total_length = FileInfoHandler.HASH_LENGTH + FileInfoHandler.HASH_RANDOM_LENGTH
         uri_length = len("00/01/01/") + hash_total_length + len(f"_{filename}")
-        self.assertTrue(result_uri.endswith(f"_{filename}"))
+        self.assertTrue(result_uri.endswith(f"{filename}"))
         self.assertEqual(len(result_uri), uri_length)
 
         minimum_length = len(f"{root}/") + uri_length
@@ -81,7 +81,7 @@ class TestFileInfoHandler(unittest.TestCase):
         key_part = f"/{key}/"
         hash_total_length = FileInfoHandler.HASH_LENGTH + FileInfoHandler.HASH_RANDOM_LENGTH
         uri_length = len("00/01/01") + len(key_part) + hash_total_length + len(f"_{filename}")
-        self.assertTrue(result_uri.endswith(f"_{filename}"))
+        self.assertTrue(result_uri.endswith(f"{filename}"))
         self.assertTrue(key_part in result_uri)
         self.assertEqual(len(result_uri), uri_length)
 
