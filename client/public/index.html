@@ -10,14 +10,28 @@
 <div class="container">
   <div id="uploader" hidden="hidden">
     <div class="upload-details">
-      <input type="file" id="fileInput" class="file-input">
+      <div class="upload-inputs">
+        <input type="file" id="fileInput" class="file-input">
+        <br>
+        <br>
+        <label for="secret">Extra Secret: </label>
+        <input id="secret" type="text">
+        <br>
+        <br>
+        <label for="secret">Filename: </label>
+        <input id="filename" type="text">
+      </div>
       <br>
-      <br>
-      <label for="secret">Extra Secret: </label>
-      <input id="secret" type="text">
-      <br>
-      <br>
-      <button id="upload-btn" type="submit" disabled style="font-size: 3rem;">Upload</button>
+      <button id="upload-btn" type="submit" disabled>
+<!--        <span class="spinner"></span>-->
+        Upload
+      </button>
+    </div>
+    <div id="link-share" class="invisible">
+      <div class="link-container">
+        <span class="link-text"></span>
+        <i class="link-copy-btn" title="click to copy">⎘</i>
+      </div>
     </div>
   </div>
   <div id="viewer" hidden="hidden"></div>
