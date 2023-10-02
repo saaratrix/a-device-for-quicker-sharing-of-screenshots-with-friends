@@ -67,17 +67,25 @@ def upload_file():
 
 
 # View with & without key.
-@app.route('/v/<year>/<month>/<day>/<prefix>/<key>/<filename>', methods=['GET'])
-@app.route('/v/<year>/<month>/<day>/<prefix>/<filename>/', methods=['GET'], defaults={'key': None})
-def view_file(year: str, month: str, day: str, prefix: str, key: str, filename: str) -> None:
-    return send_file(year, month, day, prefix, key, filename, False)
+@app.route('/v/<year>/<month>/<day>/<prefix>/<secret>/<filename>', methods=['GET'])
+def view_file_with_secret(year: str, month: str, day: str, prefix: str, secret: str, filename: str) -> None:
+    return send_file(year, month, day, prefix, secret, filename, False)
+
+
+@app.route('/v/<year>/<month>/<day>/<prefix>/<filename>/', methods=['GET'])
+def view_file_no_secret(year: str, month: str, day: str, prefix: str, filename: str) -> None:
+    return send_file(year, month, day, prefix, "", filename, False)
 
 
 # Downloads with & without key
-@app.route('/d/<year>/<month>/<day>/<prefix>/<key>/<filename>', methods=['GET'])
-@app.route('/d/<year>/<month>/<day>/<prefix>/<filename>/', methods=['GET'], defaults={'key': None})
-def download_file(year: str, month: str, day: str, prefix: str, key: str, filename: str) -> None:
-    return send_file(year, month, day, prefix, key, filename, True)
+@app.route('/d/<year>/<month>/<day>/<prefix>/<secret>/<filename>', methods=['GET'])
+def download_file_with_secret(year: str, month: str, day: str, prefix: str, secret: str, filename: str) -> None:
+    return send_file(year, month, day, prefix, secret, filename, True)
+
+
+@app.route('/d/<year>/<month>/<day>/<prefix>/<filename>/', methods=['GET'])
+def download_file_no_secret(year: str, month: str, day: str, prefix: str, filename: str) -> None:
+    return send_file(year, month, day, prefix, "", filename, True)
 
 
 @app.errorhandler(RequestEntityTooLarge)
@@ -119,5 +127,5 @@ def get_file_path(year: str, month: str, day: str, prefix: str, key: str, filena
 
 
 if __name__ == '__main__':
-    CORS(app, origins=["http://localhost:63342"])
+    CORS(app, origins=["http://localhost:63342", "http://localhost:63343"])
     app.run(debug=True, port=5001)
