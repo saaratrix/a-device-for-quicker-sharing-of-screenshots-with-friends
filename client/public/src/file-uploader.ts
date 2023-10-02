@@ -1,4 +1,5 @@
 import { FileInputEvent, fileInputEvent } from "./file-events.js";
+import { api } from "./environment.js";
 
 export interface UploadInfo {
   extensions: string[];
@@ -98,7 +99,7 @@ export class FileUploader {
     return promise;
 
     async function tryFetchUploadInfo(tries: number, res: (vaule: (UploadInfo | PromiseLike<UploadInfo>)) => void, rej: (reason: any) => void) {
-      const request = fetch('http://localhost:5001/upload-info', {
+      const request = fetch(`${api}/upload-info`, {
         method: "GET",
         mode: "cors",
       });
@@ -177,7 +178,7 @@ export class FileUploader {
     uploadButton.classList.add('spinner');
     uploadButton.disabled = true;
 
-    const request = fetch('http://localhost:5001/upload', {
+    const request = fetch(`${api}/upload`, {
       method: 'PUT',
       body: formData,
     });

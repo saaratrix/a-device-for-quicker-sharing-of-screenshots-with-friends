@@ -11,14 +11,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const fileViewer = new FileViewer();
   if (fileViewer.isViewUrl()) {
-    initViewer(viewerElement!);
+    initViewer(viewerElement!, fileViewer);
   } else {
     initUploader(uploaderElement!);
   }
 });
 
-function initViewer(viewerElement: HTMLElement): void {
+function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
   viewerElement.hidden = false;
+
+  fileViewer.viewFile();
 }
 
 function initUploader(uploaderElement: HTMLElement): void {
