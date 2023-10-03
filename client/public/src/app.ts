@@ -8,6 +8,9 @@ import { dispatchFileInput } from "./file-events.js";
 document.addEventListener('DOMContentLoaded', async () => {
   const uploaderElement = document.getElementById('uploader');
   const viewerElement = document.getElementById('viewer');
+  // Reason for this example is if we're on index.html and you paste the shared url it would not change the url.
+  // As we're dealing with #.
+  initItemChange();
 
   const fileViewer = new FileViewer();
   if (fileViewer.isViewUrl()) {
@@ -16,6 +19,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     initUploader(uploaderElement!);
   }
 });
+
+function initItemChange(): void {
+  window.addEventListener('hashchange', function() {
+    const hash = window.location.hash.substring(1); // Get hash, remove the '#'
+    if (hash.startsWith('/v/') || hash.startsWith('/d/')) {
+      location.reload();
+    }
+  });
+}
 
 function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
   viewerElement.hidden = false;
