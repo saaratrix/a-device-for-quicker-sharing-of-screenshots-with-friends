@@ -30,7 +30,7 @@ body {
   width: 20rem;
 }
 
-// Spinner source: https://stackoverflow.com/questions/64608661/add-loader-spinner-at-center-of-a-button
+
 #upload-btn {
   position: relative;
   font-size: 2.5rem;
@@ -40,6 +40,7 @@ body {
   }
 }
 
+// Spinner source: https://stackoverflow.com/questions/64608661/add-loader-spinner-at-center-of-a-button
 .spinner {
   &::after {
     border: 3px solid #008ad6;
@@ -103,27 +104,7 @@ body {
   text-shadow: 1px 1px 2px black;
 }
 
-.drag-drop-area:hover {
-  background-color: #5a5a65; // Lighter shade when hovered
-}
-
-.image-paste-input {
-  margin-top: 20px;
-  padding: 10px;
-  width: 80%;
-  background-color: #4a4a55; // Dark background for input
-  color: #e1e1e8; // Light text
-  border: 1px solid #7f5af0; // Purple-ish border
-  border-radius: 4px;
-  outline: none;
-
-  &:focus {
-    border-color: #a086f7; // Lighter purple when focused
-  }
-}
-
 #link-share {
-
   margin-top: 1rem;
 }
 

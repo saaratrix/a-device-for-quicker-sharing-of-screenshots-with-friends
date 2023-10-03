@@ -9,14 +9,7 @@ enum ViewingType {
 }
 
 export class FileViewer {
-  /**
-   * # Images
-   *         '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.webp',
-   *         # Videos
-   *         '.mp4', '.mkv', '.flv', '.webm', '.mov', '.avi', '.m4v',
-   *         # Audio
-   *         '.mp3', '.wav', '.aac', '.flac', '.ogg', '.m4a',
-   */
+
   imageExtensions = [
     // Images
     '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.webp',
