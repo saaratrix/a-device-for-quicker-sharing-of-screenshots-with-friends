@@ -186,7 +186,7 @@ export class FileUploader {
     try {
       const response = await request;
       const json = await response.json() as UploadResponse;
-      const url = `${location.href}/${json.url}`;
+      const url = getShareUrl(json.url);
       this.onShareLinkChanged(url);
     } finally {
       uploadButton.classList.remove('spinner');
@@ -204,4 +204,8 @@ export class FileUploader {
     }
     navigator.clipboard.writeText(text)
   }
+}
+
+export function getShareUrl(url: string) {
+  return `${location.href}#${url}`;
 }
