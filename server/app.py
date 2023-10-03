@@ -62,7 +62,7 @@ def upload_file():
         return 'Failed uploading', 500
 
     return jsonify(
-        url=f"v/{uri_path}"
+        url=f"/v/{uri_path}"
     )
 
 
