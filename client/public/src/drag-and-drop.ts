@@ -10,7 +10,6 @@ export class DragAndDrop {
     });
 
     dragAndDropELement.addEventListener('dragleave', (event) => {
-        console.log(event.target);
         document.body.classList.remove('drag');
     });
 

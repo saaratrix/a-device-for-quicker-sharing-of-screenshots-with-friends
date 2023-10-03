@@ -11,7 +11,6 @@ export class Paster {
   onPaste(event: ClipboardEvent): void {
     const items = (event.clipboardData || (window as any).clipboardData).items;
 
-    console.log('paste items', items);
     for (let index in items) {
       const item = items[index];
 
@@ -22,7 +21,6 @@ export class Paster {
         if (!file) {
           break;  // For simplicity, handling only the first image found
         }
-        console.log(file);
         dispatchFileInput(file);
       }
     }
