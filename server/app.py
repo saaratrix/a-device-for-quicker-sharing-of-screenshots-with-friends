@@ -21,7 +21,7 @@ def get_upload_info():
     return jsonify(
         extensions=FileUtility.ALLOWED_EXTENSIONS,
         maxlengthFile=FileValidation.MAXLENGTH_FILENAME,
-        maxlengthSecret=FileValidation.MAXLENGTH_SECRET_KEY
+        maxlengthSecret=FileValidation.MAXLENGTH_USER_SECRET
     )
 
 
@@ -38,9 +38,9 @@ def upload_file():
             FileValidation.ALLOW_EMPTY_DEFAULT,
         )
         FileUtility.validate_path(
-            request.form.get('key'),
-            FileValidation.MAXLENGTH_SECRET_KEY,
-            FileValidation.ALLOW_EMPTY_USER_KEY,
+            request.form.get('secret'),
+            FileValidation.MAXLENGTH_USER_SECRET,
+            FileValidation.ALLOW_EMPTY_USER_SECRET,
         )
     except:
         return f"Invalid file format.", 400
@@ -54,7 +54,7 @@ def upload_file():
     try:
         uri_path, upload_path = FileInfoHandler.get_upload_path(
             sanitized_filename,
-            request.form.get('key'),
+            request.form.get('secret'),
             app.config["UPLOAD_FOLDER"]
         )
         FileManager.upload_file(file, upload_path)
@@ -66,7 +66,6 @@ def upload_file():
     )
 
 
-# View with & without key.
 @app.route('/v/<year>/<month>/<day>/<prefix>/<secret>/<filename>', methods=['GET'])
 def view_file_with_secret(year: str, month: str, day: str, prefix: str, secret: str, filename: str) -> None:
     return send_file(year, month, day, prefix, secret, filename, False)
@@ -77,7 +76,6 @@ def view_file_no_secret(year: str, month: str, day: str, prefix: str, filename: 
     return send_file(year, month, day, prefix, "", filename, False)
 
 
-# Downloads with & without key
 @app.route('/d/<year>/<month>/<day>/<prefix>/<secret>/<filename>', methods=['GET'])
 def download_file_with_secret(year: str, month: str, day: str, prefix: str, secret: str, filename: str) -> None:
     return send_file(year, month, day, prefix, secret, filename, True)
@@ -93,9 +91,9 @@ def handle_file_too_large(e):
     return "File size exceeds the allowed limit.", 413
 
 
-def send_file(year: str, month: str, day: str, prefix: str, key: str, filename: str, as_attachment):
+def send_file(year: str, month: str, day: str, prefix: str, user_secret: str, filename: str, as_attachment):
     try:
-        path, full_filename = get_file_path(year, month, day, prefix, key, filename)
+        path, full_filename = get_file_path(year, month, day, prefix, user_secret, filename)
         if not os.path.exists(path):
             raise FileExistsError("File not found.")
     except:
@@ -104,13 +102,13 @@ def send_file(year: str, month: str, day: str, prefix: str, key: str, filename: 
     return send_from_directory(path, full_filename, as_attachment=as_attachment)
 
 
-def get_file_path(year: str, month: str, day: str, prefix: str, key: str, filename: str) -> str:
+def get_file_path(year: str, month: str, day: str, prefix: str, user_secret: str, filename: str) -> str:
     try:
         FileUtility.validate_path(year, FileValidation.MAXLENGTH_DATE, FileValidation.ALLOW_EMPTY_DEFAULT)
         FileUtility.validate_path(month, FileValidation.MAXLENGTH_DATE, FileValidation.ALLOW_EMPTY_DEFAULT)
         FileUtility.validate_path(day, FileValidation.MAXLENGTH_DATE, FileValidation.ALLOW_EMPTY_DEFAULT)
         FileUtility.validate_path(prefix, FileValidation.MAXLENGTH_HASH, FileValidation.ALLOW_EMPTY_DEFAULT)
-        FileUtility.validate_path(key, FileValidation.MAXLENGTH_HASH, FileValidation.ALLOW_EMPTY_USER_KEY)
+        FileUtility.validate_path(user_secret, FileValidation.MAXLENGTH_HASH, FileValidation.ALLOW_EMPTY_USER_SECRET)
         FileUtility.validate_path(filename, FileValidation.MAXLENGTH_FILENAME, FileValidation.ALLOW_EMPTY_DEFAULT)
     except ValueError as e:
         raise Exception(f"Invalid uri.")
@@ -120,7 +118,7 @@ def get_file_path(year: str, month: str, day: str, prefix: str, key: str, filena
         month,
         day,
         prefix,
-        key,
+        user_secret,
         filename,
         app.config["UPLOAD_FOLDER"]
     )

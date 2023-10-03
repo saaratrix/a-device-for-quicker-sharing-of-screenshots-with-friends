@@ -11,28 +11,28 @@ class FileInfoHandler:
     HASH_RANDOM_LENGTH = 8
 
     @staticmethod
-    def get_upload_path(original_filename: str, user_key: str, root: str) -> str:
+    def get_upload_path(original_filename: str, user_secret: str, root: str) -> str:
         now = datetime.datetime.now()
         time = now.time()
         hash_key = FileInfoHandler.generate_hash(time)
         date_formatted, date_folder = FileInfoHandler.get_date_folder_name(now)
         filename = f"{hash_key}_{original_filename}"
 
-        uri_path = FileInfoHandler.get_uri_path(date_formatted, hash_key, user_key, original_filename)
-        upload_path = os.path.join(root, date_folder, user_key, filename)
+        uri_path = FileInfoHandler.get_uri_path(date_formatted, hash_key, user_secret, original_filename)
+        upload_path = os.path.join(root, date_folder, user_secret, filename)
         return uri_path, upload_path
 
     @staticmethod
-    def get_uri_path(date_formatted: str,  prefix: str, user_key: str, filename: str) -> str:
+    def get_uri_path(date_formatted: str, prefix: str, user_secret: str, filename: str) -> str:
         uri_path = f"{date_formatted[:2]}/{date_formatted[2:4]}/{date_formatted[4:]}/{prefix}"
-        if user_key != "": uri_path += f"/{user_key}"
+        if user_secret != "": uri_path += f"/{user_secret}"
         uri_path += f"/{filename}"
         return uri_path
 
     @staticmethod
-    def get_filepath_from_request(year: str, month: str, day: str, prefix: str, key: str, filename: str, root: str):
+    def get_filepath_from_request(year: str, month: str, day: str, prefix: str, user_secret: str, filename: str, root: str):
         filename = f"{prefix}_{filename}"
-        path = os.path.join(root, year, month, day, key)
+        path = os.path.join(root, year, month, day, user_secret)
         return path, filename
 
     @staticmethod

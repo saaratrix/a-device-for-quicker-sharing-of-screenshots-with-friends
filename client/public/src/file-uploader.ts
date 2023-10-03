@@ -17,7 +17,7 @@ export class FileUploader {
 
   filename: string = '';
   selectedFile: File | undefined;
-  selectedKey: string = '';
+  selectedSecret: string = '';
 
   constructor() {
     window.addEventListener(fileInputEvent, (event) => this.onFileInput(event as CustomEvent<FileInputEvent>));
@@ -32,16 +32,16 @@ export class FileUploader {
   initSecrets(): void {
     const secretsElement = document.getElementById('secret') as HTMLInputElement;
     secretsElement.addEventListener('input', (event) => {
-      this.selectedKey = (event.target as HTMLInputElement).value;
+      this.selectedSecret = (event.target as HTMLInputElement).value;
       try {
-        localStorage.setItem('key', this.selectedKey);
+        localStorage.setItem('secret', this.selectedSecret);
       } catch {
       }
     });
 
     try {
-      this.selectedKey = localStorage.getItem('key') ?? '';
-      secretsElement.value = this.selectedKey;
+      this.selectedSecret = localStorage.getItem('secret') ?? '';
+      secretsElement.value = this.selectedSecret;
     } catch {
     }
   }
@@ -172,7 +172,7 @@ export class FileUploader {
     const formData = new FormData();
     formData.set('file', this.selectedFile);
     formData.set('filename', this.filename);
-    formData.set('key', this.selectedKey);
+    formData.set('secret', this.selectedSecret);
 
     const uploadButton = document.getElementById('upload-btn') as HTMLButtonElement;
     uploadButton.classList.add('spinner');

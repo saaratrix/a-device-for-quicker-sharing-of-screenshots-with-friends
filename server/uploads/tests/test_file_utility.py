@@ -48,7 +48,7 @@ class MyTestCase(unittest.TestCase):
             ("12", FileValidation.MAXLENGTH_DATE),
             ("31", FileValidation.MAXLENGTH_DATE),
             ("abcdefgh", FileValidation.MAXLENGTH_HASH),
-            ("abcdefgh", FileValidation.MAXLENGTH_SECRET_KEY),
+            ("abcdefgh", FileValidation.MAXLENGTH_USER_SECRET),
         ]
 
         for path, max_length in test_cases:
@@ -66,7 +66,7 @@ class MyTestCase(unittest.TestCase):
             ("230930", FileValidation.MAXLENGTH_DATE),
             ("1234567890abcedf1", FileValidation.MAXLENGTH_HASH),
             ("a" * (FileValidation.MAXLENGTH_HASH + 1), FileValidation.MAXLENGTH_HASH),
-            ("a" * (FileValidation.MAXLENGTH_SECRET_KEY + 1), FileValidation.MAXLENGTH_SECRET_KEY),
+            ("a" * (FileValidation.MAXLENGTH_USER_SECRET + 1), FileValidation.MAXLENGTH_USER_SECRET),
         ]
 
         for path, max_length in test_cases:

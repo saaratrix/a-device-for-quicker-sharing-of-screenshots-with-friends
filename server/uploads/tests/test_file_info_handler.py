@@ -34,9 +34,9 @@ class TestFileInfoHandler(unittest.TestCase):
             ("190505", "01234abcde", "", "notes.md", "19/05/05/01234abcde/notes.md"),
         ]
 
-        for date_formatted, prefix, user_key, filename, expected_uri in test_data:
-            with self.subTest(date_formatted=date_formatted, prefix=prefix, user_key=user_key, filename=filename, expected_uri=expected_uri):
-                result = FileInfoHandler.get_uri_path(date_formatted, prefix, user_key, filename)
+        for date_formatted, prefix, secret, filename, expected_uri in test_data:
+            with self.subTest(date_formatted=date_formatted, prefix=prefix, secret=secret, filename=filename, expected_uri=expected_uri):
+                result = FileInfoHandler.get_uri_path(date_formatted, prefix, secret, filename)
                 self.assertEqual(result, expected_uri)
 
     def test_get_date_folder_name(self):
@@ -53,12 +53,12 @@ class TestFileInfoHandler(unittest.TestCase):
                 self.assertTrue(result_formatted, expected_formatted_date)
                 self.assertEqual(result_folder, expected_output_folder)
 
-    def test_get_upload_path_without_key(self):
+    def test_get_upload_path_without_user_secret(self):
         filename = "test.png"
         root = "root"
-        # no key so should not add path
-        key = ""
-        result_uri, result_upload = FileInfoHandler.get_upload_path(filename, key, root)
+        # no secret so should not add path
+        user_secret = ""
+        result_uri, result_upload = FileInfoHandler.get_upload_path(filename, user_secret, root)
 
         hash_total_length = FileInfoHandler.HASH_LENGTH + FileInfoHandler.HASH_RANDOM_LENGTH
         uri_length = len("00/01/01/") + hash_total_length + len(f"_{filename}")
@@ -71,18 +71,18 @@ class TestFileInfoHandler(unittest.TestCase):
         self.assertTrue(result_upload.endswith(f"_{filename}"))
         self.assertTrue(len(result_upload) >= minimum_length)
 
-    def test_get_upload_path_with_key(self):
+    def test_get_upload_path_with_user_secret(self):
         filename = "test.png"
         root = "root"
-        # no key so should not add path
-        key = "little"
-        result_uri, result_upload = FileInfoHandler.get_upload_path(filename, key, root)
+        # no secret so should not add path
+        user_secret = "little"
+        result_uri, result_upload = FileInfoHandler.get_upload_path(filename, user_secret, root)
 
-        key_part = f"/{key}/"
+        user_secret_part = f"/{user_secret}/"
         hash_total_length = FileInfoHandler.HASH_LENGTH + FileInfoHandler.HASH_RANDOM_LENGTH
-        uri_length = len("00/01/01") + len(key_part) + hash_total_length + len(f"_{filename}")
+        uri_length = len("00/01/01") + len(user_secret_part) + hash_total_length + len(f"_{filename}")
         self.assertTrue(result_uri.endswith(f"{filename}"))
-        self.assertTrue(key_part in result_uri)
+        self.assertTrue(user_secret_part in result_uri)
         self.assertEqual(len(result_uri), uri_length)
 
         minimum_length = len(f"{root}/") + uri_length
@@ -97,14 +97,14 @@ class TestFileInfoHandler(unittest.TestCase):
         year = "00"
         month = "01"
         day = "01"
-        key = "mouse"
+        user_secret = "mouse"
         prefix = "abcdef"
         filename = "file.txt"
-        result_path, result_filename = FileInfoHandler.get_filepath_from_request(year, month, day, prefix, key, filename, root)
+        result_path, result_filename = FileInfoHandler.get_filepath_from_request(year, month, day, prefix, user_secret, filename, root)
 
         # Construct the expected path
         expected_filename = f"{prefix}_{filename}"
-        expected_path = os.path.join(root, year, month, day, key)
+        expected_path = os.path.join(root, year, month, day, user_secret)
         self.assertEqual(result_path, expected_path)
         self.assertEqual(result_filename, expected_filename)
 
