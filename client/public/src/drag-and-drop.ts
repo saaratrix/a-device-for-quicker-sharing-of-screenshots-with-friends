@@ -2,23 +2,21 @@ import { dispatchFileInput } from './file-events.js';
 
 export class DragAndDrop {
   initialize() {
-    // Add dragover event listener
+    const dragAndDropELement = document.querySelector('.drag-drop-area') as HTMLElement;
+
     document.addEventListener('dragover', (event) => {
+      document.body.classList.add('drag');
       event.preventDefault(); // Prevent default to allow drop
-      // dropAreaElement.classList.add('dragging'); // Add a class for visual feedback
-      console.log('dragover');
     });
 
-    // Add dragleave event listener
-    document.addEventListener('dragleave', () => {
-      // dropAreaElement.classList.remove('dragging'); // Remove the visual feedback class
-      console.log('dragleave');
+    dragAndDropELement.addEventListener('dragleave', (event) => {
+        console.log(event.target);
+        document.body.classList.remove('drag');
     });
 
-    document.addEventListener('drop', (event) => {
+    dragAndDropELement.addEventListener('drop', (event) => {
+      document.body.classList.remove('drag');
       event.preventDefault(); // Prevent default behavior
-      // dropAreaElement.classList.remove('dragging'); // Remove the visual feedback class
-      console.log('drop');
 
       // Handle the files here
       const files = event.dataTransfer?.files;
@@ -34,6 +32,7 @@ export class DragAndDrop {
     });
     // Prevent file drops everywhere.
     window.addEventListener('drop', (event) => {
+
       event.preventDefault();
     });
 
