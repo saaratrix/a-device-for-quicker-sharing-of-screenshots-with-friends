@@ -1,34 +1,21 @@
-import { dispatchFileInpit } from './file-events.js';
+import { dispatchFileInput } from './file-events.js';
 
 export class DragAndDrop {
-  initialize(dropAreaElement: HTMLElement) {
-    // Add dragover event listener
-    dropAreaElement?.addEventListener('dragover', (event) => {
+  initialize() {
+    const dragAndDropELement = document.querySelector('.drag-drop-area') as HTMLElement;
+
+    document.addEventListener('dragover', (event) => {
+      document.body.classList.add('drag');
       event.preventDefault(); // Prevent default to allow drop
-      dropAreaElement.classList.add('dragging'); // Add a class for visual feedback
-      console.log('dragover');
     });
 
-    // Add dragleave event listener
-    dropAreaElement?.addEventListener('dragleave', () => {
-      dropAreaElement.classList.remove('dragging'); // Remove the visual feedback class
-      console.log('dragleave');
+    dragAndDropELement.addEventListener('dragleave', (event) => {
+        document.body.classList.remove('drag');
     });
 
-
-    window.addEventListener("dragover",function(e){
-      e.preventDefault();
-    });
-    // Prevent file drops everywhere.
-    window.addEventListener('drop', (event) => {
-      event.preventDefault();
-    });
-
-    // Add drop event listener
-    dropAreaElement?.addEventListener('drop', (event) => {
+    dragAndDropELement.addEventListener('drop', (event) => {
+      document.body.classList.remove('drag');
       event.preventDefault(); // Prevent default behavior
-      dropAreaElement.classList.remove('dragging'); // Remove the visual feedback class
-      console.log('drop');
 
       // Handle the files here
       const files = event.dataTransfer?.files;
@@ -36,9 +23,19 @@ export class DragAndDrop {
         return;
       }
 
-      const file = files[0];
-      const blob = new Blob([file], { type: file.type });
-      dispatchFileInpit(blob);
+      dispatchFileInput(files[0]);
     });
+
+    window.addEventListener("dragover",function(e){
+      e.preventDefault();
+    });
+    // Prevent file drops everywhere.
+    window.addEventListener('drop', (event) => {
+
+      event.preventDefault();
+    });
+
+    // Add drop event listener
+
   }
 }
