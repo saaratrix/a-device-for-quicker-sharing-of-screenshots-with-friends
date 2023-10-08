@@ -1,6 +1,6 @@
 import os.path
 
-from flask import Flask, request, send_from_directory, make_response, jsonify
+from flask import Flask, request, send_from_directory, jsonify
 from flask_cors import CORS
 from werkzeug.exceptions import RequestEntityTooLarge
 
@@ -14,7 +14,6 @@ UPLOAD_FOLDER = FileUtility.ROOT
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # bytes * kb * mb * gb, so 1 GB is current maximum size.
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024 * 1
-
 
 @app.route("/upload-info", methods=["GET"])
 def get_upload_info():
@@ -125,5 +124,6 @@ def get_file_path(year: str, month: str, day: str, prefix: str, user_secret: str
 
 
 if __name__ == '__main__':
-    CORS(app, origins=["http://localhost:63342", "http://localhost:63343"])
+    origins = os.environ.get("ORIGINS", '"http://localhost:63342","http://localhost:63343"').split(",")
+    CORS(app, origins=origins)
     app.run(debug=True, port=5001)
