@@ -4,10 +4,16 @@
   "version": "1.0.0",
   "description": "Easy way to upload files and share.",
   "main": "index.js",
+  "type": "module",
   "private": true,
   "scripts": {
     "start:dev": "concurrently \"npm run tsc:watch\" \"npm run sass:watch\"",
+    "build:production": "npm run build:clean && npm run tsc:build && npm run build:copy-assets && npm run sass:production",
+    "build:clean": "node scripts/clean-build.js",
+    "build:copy-assets": "node scripts/copy-index.html.js",
+    "tsc:build": "tsc -p public/tsconfig.production.json",
     "tsc:watch": "tsc -w -p public/tsconfig.json",
+    "sass:production": "sass public/src/main.scss:build/src/main.css",
     "sass:watch": "sass --watch ."
   },
   "license": "ISC",
