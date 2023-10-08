@@ -1,0 +1,11 @@
+import os
+from flask_cors import CORS
+
+from server.app import create_app
+
+if __name__ == '__main__':
+    app = create_app()
+
+    origins = os.environ.get("ORIGINS", '"http://localhost:63342","http://localhost:63343"').split(",")
+    CORS(app, origins=origins)
+    app.run(debug=True, port=5001)
