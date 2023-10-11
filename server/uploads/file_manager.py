@@ -8,7 +8,6 @@ if TYPE_CHECKING:
 
 
 class FileManager:
-
     @staticmethod
     def upload_file(file: 'FileStorage', upload_path: str):
         if not FileUtility.is_file_allowed(upload_path):
