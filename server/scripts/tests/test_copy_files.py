@@ -23,7 +23,7 @@ class MoveFilesTests(unittest.TestCase):
         current_file = os.path.dirname(os.path.abspath(__file__))
         source_path = os.path.join(current_file, "test_files", "a_cool_file.txt")
         target_path = os.path.join(self.test_folder, "a_cool_file.txt")
-        copy_file(source_path, target_path)
+        copy_file(source_path, target_path, False)
         os.path.exists(target_path)
 
     def test_can_copy_file_can_copy(self) -> None:
