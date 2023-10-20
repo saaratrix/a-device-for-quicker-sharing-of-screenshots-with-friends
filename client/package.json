@@ -10,7 +10,7 @@
     "start:dev": "start npm run tsc:watch && start npm run sass:watch",
     "build:production": "npm run build:clean && npm run tsc:build && npm run build:copy-assets && npm run sass:production",
     "build:clean": "node scripts/clean-build.js",
-    "build:copy-assets": "node scripts/copy-index.html.js",
+    "build:copy-assets": "node scripts/copy-assets.js",
     "tsc:build": "tsc -p public/tsconfig.production.json",
     "tsc:watch": "tsc -w -p public/tsconfig.json",
     "sass:production": "sass public/src/main.scss:build/src/main.css",
