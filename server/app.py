@@ -15,7 +15,7 @@ def create_app():
     # bytes * kb * mb * gb, so 1 GB is current maximum size.
     app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024 * 1
 
-    @app.route("/upload-info", methods=["GET"])
+    @app.route("/upload-info", methods=["GET"]) 
     def get_upload_info():
         return jsonify(
             extensions=FileUtility.ALLOWED_EXTENSIONS,

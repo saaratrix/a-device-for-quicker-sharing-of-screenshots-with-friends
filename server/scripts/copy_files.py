@@ -28,7 +28,7 @@ def copy_file(source: str, target: str, only_print_errors: bool) -> None:
         shutil.copy2(source_abs, target_abs)
         return True
     except Exception as e:
-        print(f"\033[91mFailed to copy file {source} because {e}[0m")
+        print(f"\033[91mFailed to copy file {source} because {e}\033[0;0m")
         return False
 
 
