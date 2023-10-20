@@ -76,6 +76,7 @@ if __name__ == "__main__":
         root_path = os.path.join(root_path, "")
 
     files_to_move = [
+        "app.py",
         "wsgi.py",
         "requirements.txt"
     ]
