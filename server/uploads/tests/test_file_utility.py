@@ -84,6 +84,8 @@ class MyTestCase(unittest.TestCase):
             "3dmodel.obj",
             "texture.dds",
             "webfile.xml",
+            "book.epub",
+            "book2.cbz"
         ]
 
         for filename in test_cases:

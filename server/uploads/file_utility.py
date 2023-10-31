@@ -62,6 +62,9 @@ class FileUtility:
         '.zip', '.rar', '.tar', '.gz', '.7z', '.tar.gz',
         # Documents
         '.txt', '.rtf', '.pdf', '.doc', '.docx', '.odt', '.ppt', '.pptx', '.xls', '.xlsx',
+        # E-books
+        '.epub', '.mobi', '.cbz', '.cbr', '.ibook', '.azw', '.fb2', '.azw3', '.kf8',
+        # Other files, maybe: '.pdb',  '.iba', '.prc', '.lit', '.lrf', '.lrx', '.oxps', '.xps',
         # 3D Models
         '.obj', '.fbx', '.dae', '.3ds', '.blend', '.ply', '.stl',
         # Textures
