@@ -38,6 +38,8 @@ function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
 function initUploader(uploaderElement: HTMLElement): void {
   uploaderElement.hidden = false;
 
+  document.title = 'upload a file';
+
   const dragAndDrop = new DragAndDrop();
   dragAndDrop.initialize();
 

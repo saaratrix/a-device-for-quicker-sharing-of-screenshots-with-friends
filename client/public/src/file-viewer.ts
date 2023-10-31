@@ -55,6 +55,8 @@ export class FileViewer {
       return;
     }
 
+    document.title = url;
+
     if (viewingType === ViewingType.Image) {
       this.viewImage(url);
     } else if (viewingType === ViewingType.Video) {
