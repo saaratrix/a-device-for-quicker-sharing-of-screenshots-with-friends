@@ -186,7 +186,8 @@ export class FileUploader {
     try {
       const response = await request;
       const json = await response.json() as UploadResponse;
-      const url = getShareUrl(json.url);
+      let url = getShareUrl(json.url);
+      url = encodeURIComponent(url);
       this.onShareLinkChanged(url);
     } finally {
       uploadButton.classList.remove('spinner');
