@@ -186,8 +186,7 @@ export class FileUploader {
     try {
       const response = await request;
       const json = await response.json() as UploadResponse;
-      let url = getShareUrl(json.url);
-      url = encodeURIComponent(url);
+      const url = getShareUrl(json.url);
       this.onShareLinkChanged(url);
     } finally {
       uploadButton.classList.remove('spinner');
@@ -208,5 +207,8 @@ export class FileUploader {
 }
 
 export function getShareUrl(url: string) {
-  return `${location.href}#${url}`;
+  const components = url.split('/');
+  const encodedUrl = components.map(c => encodeURIComponent(c)).join('/');
+
+  return `${location.href}#${encodedUrl}`;
 }
