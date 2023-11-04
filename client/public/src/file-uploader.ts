@@ -1,5 +1,6 @@
-import { FileInputEvent, fileInputEvent } from "./file-events.js";
+import { dispatchFileUploaded, FileInputEvent, fileInputEvent } from "./events/file-events.js";
 import { api } from "./environment.js";
+import { copyUrlToClipboard } from "./utility/copy-url-to-clipboard.js";
 
 export interface UploadInfo {
   extensions: string[];
@@ -188,6 +189,7 @@ export class FileUploader {
       const json = await response.json() as UploadResponse;
       const url = getShareUrl(json.url);
       this.onShareLinkChanged(url);
+      dispatchFileUploaded(url);
     } finally {
       uploadButton.classList.remove('spinner');
       uploadButton.disabled = false;
@@ -196,13 +198,7 @@ export class FileUploader {
 
   private copyLinkToClipboard() {
     const linkShareElement = document.getElementById('link-share') as HTMLElement;
-    const linkTextElement = linkShareElement.querySelector<HTMLSpanElement>('.link-text') as HTMLSpanElement;
-    const text = linkTextElement.innerHTML;
-
-    if (!text) {
-      return;
-    }
-    navigator.clipboard.writeText(text)
+    copyUrlToClipboard(linkShareElement, '.link-text');
   }
 }
 

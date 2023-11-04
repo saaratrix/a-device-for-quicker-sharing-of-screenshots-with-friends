@@ -1,4 +1,4 @@
-import { dispatchFileInput, fileInputEvent } from './file-events.js';
+import { dispatchFileInput, fileInputEvent } from './events/file-events.js';
 
 export class Paster {
   private currentObjectUrl: string = '';
