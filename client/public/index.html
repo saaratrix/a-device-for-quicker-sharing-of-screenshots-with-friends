@@ -12,6 +12,7 @@
     <div class="upload-details">
       <div class="upload-inputs">
         <p>Drag & Drop file anywhere or select file:</p>
+        <p><span class="history history-disabled" >Show history</span></p>
         <input type="file" id="fileInput" class="file-input">
         <br>
         <br>
@@ -42,6 +43,13 @@
   <div id="viewer" hidden="hidden">
     <div id="view-item"></div>
   </div>
+  <div class="history-dialog-backdrop"></div>
+  <dialog class="history-dialog">
+    <div class="history-dialog-content">
+      <h1>Previous items</h1>
+      <div class="history-items"></div>
+    </div>
+  </dialog>
 </div>
 <script src="./src/app.js" type="module"></script>
 </body>

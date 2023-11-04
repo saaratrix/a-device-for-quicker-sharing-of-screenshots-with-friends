@@ -1,0 +1,12 @@
+{
+  "extends": "./public/tsconfig.json",
+  "compilerOptions": {
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noEmit": true
+  },
+  "include": [
+    "**/*.test.ts"
+  ],
+  "exclude": ["node_modules"]
+}

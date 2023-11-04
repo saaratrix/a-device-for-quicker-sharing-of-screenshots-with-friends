@@ -3,7 +3,8 @@ import { Paster } from './paster.js';
 import { FileUploader } from "./file-uploader.js";
 import { FileViewer } from "./file-viewer.js";
 import { FilePreviewer } from "./file-previewer.js";
-import { dispatchFileInput } from "./file-events.js";
+import { dispatchFileInput } from "./events/file-events.js";
+import { canUseLocalStorage, HistoryHandler } from "./history-handler.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
   const uploaderElement = document.getElementById('uploader');
@@ -55,6 +56,9 @@ function initUploader(uploaderElement: HTMLElement): void {
   // When uploading or pasting files the file uploader listens for those events.
   const fileUploader = new FileUploader();
   const filePreviewer = new FilePreviewer();
+  if (canUseLocalStorage()) {
+    const historyHandler = new HistoryHandler(filePreviewer);
+  }
 }
 
 

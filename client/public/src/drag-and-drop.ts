@@ -1,4 +1,4 @@
-import { dispatchFileInput } from './file-events.js';
+import { dispatchFileInput } from './events/file-events.js';
 
 export class DragAndDrop {
   initialize() {

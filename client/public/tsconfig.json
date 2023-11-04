@@ -3,6 +3,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
@@ -16,5 +17,6 @@
     "noImplicitReturns": true,
     "noImplicitOverride": true,
     "skipLibCheck": true
-  }
+  },
+  "exclude": ["**/*.test.ts"]
 }
