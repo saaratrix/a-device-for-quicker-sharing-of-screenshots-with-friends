@@ -83,6 +83,10 @@ body {
   }
 }
 
+.viewer {
+  padding: 0.5rem;
+}
+
 .history {
   cursor: pointer;
   color: $color-link;
@@ -175,7 +179,7 @@ $history-dialog-animation: fadein $history-dialog-animation-type forwards;
 
   .link-copy-btn {
     background-color: $color-bg;
-    color: $color-text; 
+    color: $color-text;
   }
 }
 

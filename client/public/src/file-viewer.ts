@@ -48,7 +48,7 @@ export class FileViewer {
   }
 
   viewFile(): void {
-    const url  = window.location.hash.substring(1);
+    const url = window.location.hash.substring(1);
     const [viewingType, extension] = this.getViewingType(url);
     if (viewingType === ViewingType.Download) {
       this.downloadFile(url);
@@ -103,15 +103,19 @@ export class FileViewer {
     const image = new Image();
     image.src = api + url;
 
+    this.setMaxWidth(image);
     this.getViewerItem().appendChild(image);
   }
 
   private viewVideo(url: string, extension: string) {
     const mimeType = this.mimeTypes[extension];
     const fileUrl = api + url;
-    this.getViewerItem().innerHTML =`<video controls autoplay>
-        <source src="${fileUrl}" type="${mimeType}">
+    this.getViewerItem().innerHTML = `<video controls autoplay>
+        <source src="${ fileUrl }" type="${ mimeType }">
       </video>`;
+
+    const videoElement = this.getViewerItem().querySelector('video') as HTMLVideoElement;
+    this.setMaxWidth(videoElement);
 
     this.getViewerItem().querySelector<HTMLSourceElement>('source')!.onerror = () => this.handleMediaError(url);
   }
@@ -119,11 +123,18 @@ export class FileViewer {
   private viewAudio(url: string, extension: string) {
     const mimeType = this.mimeTypes[extension];
     const fileUrl = api + url;
-    this.getViewerItem().innerHTML =`<audio controls>
-        <source src="${fileUrl}" type="${mimeType}">
+    this.getViewerItem().innerHTML = `<audio controls>
+        <source src="${ fileUrl }" type="${ mimeType }">
       </audio>`;
 
     this.getViewerItem().querySelector<HTMLSourceElement>('source')!.onerror = () => this.handleMediaError(url);
+  }
+
+  private setMaxWidth(element: HTMLElement): void {
+    const viewerElement = document.getElementById('viewer') as HTMLElement;
+    const computedStyle = getComputedStyle(viewerElement);
+    const maxWidth = window.innerWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
+    element.style.maxWidth = `${ maxWidth }px`;
   }
 
   private handleMediaError(url: string) {
@@ -131,7 +142,7 @@ export class FileViewer {
     const downloadUrl = getShareUrl(url);
 
     const errorMessage = "Failed to load, here is download link: ";
-    this.getViewerItem().innerHTML += `<p style="color: #a42929">${ errorMessage } <a href="${ downloadUrl }">${downloadUrl}</a></p>`;
+    this.getViewerItem().innerHTML += `<p style="color: #a42929">${ errorMessage } <a href="${ downloadUrl }">${ downloadUrl }</a></p>`;
   }
 
 }
