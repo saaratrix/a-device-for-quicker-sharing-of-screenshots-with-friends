@@ -131,10 +131,8 @@ export class FileViewer {
   }
 
   private setMaxWidth(element: HTMLElement): void {
-    const viewerElement = document.getElementById('viewer') as HTMLElement;
-    const computedStyle = getComputedStyle(viewerElement);
-    const maxWidth = window.innerWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
-    element.style.maxWidth = `${ maxWidth }px`;
+    const container = document.querySelector('.container') as HTMLElement;
+    element.style.maxWidth = `${ container.clientWidth }px`;
   }
 
   private handleMediaError(url: string) {
