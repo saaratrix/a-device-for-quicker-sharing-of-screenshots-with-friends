@@ -139,7 +139,7 @@ export class FileUploader {
 
   private onShareLinkChanged(link: string): void {
     const linkShareElement = document.getElementById('link-share') as HTMLElement;
-    const linkTextElement = linkShareElement.querySelector<HTMLSpanElement>('.link-text') as HTMLSpanElement;
+    const linkTextElement = linkShareElement.querySelector('.link-text') as HTMLAnchorElement;
 
     if (link === linkTextElement.innerHTML) {
       return;
@@ -147,6 +147,7 @@ export class FileUploader {
 
     !link ? linkShareElement.classList.add('invisible') : linkShareElement.classList.remove('invisible');
     linkTextElement.innerHTML = link;
+    linkTextElement.href = link || '#';
   }
 
   async onFileInput(event: CustomEvent<FileInputEvent>) {

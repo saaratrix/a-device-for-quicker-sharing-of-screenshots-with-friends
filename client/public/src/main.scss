@@ -3,8 +3,10 @@ html, body {
 }
 
 $color-bg: #2c2c38;
+$color-bg-contrast: #4e4166; // Used firefox color contrast 7 tool to get these values.
 $color-text: #e1e1e8;
 $color-link: #a087d2;
+$color-link-contrast: #c8acff; // Used firefox color contrast 7 tool to get these values.
 
 body {
   font-family: 'Arial', sans-serif;
@@ -98,6 +100,10 @@ body {
   color: $color-link;
   font-weight: bold;
   transition: opacity 0.3s ease-in;
+
+  &:hover {
+    color: #c8acff;
+  }
 }
 
 .history-disabled {
@@ -229,7 +235,6 @@ $history-dialog-animation: fadein $history-dialog-animation-type forwards;
 
 .link-container {
   display: flex;
-  align-items: center;
   background-color: $color-text;
   color: $color-bg;
   border-radius: 5px;
@@ -237,6 +242,17 @@ $history-dialog-animation: fadein $history-dialog-animation-type forwards;
 
 .link-text {
   padding: 0 0.5rem;
+  display: inline-flex;
+  align-items: center;
+
+  color: $color-bg;
+  &:visited {
+    color: $color-bg;
+  }
+
+  &:hover {
+    color: $color-bg-contrast;
+  }
 }
 
 .link-copy-btn {
