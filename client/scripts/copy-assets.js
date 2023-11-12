@@ -13,6 +13,7 @@ const moveFile = async (sourcePath, destPath) => {
 
 const assets = [
   ['./public/index.html', "./build/index.html"],
+  ['./public/favicon.png', "./build/favicon.png"],
   ['./public/error_pages/400.html', "./build/400.html"],
   ['./public/error_pages/404.html', "./build/404.html"],
   ['./public/error_pages/500.html', "./build/500.html"],
