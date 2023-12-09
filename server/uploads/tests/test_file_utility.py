@@ -76,6 +76,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_file_allowed(self):
         test_cases = [
+            "image.jpg",
+            "image.JPG",
             "image.png",
             "file_uploads/23/09/29/test/abdefadja_image.png",
             "video.mp4",

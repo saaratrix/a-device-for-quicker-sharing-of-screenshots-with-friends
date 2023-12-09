@@ -204,8 +204,10 @@ export class FileUploader {
 }
 
 export function getShareUrl(url: string) {
+  const baseUrl = window.location.origin + window.location.pathname;
   const components = url.split('/');
   const encodedUrl = components.map(c => encodeURIComponent(c)).join('/');
 
-  return `${location.href}#${encodedUrl}`;
+  // If we use window.location.href and we already have a #, well we end up with 2 :) 
+  return `${baseUrl}#${encodedUrl}`;
 }
