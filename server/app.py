@@ -67,7 +67,7 @@ def create_app():
     def view_file_with_secret(year: str, month: str, day: str, prefix: str, secret: str, filename: str) -> None:
         return send_file(year, month, day, prefix, secret, filename, False)
 
-    @app.route('/v/<year>/<month>/<day>/<prefix>/<filename>/', methods=['GET'])
+    @app.route('/v/<year>/<month>/<day>/<prefix>/<filename>', methods=['GET'])
     def view_file_no_secret(year: str, month: str, day: str, prefix: str, filename: str) -> None:
         return send_file(year, month, day, prefix, "", filename, False)
 
@@ -75,7 +75,7 @@ def create_app():
     def download_file_with_secret(year: str, month: str, day: str, prefix: str, secret: str, filename: str) -> None:
         return send_file(year, month, day, prefix, secret, filename, True)
 
-    @app.route('/d/<year>/<month>/<day>/<prefix>/<filename>/', methods=['GET'])
+    @app.route('/d/<year>/<month>/<day>/<prefix>/<filename>', methods=['GET'])
     def download_file_no_secret(year: str, month: str, day: str, prefix: str, filename: str) -> None:
         return send_file(year, month, day, prefix, "", filename, True)
 
