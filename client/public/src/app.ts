@@ -22,12 +22,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function initItemChange(): void {
+  let currentHash = getHash();
+
   window.addEventListener('hashchange', function() {
-    const hash = window.location.hash.substring(1); // Get hash, remove the '#'
-    if (hash.startsWith('/v/') || hash.startsWith('/d/')) {
+    const hash = getHash();
+    if (isHashForItem(hash) || isHashForItem(currentHash)) {
       location.reload();
+      return;
     }
+
+    currentHash = hash;
   });
+}
+
+function getHash(): string {
+  // Remove the '#'
+  return window.location.hash.substring(1);
+}
+
+function isHashForItem(hash: string): boolean {
+  return hash.startsWith('/v/') || hash.startsWith('/d/');
 }
 
 function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
