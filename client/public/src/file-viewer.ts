@@ -103,7 +103,7 @@ export class FileViewer {
     const image = new Image();
     image.src = api + url;
 
-    this.setMaxWidth(image);
+    this.setMaxDimensions(image);
     this.getViewerItem().appendChild(image);
   }
 
@@ -115,7 +115,7 @@ export class FileViewer {
       </video>`;
 
     const videoElement = this.getViewerItem().querySelector('video') as HTMLVideoElement;
-    this.setMaxWidth(videoElement);
+    this.setMaxDimensions(videoElement);
 
     this.getViewerItem().querySelector<HTMLSourceElement>('source')!.onerror = () => this.handleMediaError(url);
   }
@@ -130,9 +130,20 @@ export class FileViewer {
     this.getViewerItem().querySelector<HTMLSourceElement>('source')!.onerror = () => this.handleMediaError(url);
   }
 
-  private setMaxWidth(element: HTMLElement): void {
+  private setMaxDimensions(element: HTMLElement): void {
     const container = document.querySelector('.container') as HTMLElement;
+    const maxHeight = window.innerHeight - this.getOccupiedHeight();
+
     element.style.maxWidth = `${ container.clientWidth }px`;
+    element.style.maxHeight = `${maxHeight}px`;
+  }
+
+  private getOccupiedHeight(): number {
+    const viewer = document.getElementById('viewer')!;
+    const viewerStyle = getComputedStyle(viewer);
+
+    const viewerPadding = parseInt(viewerStyle.paddingTop) + parseInt(viewerStyle.paddingBottom);
+    return viewerPadding;
   }
 
   private handleMediaError(url: string) {
