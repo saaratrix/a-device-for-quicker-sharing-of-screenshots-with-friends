@@ -95,6 +95,11 @@ body {
   padding: 0.5rem;
 }
 
+#view-item {
+  // To remove whitespace for scroll bars etc.
+  display: flex;
+}
+
 .history {
   cursor: pointer;
   color: $color-link;
