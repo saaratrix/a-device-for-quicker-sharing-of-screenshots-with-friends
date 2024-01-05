@@ -2,6 +2,7 @@ import { FileUploadedEvent, fileUploadedEvent } from "./events/file-events.js";
 import { FilePreviewer } from "./file-previewer.js";
 import { HistoryListHandler } from "./history-list-handler.js";
 import { historyRemoveItemEvent } from "./events/history-events.js";
+import { DialogHandler } from './dialog-handler.js';
 
 export interface HistoryItem {
   date: Date;
@@ -27,9 +28,8 @@ export function canUseLocalStorage() {
   return true;
 }
 
-export class HistoryHandler {
-  private backdropElement: HTMLDivElement;
-  private dialogElement: HTMLDialogElement;
+export class HistoryHandler extends DialogHandler {
+
   private historyButton: HTMLSpanElement;
 
   private isEnabled = false;
@@ -40,18 +40,19 @@ export class HistoryHandler {
   private historyListHandler: HistoryListHandler;
 
   constructor(public filePreviewer: FilePreviewer) {
-    this.historyListHandler = new HistoryListHandler();
+    const dialogElement = document.querySelector('.history-dialog') as HTMLDialogElement;
+    super(dialogElement);
 
-    this.backdropElement = document.querySelector('.history-dialog-backdrop') as HTMLDivElement;
-    this.dialogElement = document.querySelector('.history-dialog') as HTMLDialogElement;
+    this.historyListHandler = new HistoryListHandler();
     this.historyButton = document.querySelector('.history') as HTMLSpanElement;
 
     this.items = this.getItems();
     this.onItemsChanged();
 
-    this.backdropElement.addEventListener('click', () => this.closeHistory());
     window.addEventListener(fileUploadedEvent, async (event) => this.onFileUploaded(event as CustomEvent<FileUploadedEvent>));
     document.querySelector('.history-items')?.addEventListener(historyRemoveItemEvent, (event) => this.onItemRemoved(event as CustomEvent<HistoryItem>));
+
+    dialogElement.addEventListener('opened', () => this.historyListHandler.initList(this.items));
   }
 
   private getItems(): HistoryItem[] {
@@ -113,25 +114,13 @@ export class HistoryHandler {
     this.addItem(item);
   }
 
-  openHistory = () => {
-    this.backdropElement.classList.add('open');
-    this.dialogElement.open = true;
-
-    this.historyListHandler.initList(this.items);
-  }
-
-  closeHistory() {
-    this.backdropElement.classList.remove('open');
-    this.dialogElement.open = false;
-  }
-
   private enable() {
     this.historyButton.classList.remove('history-disabled');
-    this.historyButton.addEventListener('click', this.openHistory)
+    this.historyButton.addEventListener('click', this.openDialog);
   }
 
   private disable() {
     this.historyButton.classList.add('history-disabled');
-    this.historyButton.removeEventListener('click', this.openHistory);
+    this.historyButton.removeEventListener('click', this.openDialog);
   }
 }

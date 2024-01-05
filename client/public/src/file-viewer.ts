@@ -1,5 +1,6 @@
 import { api } from './environment.js';
 import { getShareUrl } from "./file-uploader.js";
+import { Settings } from "./settings.js";
 
 enum ViewingType {
   Download,
@@ -135,7 +136,10 @@ export class FileViewer {
     const maxHeight = window.innerHeight - this.getOccupiedHeight();
 
     element.style.maxWidth = `${ container.clientWidth }px`;
-    element.style.maxHeight = `${maxHeight}px`;
+
+    if (Settings.getSettings().automaticallyAdjustHeight) {
+      element.style.maxHeight = `${maxHeight}px`;
+    }
   }
 
   private getOccupiedHeight(): number {

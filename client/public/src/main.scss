@@ -6,6 +6,7 @@ $color-bg: #2c2c38;
 $color-bg-contrast: #4e4166; // Used firefox color contrast 7 tool to get these values.
 $color-text: #e1e1e8;
 $color-link: #a087d2;
+$color-link-hover: #c8acff;
 $color-link-contrast: #c8acff; // Used firefox color contrast 7 tool to get these values.
 
 body {
@@ -100,14 +101,31 @@ body {
   display: flex;
 }
 
-.history {
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.menu-action {
   cursor: pointer;
   color: $color-link;
   font-weight: bold;
   transition: opacity 0.3s ease-in;
 
   &:hover {
-    color: #c8acff;
+    color: $color-link-hover;
+  }
+}
+
+.settings {
+  stroke: $color-link;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    stroke: $color-link-hover;
   }
 }
 
@@ -119,9 +137,9 @@ body {
   font-weight: normal;
 }
 
-$history-dialog-animation-type: 0.15s ease-in;
-$history-dialog-animation: fadein $history-dialog-animation-type forwards;
-.history-dialog-backdrop {
+$dialog-animation-type: 0.15s ease-in;
+$dialog-animation: fadein $dialog-animation-type forwards;
+.dialog-backdrop {
   position: fixed;
   left: 0;
   top: 0;
@@ -130,7 +148,7 @@ $history-dialog-animation: fadein $history-dialog-animation-type forwards;
   background-color: rgba(0, 0, 0, 0.5);
   pointer-events: none;
   opacity: 0;
-  transition: opacity $history-dialog-animation-type;
+  transition: opacity $dialog-animation-type;
 
   &.open {
     pointer-events: all;
@@ -138,7 +156,7 @@ $history-dialog-animation: fadein $history-dialog-animation-type forwards;
   }
 }
 
-.history-dialog {
+.dialog {
   // <dialog> element behaves odd that left: 0; is the center of the page.
   left: 0;
   top: 50%;
@@ -151,7 +169,7 @@ $history-dialog-animation: fadein $history-dialog-animation-type forwards;
   background-color: $color-bg;
 
   &[open] {
-    animation: $history-dialog-animation;
+    animation: $dialog-animation;
   }
 }
 
@@ -198,6 +216,15 @@ $history-dialog-animation: fadein $history-dialog-animation-type forwards;
     background-color: $color-bg;
     color: $color-text;
   }
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: row;
+}
+
+.settings-row {
+  display: flex;
 }
 
 @keyframes fadein{

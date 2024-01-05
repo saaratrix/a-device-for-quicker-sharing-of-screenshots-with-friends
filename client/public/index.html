@@ -13,7 +13,13 @@
     <div class="upload-details">
       <div class="upload-inputs">
         <p>Drag & Drop file anywhere or select file:</p>
-        <p><span class="history history-disabled" >Show history</span></p>
+        <p class="menu">
+          <span class="history history-disabled menu-action" >Show history</span>
+          -
+          <span class="settings menu-action">
+            Settings
+          </span>
+        </p>
         <input type="file" id="fileInput" class="file-input">
         <br>
         <br>
@@ -44,11 +50,22 @@
   <div id="viewer" hidden="hidden">
     <div id="view-item"></div>
   </div>
-  <div class="history-dialog-backdrop"></div>
-  <dialog class="history-dialog">
+  <div class="dialog-backdrop"></div>
+  <dialog class="history-dialog dialog">
     <div class="history-dialog-content">
       <h1>Previous items</h1>
       <div class="history-items"></div>
+    </div>
+  </dialog>
+  <dialog class="settings-dialog dialog">
+    <div class="settings-dialog-content">
+      <h1>Settings, many choices.</h1>
+      <div class="settings-list">
+        <div class="settings-adapt-height settings-row" title="If checked it will limit the height of the image, video to the height of your browser.">
+          <label for="automaticallyAdjustHeight">Automatically adjust height:</label>
+          <input type="checkbox" id="automaticallyAdjustHeight">
+        </div>
+      </div>
     </div>
   </dialog>
 </div>
