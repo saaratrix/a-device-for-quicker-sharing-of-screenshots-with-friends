@@ -37,8 +37,8 @@ def copy_file(source: str, target: str, only_print_errors: bool) -> None:
 
 def copy_all_files(include_pattern: str, exclude_patterns: List[str], only_print_errors: bool) -> Tuple[int, int]:
     files = glob.glob(include_pattern, recursive=True)
-    fileSuccesses = 0
-    fileFails = 0
+    successes = 0
+    fails = 0
 
     for file in files:
         if not can_copy_file(file, exclude_patterns):
@@ -47,11 +47,11 @@ def copy_all_files(include_pattern: str, exclude_patterns: List[str], only_print
         relative_path = file.replace(ROOT_PATH, "")
         target_file = os.path.join(TARGET_DIRECTORY, relative_path)
         if copy_file(file, target_file, only_print_errors):
-            fileSuccesses += 1
+            successes += 1
         else:
-            fileFails += 1
+            fails += 1
 
-    return fileSuccesses, fileFails
+    return successes, fails
 
 
 def can_copy_file(path, exclude_patterns) -> bool:
@@ -62,6 +62,9 @@ def can_copy_file(path, exclude_patterns) -> bool:
     return True
 
 
+"""
+Copies the server files from this project 
+"""
 def main():
     parser = argparse.ArgumentParser(description="Move server files from this project to target destination.")
     parser.add_argument("--target", required=True, help="Target directory for moving files.")
@@ -72,19 +75,20 @@ def main():
     venv = args.venv
     TARGET_DIRECTORY = args.target
     current_file = os.path.dirname(os.path.abspath(__file__))
-    ROOT_PATH = os.path.abspath(os.path.join(current_file, "..", ""))
+    # ".." from scripts --> src
+    # ".." from src --> server
+    ROOT_PATH = os.path.abspath(os.path.join(current_file, "..", "..", ""))
     # Check if the last character of root_path is not a slash or backslash
     if not ROOT_PATH.endswith(os.path.sep):
         ROOT_PATH = os.path.join(ROOT_PATH, "")
 
     files_to_move = [
-        "app.py",
         "wsgi.py",
         "requirements.txt"
     ]
 
     folder_searches = [
-        {"includes": ["uploads/**/*.py"], "excludes": ["tests"], "only_print_errors": False},
+        {"includes": ["src/**/*.py"], "excludes": ["tests"], "only_print_errors": False},
         # {"includes": [f"{venv}/**/*"], "excludes": [], "only_print_errors": True}
     ]
 
