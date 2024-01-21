@@ -4,6 +4,9 @@ import os
 import shutil
 from typing import List, Tuple
 
+TARGET_DIRECTORY = ""
+ROOT_PATH = ""
+
 
 # Copied from file_manager ensure_directory_exists()
 def ensure_directory_exists(file_path: str) -> None:
@@ -32,24 +35,23 @@ def copy_file(source: str, target: str, only_print_errors: bool) -> None:
         return False
 
 
-
 def copy_all_files(include_pattern: str, exclude_patterns: List[str], only_print_errors: bool) -> Tuple[int, int]:
     files = glob.glob(include_pattern, recursive=True)
-    successes = 0
-    fails = 0
+    fileSuccesses = 0
+    fileFails = 0
 
     for file in files:
         if not can_copy_file(file, exclude_patterns):
             continue
 
-        relative_path = file.replace(root_path, "")
-        target_file = os.path.join(target_directory, relative_path)
+        relative_path = file.replace(ROOT_PATH, "")
+        target_file = os.path.join(TARGET_DIRECTORY, relative_path)
         if copy_file(file, target_file, only_print_errors):
-            successes += 1
+            fileSuccesses += 1
         else:
-            fails += 1
+            fileFails += 1
 
-    return successes, fails
+    return fileSuccesses, fileFails
 
 
 def can_copy_file(path, exclude_patterns) -> bool:
@@ -60,7 +62,7 @@ def can_copy_file(path, exclude_patterns) -> bool:
     return True
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="Move server files from this project to target destination.")
     parser.add_argument("--target", required=True, help="Target directory for moving files.")
     # Add the "--venv" argument (not required with a default value)
@@ -68,12 +70,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     venv = args.venv
-    target_directory = args.target
+    TARGET_DIRECTORY = args.target
     current_file = os.path.dirname(os.path.abspath(__file__))
-    root_path = os.path.abspath(os.path.join(current_file, "..", ""))
+    ROOT_PATH = os.path.abspath(os.path.join(current_file, "..", ""))
     # Check if the last character of root_path is not a slash or backslash
-    if not root_path.endswith(os.path.sep):
-        root_path = os.path.join(root_path, "")
+    if not ROOT_PATH.endswith(os.path.sep):
+        ROOT_PATH = os.path.join(ROOT_PATH, "")
 
     files_to_move = [
         "app.py",
@@ -83,15 +85,15 @@ if __name__ == "__main__":
 
     folder_searches = [
         {"includes": ["uploads/**/*.py"], "excludes": ["tests"], "only_print_errors": False},
-        #{"includes": [f"{venv}/**/*"], "excludes": [], "only_print_errors": True}
+        # {"includes": [f"{venv}/**/*"], "excludes": [], "only_print_errors": True}
     ]
 
     successes = 0
     fails = 0
 
     for file_to_move in files_to_move:
-        path = os.path.join(root_path, file_to_move)
-        target = os.path.join(target_directory, file_to_move)
+        path = os.path.join(ROOT_PATH, file_to_move)
+        target = os.path.join(TARGET_DIRECTORY, file_to_move)
         if copy_file(path, target, False):
             successes += 1
         else:
@@ -100,10 +102,14 @@ if __name__ == "__main__":
     for folder_search in folder_searches:
         for include_pattern in folder_search["includes"]:
             # Need to include the path or the glob doesn't work.
-            include_pattern = os.path.join(root_path, include_pattern)
+            include_pattern = os.path.join(ROOT_PATH, include_pattern)
             result = copy_all_files(include_pattern, folder_search["excludes"], folder_search["only_print_errors"])
             successes += result[0]
             fails += result[1]
 
     print("Finished copy all files.")
     print(f"Succesfully copied {successes} and failed to copy {fails}")
+
+
+if __name__ == "__main__":
+    main()
