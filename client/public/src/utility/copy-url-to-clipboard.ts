@@ -5,5 +5,5 @@ export function copyUrlToClipboard(element: HTMLElement, textClass: '.link-text'
   if (!text) {
     return;
   }
-  navigator.clipboard.writeText(text);
+  navigator.clipboard.writeText(text).then();
 }
