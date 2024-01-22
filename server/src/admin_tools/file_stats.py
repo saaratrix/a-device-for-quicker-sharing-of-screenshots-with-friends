@@ -11,7 +11,8 @@ def get_directory_stats(directory: str, root: str) -> Tuple[Stats, ChildStats]:
     child_sizes = 0
     child_count = 0
     child_stats = []
-    name = os.path.relpath(directory, root)
+    path = os.path.relpath(directory, root)
+    name = os.path.basename(directory)
 
     for entry in os.scandir(directory):
         if entry.is_file():
@@ -26,7 +27,7 @@ def get_directory_stats(directory: str, root: str) -> Tuple[Stats, ChildStats]:
     total_size = file_sizes + child_sizes
     total_files = files + child_count
 
-    stats = {'name': name, 'file_sizes': file_sizes, 'files': files, 'total_size': total_size, 'total_files': total_files}
+    stats = {'name': name, 'path': path, 'file_sizes': file_sizes, 'files': files, 'total_size': total_size, 'total_files': total_files}
     return stats, child_stats
 
 

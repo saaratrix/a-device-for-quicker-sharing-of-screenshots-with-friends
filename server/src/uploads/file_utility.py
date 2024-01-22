@@ -15,7 +15,6 @@ class FileValidation:
 
 
 class FileUtility:
-    ROOT = "file_uploads"
 
     @staticmethod
     def get_file_extension(path: str) -> str:

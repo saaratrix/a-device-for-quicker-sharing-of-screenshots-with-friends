@@ -1,3 +1,5 @@
+import os.path
+
 from flask import Flask
 
 from .routes.admin_stats import admin_stats
@@ -7,7 +9,10 @@ from .routes.file_sharing_routes import file_sharing_bp
 
 def create_app():
     app = Flask(__name__)
-    UPLOAD_FOLDER = FileUtility.ROOT
+    UPLOAD_FOLDER = "file_uploads"
+    if not (os.path.exists(UPLOAD_FOLDER)):
+        raise NotADirectoryError(f"Directory not found {UPLOAD_FOLDER}")
+
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     # bytes * kb * mb * gb, so 1 GB is current maximum size.
     app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024 * 1
