@@ -1,7 +1,7 @@
-from flask import Blueprint, current_app, jsonify, Response
+from flask import Blueprint, current_app, Response, request, render_template
 from ..admin_tools.file_stats import get_overview_stats
 
-admin_stats = Blueprint('admin_stats', __name__)
+admin_stats = Blueprint('admin_stats', __name__, template_folder='')
 
 # Month lookup dictionary
 month_lookup = {
@@ -22,11 +22,13 @@ month_lookup = {
 
 @admin_stats.route('/admin/stats/overview')
 def overview() -> Response:
+    original_uri = '' #request.headers.get('X-Original-URI')
     upload_path = current_app.config['UPLOAD_FOLDER']
     stats, year_stats = get_overview_stats(upload_path)
 
     overall_stats = convert_to_presentable_stats(stats, year_stats)
-    return jsonify(overall_stats)
+    # Now we have the stats, now we need some HTML to present it as a webpage.
+    return render_template('stats_page.html', base_uri=original_uri, stats=overall_stats)
 
 
 def size_to_megabytes(size: int) -> str:
