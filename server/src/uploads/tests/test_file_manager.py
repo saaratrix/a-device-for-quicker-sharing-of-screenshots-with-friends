@@ -82,25 +82,34 @@ class TestFileManager(unittest.TestCase):
         assert not FileManager.delete_file(file_path)
 
     def create_test_directory_structure(self):
-        os.makedirs(os.path.join(self.test_folder, "a", "b"))
+        os.makedirs(os.path.join(self.test_folder, "23", "01", "01"), exist_ok=True)
 
     def test_delete_existing_directory_recursively(self):
         self.create_test_directory_structure()
-        directory_path = os.path.join(self.test_folder, "a")
-        # Verify directories exists
-        assert os.path.exists(directory_path)
-        assert os.path.exists(os.path.join(self.test_folder, "a", "b"))
+        directory_path = os.path.join(self.test_folder, "23")
+        # Verify directories exist
+        self.assertTrue(os.path.exists(directory_path))
+        self.assertTrue(os.path.exists(os.path.join(directory_path, "01", "01")))
 
-        assert FileManager.delete_directory_recursively(directory_path)
-        # And then they don't.
-        assert not os.path.exists(directory_path)
-        assert not os.path.exists(os.path.join(self.test_folder, "a", "b"))
+        self.assertTrue(FileManager.delete_directory_recursively(directory_path))
+        # And then they don't
+        self.assertFalse(os.path.exists(directory_path))
 
     def test_delete_nonexistent_directory(self):
         directory_path = os.path.join(self.test_folder, "nonexistent_directory")
 
-        assert not os.path.exists(directory_path)
-        assert not FileManager.delete_directory_recursively(directory_path)
+        self.assertFalse(os.path.exists(directory_path))
+        self.assertFalse(FileManager.delete_directory_recursively(directory_path))
+
+    def test_delete_directory_with_incorrect_format(self):
+        # Create a directory with a name that is not two digits
+        os.makedirs(os.path.join(self.test_folder, "a"), exist_ok=True)
+        directory_path = os.path.join(self.test_folder, "a")
+
+        self.assertTrue(os.path.exists(directory_path))
+        self.assertFalse(FileManager.delete_directory_recursively(directory_path))
+        # Directory should still exist
+        self.assertTrue(os.path.exists(directory_path))
 
 
 if __name__ == '__main__':

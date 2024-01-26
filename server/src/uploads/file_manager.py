@@ -31,6 +31,10 @@ class FileManager:
     def delete_directory_recursively(path: str) -> bool:
         if not os.path.exists(path) or not os.path.isdir(path):
             return False
+        last_component = os.path.basename(path.rstrip(os.sep))
+
+        if not (len(last_component) == 2 and last_component.isdigit()):
+            return False
 
         shutil.rmtree(path)
         return True
