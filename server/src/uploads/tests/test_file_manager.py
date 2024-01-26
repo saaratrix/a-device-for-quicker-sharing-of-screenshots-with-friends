@@ -39,7 +39,6 @@ class TestFileManager(unittest.TestCase):
         with self.assertRaises(ValueError):
             FileManager.upload_file(None, upload_path)
 
-
     def test_upload_file_throws_if_file_exists(self):
         file_name = 'test.txt'
         upload_path = os.path.join(self.test_folder, file_name)
@@ -81,6 +80,27 @@ class TestFileManager(unittest.TestCase):
         file_path = os.path.join(self.test_folder, file_name)
 
         assert not FileManager.delete_file(file_path)
+
+    def create_test_directory_structure(self):
+        os.makedirs(os.path.join(self.test_folder, "a", "b"))
+
+    def test_delete_existing_directory_recursively(self):
+        self.create_test_directory_structure()
+        directory_path = os.path.join(self.test_folder, "a")
+        # Verify directories exists
+        assert os.path.exists(directory_path)
+        assert os.path.exists(os.path.join(self.test_folder, "a", "b"))
+
+        assert FileManager.delete_directory_recursively(directory_path)
+        # And then they don't.
+        assert not os.path.exists(directory_path)
+        assert not os.path.exists(os.path.join(self.test_folder, "a", "b"))
+
+    def test_delete_nonexistent_directory(self):
+        directory_path = os.path.join(self.test_folder, "nonexistent_directory")
+
+        assert not os.path.exists(directory_path)
+        assert not FileManager.delete_directory_recursively(directory_path)
 
 
 if __name__ == '__main__':
