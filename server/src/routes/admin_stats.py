@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, Response, request, render_template
-from ..admin_tools.file_stats import get_overview_stats
+from server.src.admin_tools.file_stats import get_overview_stats
 
 admin_stats = Blueprint('admin_stats', __name__, template_folder='')
 
@@ -20,20 +20,28 @@ month_lookup = {
 }
 
 
-@admin_stats.route('/admin/stats/overview')
+@admin_stats.route('/admin/stats/overview', methods=['GET'])
 def overview() -> Response:
-    original_uri = '' #request.headers.get('X-Original-URI')
+    base_uri = get_base_uri(request.headers.environ)
     upload_path = current_app.config['UPLOAD_FOLDER']
     stats, year_stats = get_overview_stats(upload_path)
 
     overall_stats = convert_to_presentable_stats(stats, year_stats)
     # Now we have the stats, now we need some HTML to present it as a webpage.
-    return render_template('stats_page.html', base_uri=original_uri, stats=overall_stats)
+    return render_template('stats_page.html', base_uri=base_uri, stats=overall_stats)
+
+
+def get_base_uri(headers):
+    # REQUEST_URI will look like "/admin/stats/overview"
+    url = headers.get('X-Original-URI') or headers.get('REQUEST_URI')
+    url = url.split('/stats/overview')[0]
+    return url
 
 
 def size_to_megabytes(size: int) -> str:
     megabytes = size / 2 ** 20
-    return f"{megabytes:.3f} MB"
+    text = f"{megabytes:.3f}".rstrip('0').rstrip('.')
+    return f"{text} MB"
 
 
 def convert_to_presentable_stats(root_stats, year_items):

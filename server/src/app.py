@@ -2,14 +2,14 @@ import os.path
 
 from flask import Flask
 
-from .routes.admin_stats import admin_stats
-from .uploads.file_utility import FileUtility
 from .routes.file_sharing_routes import file_sharing_bp
+from .routes.admin_stats import admin_stats
+from .routes.admin_delete import admin_delete
 
 
-def create_app():
+def create_app(upload_folder='file_uploads'):
     app = Flask(__name__)
-    UPLOAD_FOLDER = "file_uploads"
+    UPLOAD_FOLDER = upload_folder
     if not (os.path.exists(UPLOAD_FOLDER)):
         raise NotADirectoryError(f"Directory not found {UPLOAD_FOLDER}")
 
@@ -19,4 +19,5 @@ def create_app():
 
     app.register_blueprint(file_sharing_bp)
     app.register_blueprint(admin_stats)
+    app.register_blueprint(admin_delete)
     return app

@@ -26,10 +26,12 @@ def delete_month(year: str, month: str) -> Response:
     return "Success" if success else "Failed", 200
 
 
-@admin_delete.route('/admin/delete/year/<year>/month/<month>/day/<day>')
+@admin_delete.route('/admin/delete/year/<string:year>/month/<string:month>/day/<string:day>')
 def delete_day(year: str, month: str, day: str) -> Response:
     year = year[2:]
-    month = reverse_month_lookup.get(month, "undefined")
+    month = reverse_month_lookup.get(month, None)
+    if (month is None):
+        return "Failed", 200
     day = format_day(day)
     path = os.path.join(current_app.config['UPLOAD_FOLDER'], year, month, day)
     success = FileManager.delete_directory_recursively(path)
