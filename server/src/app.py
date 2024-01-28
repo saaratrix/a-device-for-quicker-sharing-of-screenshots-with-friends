@@ -3,8 +3,8 @@ import os.path
 from flask import Flask
 
 from .routes.file_sharing_routes import file_sharing_bp
-from .routes.admin_stats import admin_stats
-from .routes.admin_delete import admin_delete
+from .routes.admin_stats import admin_stats_bp
+from .routes.admin_delete import admin_delete_bp
 
 
 def create_app(upload_folder='file_uploads'):
@@ -18,6 +18,6 @@ def create_app(upload_folder='file_uploads'):
     app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024 * 1
 
     app.register_blueprint(file_sharing_bp)
-    app.register_blueprint(admin_stats)
-    app.register_blueprint(admin_delete)
+    app.register_blueprint(admin_stats_bp)
+    app.register_blueprint(admin_delete_bp)
     return app

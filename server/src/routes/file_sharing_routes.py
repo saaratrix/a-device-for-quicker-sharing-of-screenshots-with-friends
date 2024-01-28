@@ -1,5 +1,4 @@
 import os.path
-
 from flask import Blueprint, request, send_from_directory, jsonify, current_app, Response
 from ..uploads.file_info_handler import FileInfoHandler
 from ..uploads.file_manager import FileManager

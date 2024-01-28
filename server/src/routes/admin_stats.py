@@ -2,7 +2,7 @@ from flask import Blueprint, current_app, Response, request, render_template
 from server.src.admin_tools.file_stats import get_overview_stats
 from ..admin_tools.admin_credentials import verify_password, auth
 
-admin_stats = Blueprint('admin_stats', __name__, template_folder='')
+admin_stats_bp = Blueprint('admin_stats', __name__, template_folder='')
 
 # Month lookup dictionary
 month_lookup = {
@@ -21,7 +21,7 @@ month_lookup = {
 }
 
 
-@admin_stats.route('/admin/stats/overview', methods=['GET'])
+@admin_stats_bp.route('/admin/stats/overview', methods=['GET'])
 @auth.login_required
 def overview() -> Response:
     base_uri = get_base_uri(request.headers.environ)

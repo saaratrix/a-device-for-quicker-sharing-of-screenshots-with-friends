@@ -30,8 +30,7 @@ class FileInfoHandler:
         return uri_path
 
     @staticmethod
-    def get_filepath_from_request(year: str, month: str, day: str, prefix: str, user_secret: str, filename: str,
-                                  root: str):
+    def get_filepath_from_request(year: str, month: str, day: str, prefix: str, user_secret: str, filename: str, root: str):
         filename = f"{prefix}_{filename}"
         path = os.path.join(root, year, month, day, user_secret)
         return path, filename

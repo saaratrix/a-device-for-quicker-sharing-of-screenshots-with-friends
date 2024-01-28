@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 from flask import Flask
-from ..admin_delete import admin_delete, format_day
+from ..admin_delete import admin_delete_bp, format_day
 
 
 class TestAdminDelete(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestAdminDelete(unittest.TestCase):
     def setUp(self):
         self.app = Flask(__name__)
         self.app.config['UPLOAD_FOLDER'] = '/fake/path'
-        self.app.register_blueprint(admin_delete)
+        self.app.register_blueprint(admin_delete_bp)
         self.client = self.app.test_client()
 
     @patch('server.src.uploads.file_manager.FileManager.delete_directory_recursively')

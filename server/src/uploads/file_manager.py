@@ -28,11 +28,12 @@ class FileManager:
         return True
 
     @staticmethod
-    def delete_directory_recursively(path: str) -> bool:
+    def delete_date_directory_recursively(path: str) -> bool:
         if not os.path.exists(path) or not os.path.isdir(path):
             return False
         last_component = os.path.basename(path.rstrip(os.sep))
 
+        # If for some reason the directory isn't 2 digits then we do nothing.
         if not (len(last_component) == 2 and last_component.isdigit()):
             return False
 
