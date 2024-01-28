@@ -31,5 +31,5 @@ class TestFileStats(unittest.TestCase):
         assert child_stats[0][1][1][0][1][0]['files'] == 1
         assert child_stats[0][1][1][0][1][0]['total_files'] == 1
         assert child_stats[0][1][1][0][1][0]['total_size'] == 0
-        assert child_stats[0][1][1][0][1][0]['path'] == 'c\\e'
+        assert child_stats[0][1][1][0][1][0]['path'] == f'c{os.path.sep}e'
         assert child_stats[0][1][1][0][1][0]['name'] == 'e'
