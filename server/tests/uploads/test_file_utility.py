@@ -1,6 +1,5 @@
 import unittest
-
-from ..file_utility import FileUtility, FileValidation
+from server.src.uploads.file_utility import FileUtility, FileValidation
 
 
 class MyTestCase(unittest.TestCase):

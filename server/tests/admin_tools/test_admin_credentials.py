@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 import importlib
-from .. import admin_credentials as module
+from server.src.admin_tools import admin_credentials as module
 
 
 class TestAdminCredentials(unittest.TestCase):

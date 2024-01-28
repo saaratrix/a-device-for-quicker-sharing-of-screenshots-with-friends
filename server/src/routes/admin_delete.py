@@ -1,8 +1,8 @@
 import os
 from flask import Blueprint, Response, current_app
 from .admin_stats import month_lookup
-from uploads.file_manager import FileManager
-from admin_tools.admin_credentials import auth
+from server.src.uploads.file_manager import FileManager
+from server.src.admin_tools.admin_credentials import auth
 
 admin_delete_bp = Blueprint('admin_delete', __name__, template_folder='')
 reverse_month_lookup = {value: key for key, value in month_lookup.items()}

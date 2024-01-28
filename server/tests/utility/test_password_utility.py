@@ -1,5 +1,5 @@
 import unittest
-from ..password_utility import generate_hash, check_password
+from server.src.utility.password_utility import generate_hash, check_password
 
 
 class TestPasswordUtility(unittest.TestCase):

@@ -4,7 +4,7 @@ import shutil
 import pytest
 from typing import Tuple, IO
 
-from ..file_manager import FileManager
+from server.src.uploads.file_manager import FileManager
 from werkzeug.datastructures import FileStorage
 
 

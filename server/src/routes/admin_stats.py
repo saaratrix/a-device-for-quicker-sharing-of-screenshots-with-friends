@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, Response, request, render_template
-from admin_tools.file_stats import get_overview_stats
-from admin_tools.admin_credentials import auth
+from server.src.admin_tools.file_stats import get_overview_stats
+from server.src.admin_tools.admin_credentials import auth
 
 admin_stats_bp = Blueprint('admin_stats', __name__, template_folder='')
 

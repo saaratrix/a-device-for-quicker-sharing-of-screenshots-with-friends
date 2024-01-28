@@ -1,6 +1,6 @@
 import os
 import unittest
-from ..file_stats import get_overview_stats
+from server.src.admin_tools.file_stats import get_overview_stats
 
 
 class TestFileStats(unittest.TestCase):

@@ -2,7 +2,7 @@ import datetime
 import os
 import unittest
 from unittest.mock import patch
-from ..file_info_handler import FileInfoHandler
+from server.src.uploads.file_info_handler import FileInfoHandler
 
 
 class TestFileInfoHandler(unittest.TestCase):
@@ -22,8 +22,8 @@ class TestFileInfoHandler(unittest.TestCase):
             with patch('secrets.choice', lambda x: next(mock_choices)):
                 with self.subTest(input_time=input_time, expected_hash=expected_hash):
                     result = FileInfoHandler.generate_hash(input_time)
-                    self.assertEquals(len(result), FileInfoHandler.HASH_LENGTH + FileInfoHandler.HASH_RANDOM_LENGTH)
-                    self.assertEqual(result, expected_hash)
+                    assert len(result) == FileInfoHandler.HASH_LENGTH + FileInfoHandler.HASH_RANDOM_LENGTH
+                    assert result == expected_hash
 
     def test_get_uri_path(self):
         test_data = [
