@@ -32,5 +32,9 @@ def get_directory_stats(directory: str, root: str) -> Tuple[Stats, ChildStats]:
 
 
 def get_overview_stats(directory: str) -> Tuple[Stats, ChildStats]:
+    # This is more for unit tests by CI that can't read the directory.
+    if not os.path.exists(directory):
+        return {'name': '', 'path': '.', 'file_sizes': 0, 'files': 0, 'total_size': 0, 'total_files': 0}, []
+
     stats, child_stats = get_directory_stats(directory, directory)
     return stats, child_stats
