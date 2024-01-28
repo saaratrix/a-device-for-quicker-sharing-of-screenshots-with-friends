@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 
 from server.src.admin_tools.admin_credentials import auth
-from server.src.routes.admin_stats import get_base_uri, size_to_megabytes
+from server.src.routes.admin_stats import get_base_uri, size_to_megabytes, convert_to_presentable_stats
 from server.src.app import create_app
 
 
@@ -60,3 +60,45 @@ def test_size_to_megabytes_with_random_size():
     size_in_bytes = 123456789
     result = size_to_megabytes(size_in_bytes)
     assert result == '117.738 MB'
+
+def test_convert_to_presentable_stats():
+    # Test data
+    root_stats = {'total_size': 3000000000, 'total_files': 1500}
+    year_items = [
+        ('19', ({'name': '19', 'total_size': 2000000000, 'total_files': 1000}, [
+            ('02', ({'name': '02', 'total_size': 500000000, 'total_files': 300}, [
+                ('05', ({'name': '05', 'total_size': 300000000, 'total_files': 200}, [])),
+            ])),
+        ])),
+    ]
+
+    expected_output = {
+        'name': 'Overview',
+        'size': '2861.023 MB',
+        'files': 1500,
+        'years': [
+            {
+                'name': '2019',
+                'size': '1907.349 MB',
+                'files': 1000,
+                'months': [
+                    {
+                        'name': 'February',
+                        'size': '476.837 MB',
+                        'files': 300,
+                        'days': [
+                            {
+                                'name': '5',
+                                'size': '286.102 MB',
+                                'files': 200
+                            },
+                        ]
+                    },
+                ]
+            },
+        ]
+    }
+
+    result = convert_to_presentable_stats(root_stats, year_items)
+
+    assert result == expected_output
