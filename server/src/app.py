@@ -7,10 +7,10 @@ from .routes.admin_stats import admin_stats_bp
 from .routes.admin_delete import admin_delete_bp
 
 
-def create_app(upload_folder='file_uploads'):
+def create_app(upload_folder='file_uploads', require_upload_folder=True):
     app = Flask(__name__)
     UPLOAD_FOLDER = upload_folder
-    if not (os.path.exists(UPLOAD_FOLDER)):
+    if require_upload_folder and not (os.path.exists(UPLOAD_FOLDER)):
         raise NotADirectoryError(f"Directory not found {UPLOAD_FOLDER}")
 
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER

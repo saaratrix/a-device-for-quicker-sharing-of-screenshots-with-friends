@@ -8,7 +8,7 @@ if __name__ == '__main__':
     os.environ['ADMIN_PASSWORD'] = 'kuno'
 
     uploads_path = os.path.join(os.path.dirname(__file__), "file_uploads")
-    app = create_app(uploads_path)
+    app = create_app(uploads_path, True)
 
     origins = os.environ.get("ORIGINS", "http://localhost:63342,http://localhost:63343,http://localhost:63344,http://localhost:63345").split(",")
     CORS(app, origins=origins)

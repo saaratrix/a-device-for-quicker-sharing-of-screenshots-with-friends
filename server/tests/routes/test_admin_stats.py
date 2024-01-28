@@ -8,7 +8,7 @@ from server.src.app import create_app
 
 @pytest.fixture
 def client(monkeypatch):
-    app = create_app()
+    app = create_app('file_uploads', False)
     with app.test_client() as client:
 
         yield client
