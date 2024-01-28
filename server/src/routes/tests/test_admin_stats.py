@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from routes.admin_stats import get_base_uri, size_to_megabytes
+from ..admin_stats import get_base_uri, size_to_megabytes
 from ...app import create_app
 
 
