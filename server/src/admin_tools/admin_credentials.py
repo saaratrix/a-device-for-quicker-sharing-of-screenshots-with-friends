@@ -22,7 +22,7 @@ class AdminCredentials:
 
     @staticmethod
     def check_admin_password(password: str) -> bool:
-        if AdminCredentials.__admin_password is 'SECRET':
+        if AdminCredentials.__admin_password == 'SECRET':
             return False
 
         return check_password(password, AdminCredentials.__admin_password_hash)
