@@ -1,6 +1,7 @@
 import unittest
+from unittest.mock import patch
 
-from server.src.routes.admin_stats import get_base_uri, size_to_megabytes
+from routes.admin_stats import get_base_uri, size_to_megabytes
 from ...app import create_app
 
 
@@ -11,11 +12,17 @@ class TestAdminStats(unittest.TestCase):
         self.client = self.app.test_client()
 
     # I tried patching the get_overview_stats but alas to no avail so for now we just check doctype.
+    @patch('admin_tools.admin_credentials.auth.authenticate', lambda x, y: True)
     def test_overview_route(self):
         response = self.client.get('/admin/stats/overview')
         self.assertEqual(response.status_code, 200)
         html = response.get_data(as_text=True)
         self.assertTrue(html.startswith('<!DOCTYPE html>'))
+
+    @patch('admin_tools.admin_credentials.auth.authenticate', lambda x, y: False)
+    def test_overview_route_unauthorized(self):
+        response = self.client.get('/admin/stats/overview')
+        self.assertEqual(response.status_code, 401)
 
     def test_get_base_uri_with_x_original_uri(self):
         headers = {'X-Original-URI': '/admin/stats/overview/test'}

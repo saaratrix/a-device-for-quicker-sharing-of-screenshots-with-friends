@@ -1,6 +1,6 @@
 import os
 from flask_httpauth import HTTPBasicAuth
-from ..utility.password_utility import generate_hash, check_password
+from utility.password_utility import generate_hash, check_password
 
 auth = HTTPBasicAuth()
 
