@@ -33,6 +33,4 @@ def get_directory_stats(directory: str, root: str) -> Tuple[Stats, ChildStats]:
 
 def get_overview_stats(directory: str) -> Tuple[Stats, ChildStats]:
     stats, child_stats = get_directory_stats(directory, directory)
-    # We now have all the stats
-
     return stats, child_stats

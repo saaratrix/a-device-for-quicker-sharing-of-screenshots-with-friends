@@ -1,9 +1,12 @@
 import os
 from flask_cors import CORS
-
 from src.app import create_app
 
 if __name__ == '__main__':
+    # Asking ChatGPT for username & password makes it ninja themed, ok!
+    os.environ['ADMIN_USERNAME'] = 'ninja'
+    os.environ['ADMIN_PASSWORD'] = 'kuno'
+
     uploads_path = os.path.join(os.path.dirname(__file__), "file_uploads")
     app = create_app(uploads_path)
 
