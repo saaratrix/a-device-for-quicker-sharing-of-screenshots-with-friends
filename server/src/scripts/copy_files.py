@@ -63,7 +63,7 @@ def can_copy_file(path, exclude_patterns) -> bool:
 
 
 """
-Copies the server files from this project 
+Copies the server files from this project.
 """
 def main():
     parser = argparse.ArgumentParser(description="Move server files from this project to target destination.")
@@ -72,7 +72,9 @@ def main():
     parser.add_argument("--venv", default="env", help="Python's venv folder path")
     args = parser.parse_args()
 
-    venv = args.venv
+    global TARGET_DIRECTORY
+    global ROOT_PATH
+
     TARGET_DIRECTORY = args.target
     current_file = os.path.dirname(os.path.abspath(__file__))
     # ".." from scripts --> src
@@ -89,7 +91,6 @@ def main():
 
     folder_searches = [
         {"includes": ["src/**/*.py"], "excludes": ["tests"], "only_print_errors": False},
-        # {"includes": [f"{venv}/**/*"], "excludes": [], "only_print_errors": True}
     ]
 
     successes = 0
