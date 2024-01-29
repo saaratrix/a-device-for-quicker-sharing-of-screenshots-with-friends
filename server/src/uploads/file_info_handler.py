@@ -1,10 +1,10 @@
 import datetime
 import hashlib
 import os
-import random
 import secrets
 import string
 from typing import Tuple
+
 
 class FileInfoHandler:
     HASH_LENGTH = 8

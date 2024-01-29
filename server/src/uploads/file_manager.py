@@ -1,4 +1,5 @@
 import os.path
+import shutil
 from typing import TYPE_CHECKING
 
 from .file_utility import FileUtility
@@ -27,8 +28,17 @@ class FileManager:
         return True
 
     @staticmethod
-    def delete_month(year: str, month: str, root: str):
-        pass
+    def delete_date_directory_recursively(path: str) -> bool:
+        if not os.path.exists(path) or not os.path.isdir(path):
+            return False
+        last_component = os.path.basename(path.rstrip(os.sep))
+
+        # If for some reason the directory isn't 2 digits then we do nothing.
+        if not (len(last_component) == 2 and last_component.isdigit()):
+            return False
+
+        shutil.rmtree(path)
+        return True
 
     @staticmethod
     def ensure_directory_exists(file_path: str) -> None:

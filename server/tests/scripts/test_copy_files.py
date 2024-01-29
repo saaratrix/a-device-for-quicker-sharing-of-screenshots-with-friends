@@ -1,10 +1,8 @@
 import os
 import shutil
 import unittest
-
 import pytest
-
-from ..copy_files import copy_file, can_copy_file
+from server.src.scripts.copy_files import copy_file, can_copy_file
 
 
 class MoveFilesTests(unittest.TestCase):

@@ -4,7 +4,7 @@ import shutil
 import pytest
 from typing import Tuple, IO
 
-from ..file_manager import FileManager
+from server.src.uploads.file_manager import FileManager
 from werkzeug.datastructures import FileStorage
 
 
@@ -38,7 +38,6 @@ class TestFileManager(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             FileManager.upload_file(None, upload_path)
-
 
     def test_upload_file_throws_if_file_exists(self):
         file_name = 'test.txt'
@@ -81,6 +80,36 @@ class TestFileManager(unittest.TestCase):
         file_path = os.path.join(self.test_folder, file_name)
 
         assert not FileManager.delete_file(file_path)
+
+    def create_test_directory_structure(self):
+        os.makedirs(os.path.join(self.test_folder, "23", "01", "01"), exist_ok=True)
+
+    def test_delete_date_existing_directory_recursively(self):
+        self.create_test_directory_structure()
+        directory_path = os.path.join(self.test_folder, "23")
+        # Verify directories exist
+        self.assertTrue(os.path.exists(directory_path))
+        self.assertTrue(os.path.exists(os.path.join(directory_path, "01", "01")))
+
+        self.assertTrue(FileManager.delete_date_directory_recursively(directory_path))
+        # And then they don't
+        self.assertFalse(os.path.exists(directory_path))
+
+    def test_delete_date_nonexistent_directory(self):
+        directory_path = os.path.join(self.test_folder, "nonexistent_directory")
+
+        self.assertFalse(os.path.exists(directory_path))
+        self.assertFalse(FileManager.delete_date_directory_recursively(directory_path))
+
+    def test_delete_date_directory_with_incorrect_format(self):
+        # Create a directory with a name that is not two digits
+        os.makedirs(os.path.join(self.test_folder, "a"), exist_ok=True)
+        directory_path = os.path.join(self.test_folder, "a")
+
+        self.assertTrue(os.path.exists(directory_path))
+        self.assertFalse(FileManager.delete_date_directory_recursively(directory_path))
+        # Directory should still exist
+        self.assertTrue(os.path.exists(directory_path))
 
 
 if __name__ == '__main__':
