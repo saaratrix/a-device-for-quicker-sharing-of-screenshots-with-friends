@@ -28,16 +28,23 @@ def test_overview_route_unauthorized(client, monkeypatch):
     assert response.status_code == 401
 
 
-def test_get_base_uri_with_request_uri():
-    headers = {'REQUEST_URI': f'{admin_prefix}/stats/overview/test'}
-    base_uri = get_base_uri(headers)
-    assert base_uri == f'{admin_prefix}'
+class BaseUriTest:
+    pass
+
+def test_get_base_uri_with_path():
+    request = BaseUriTest()
+    request.path = f'{admin_prefix}/stats/overview/test'
+    base_uri = get_base_uri(request)
+    assert base_uri == admin_prefix
 
 
-def test_get_base_uri_without_known_headers():
-    headers = {'Unknown-Header': f'{admin_prefix}/stats/overview/test'}
-    with pytest.raises(AttributeError):
-        get_base_uri(headers)
+def test_get_base_uri_with_base_url():
+    expected = f'https://localhost:5000{admin_prefix}'
+    request = BaseUriTest()
+    request.base_url = f'{expected}/stats/overview/test'
+    request.path = ''
+    base_uri = get_base_uri(request)
+    assert base_uri == expected
 
 
 def test_size_to_megabytes_with_zero():
