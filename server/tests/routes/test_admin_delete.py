@@ -4,6 +4,8 @@ from server.src.routes.admin_delete import admin_delete_bp, format_day
 from server.src.uploads.file_manager import FileManager
 from server.src.admin_tools.admin_credentials import auth
 
+admin_prefix = '/admin/'
+
 
 @pytest.fixture
 def client():
@@ -35,53 +37,53 @@ def delete_failure(monkeypatch):
 
 # Individual tests start here
 def test_delete_year_success(client, auth_success, delete_success):
-    response = client.get('/admin/delete/year/2023')
+    response = client.get(f'{admin_prefix}delete/year/2023')
     assert response.status_code == 200
     assert response.data.decode() == "Success"
 
 
 def test_delete_year_failure(client, auth_success, delete_failure):
-    response = client.get('/admin/delete/year/2023')
+    response = client.get(f'{admin_prefix}delete/year/2023')
     assert response.status_code == 200
     assert response.data.decode() == "Failed"
 
 
 def test_delete_year_auth_failure(client, auth_failure):
-    response = client.get('/admin/delete/year/2023')
+    response = client.get(f'{admin_prefix}delete/year/2023')
     assert response.status_code == 401
 
 
 def test_delete_month_success(client, auth_success, delete_success):
-    response = client.get('/admin/delete/year/2023/month/March')
+    response = client.get(f'{admin_prefix}delete/year/2023/month/March')
     assert response.status_code == 200
     assert response.data.decode() == "Success"
 
 
 def test_delete_month_failure(client, auth_success, delete_failure):
-    response = client.get('/admin/delete/year/2023/month/March')
+    response = client.get(f'{admin_prefix}delete/year/2023/month/March')
     assert response.status_code == 200
     assert response.data.decode() == "Failed"
 
 
 def test_delete_month_auth_failure(client, auth_failure):
-    response = client.get('/admin/delete/year/2023/month/March')
+    response = client.get(f'{admin_prefix}delete/year/2023/month/March')
     assert response.status_code == 401
 
 
 def test_delete_day_success(client, auth_success, delete_success):
-    response = client.get('/admin/delete/year/2023/month/March/day/5')
+    response = client.get(f'{admin_prefix}delete/year/2023/month/March/day/5')
     assert response.status_code == 200
     assert response.data.decode() == "Success"
 
 
 def test_delete_day_failure(client, auth_success, delete_failure):
-    response = client.get('/admin/delete/year/2023/month/March/day/15')
+    response = client.get(f'{admin_prefix}delete/year/2023/month/March/day/15')
     assert response.status_code == 200
     assert response.data.decode() == "Failed"
 
 
 def test_delete_day_auth_failure(client, auth_failure):
-    response = client.get('/admin/delete/year/2023/month/March/day/5')
+    response = client.get(f'{admin_prefix}delete/year/2023/month/March/day/5')
     assert response.status_code == 401
 
 
