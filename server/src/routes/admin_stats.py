@@ -25,7 +25,7 @@ month_lookup = {
 @admin_stats_bp.route(f'{admin_url_prefix}/stats/overview', methods=['GET'])
 @auth.login_required
 def overview() -> Response:
-    base_uri = get_base_uri(request.headers.environ)
+    base_uri = get_base_uri(request)
     upload_path = current_app.config['UPLOAD_FOLDER']
     stats, year_stats = get_overview_stats(upload_path)
 
@@ -34,9 +34,9 @@ def overview() -> Response:
     return render_template('stats_page.html', base_uri=base_uri, stats=overall_stats)
 
 
-def get_base_uri(headers):
+def get_base_uri(request):
     # REQUEST_URI will look like "/admin/stats/overview"
-    url = headers.get('REQUEST_URI')
+    url = request.path or request.base_url
     url = url.split('/stats/overview')[0]
     return url
 
