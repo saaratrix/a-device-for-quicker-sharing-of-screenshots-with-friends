@@ -80,6 +80,7 @@ def convert_to_presentable_stats(root_stats, year_items):
                     'files': day_stats['total_files'],
                 }
                 days.append(day)
+            days.sort(key=lambda x: int(x['name']))
 
     overall = {
         'name': 'Overview',
