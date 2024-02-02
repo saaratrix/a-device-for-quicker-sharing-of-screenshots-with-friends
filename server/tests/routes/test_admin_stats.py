@@ -77,6 +77,7 @@ def test_convert_to_presentable_stats():
     year_items = [
         ('19', ({'name': '19', 'total_size': 2000000000, 'total_files': 1000}, [
             ('02', ({'name': '02', 'total_size': 500000000, 'total_files': 300}, [
+                ('07', ({'name': '07', 'total_size': 300000000, 'total_files': 200}, [])),
                 ('05', ({'name': '05', 'total_size': 300000000, 'total_files': 200}, [])),
             ])),
         ])),
@@ -99,6 +100,11 @@ def test_convert_to_presentable_stats():
                         'days': [
                             {
                                 'name': '5',
+                                'size': '286.102 MB',
+                                'files': 200
+                            },
+                            {
+                                'name': '7',
                                 'size': '286.102 MB',
                                 'files': 200
                             },
