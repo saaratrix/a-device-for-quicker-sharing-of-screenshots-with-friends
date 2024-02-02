@@ -10,10 +10,10 @@ class TestAdminUrlPrefix(unittest.TestCase):
             del os.environ['ADMIN_URL']
 
         reload(module)
-        self.assertEqual(module.admin_url_prefix, '/admin/')
+        self.assertEqual(module.admin_url_prefix, '/mega-secret-admin')
 
     def test_custom_admin_path(self):
-        expected_path = '/custom_admin/'
+        expected_path = '/custom_admin'
         os.environ['ADMIN_URL'] = expected_path
 
         reload(module)
