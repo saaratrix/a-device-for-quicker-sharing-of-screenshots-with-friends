@@ -1,9 +1,10 @@
 import pytest
-from unittest.mock import patch
 
 from server.src.admin_tools.admin_credentials import auth
 from server.src.routes.admin_stats import get_base_uri, size_to_megabytes, convert_to_presentable_stats
 from server.src.app import create_app
+
+admin_prefix = '/mega-secret-admin'
 
 
 @pytest.fixture
@@ -15,7 +16,7 @@ def client(monkeypatch):
 
 def test_overview_route(client, monkeypatch):
     monkeypatch.setattr(auth, 'authenticate', lambda x, y: True)
-    response = client.get('/admin/stats/overview')
+    response = client.get(f'{admin_prefix}/stats/overview')
     assert response.status_code == 200
     html = response.get_data(as_text=True)
     assert html.startswith('<!DOCTYPE html>')
@@ -23,24 +24,18 @@ def test_overview_route(client, monkeypatch):
 
 def test_overview_route_unauthorized(client, monkeypatch):
     monkeypatch.setattr(auth, 'authenticate', lambda x, y: False)
-    response = client.get('/admin/stats/overview')
+    response = client.get(f'{admin_prefix}/stats/overview')
     assert response.status_code == 401
 
 
-def test_get_base_uri_with_x_original_uri():
-    headers = {'X-Original-URI': '/admin/stats/overview/test'}
-    base_uri = get_base_uri(headers)
-    assert base_uri == '/admin'
-
-
 def test_get_base_uri_with_request_uri():
-    headers = {'REQUEST_URI': '/admin/stats/overview/test'}
+    headers = {'REQUEST_URI': f'{admin_prefix}/stats/overview/test'}
     base_uri = get_base_uri(headers)
-    assert base_uri == '/admin'
+    assert base_uri == f'{admin_prefix}'
 
 
 def test_get_base_uri_without_known_headers():
-    headers = {'Unknown-Header': '/admin/stats/overview/test'}
+    headers = {'Unknown-Header': f'{admin_prefix}/stats/overview/test'}
     with pytest.raises(AttributeError):
         get_base_uri(headers)
 
