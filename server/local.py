@@ -3,6 +3,7 @@ from flask_cors import CORS
 from src.app import create_app
 
 if __name__ == '__main__':
+    os.environ["ADMIN_URL"] = "/shadow/"
     # Asking ChatGPT for username & password makes it ninja themed, ok!
     os.environ['ADMIN_USERNAME'] = 'ninja'
     os.environ['ADMIN_PASSWORD'] = 'kuno'

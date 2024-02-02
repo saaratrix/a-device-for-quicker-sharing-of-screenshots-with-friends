@@ -1,6 +1,7 @@
 import os
 from flask import Blueprint, Response, current_app
 from .admin_stats import month_lookup
+from ..admin_tools.admin_url_prefix import admin_url_prefix
 from server.src.uploads.file_manager import FileManager
 from server.src.admin_tools.admin_credentials import auth
 
@@ -8,7 +9,7 @@ admin_delete_bp = Blueprint('admin_delete', __name__, template_folder='')
 reverse_month_lookup = {value: key for key, value in month_lookup.items()}
 
 
-@admin_delete_bp.route('/admin/delete/year/<year>')
+@admin_delete_bp.route(f'{admin_url_prefix}/delete/year/<year>')
 @auth.login_required
 def delete_year(year: str) -> Response:
     year = year[2:]
@@ -17,7 +18,7 @@ def delete_year(year: str) -> Response:
     return "Success" if success else "Failed", 200
 
 
-@admin_delete_bp.route('/admin/delete/year/<year>/month/<month>')
+@admin_delete_bp.route(f'{admin_url_prefix}/delete/year/<year>/month/<month>')
 @auth.login_required
 def delete_month(year: str, month: str) -> Response:
     year = year[2:]
@@ -27,7 +28,7 @@ def delete_month(year: str, month: str) -> Response:
     return "Success" if success else "Failed", 200
 
 
-@admin_delete_bp.route('/admin/delete/year/<string:year>/month/<string:month>/day/<string:day>')
+@admin_delete_bp.route(f'{admin_url_prefix}/delete/year/<string:year>/month/<string:month>/day/<string:day>')
 @auth.login_required
 def delete_day(year: str, month: str, day: str) -> Response:
     year = year[2:]

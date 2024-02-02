@@ -1,6 +1,7 @@
 from flask import Blueprint, current_app, Response, request, render_template
 from server.src.admin_tools.file_stats import get_overview_stats
 from server.src.admin_tools.admin_credentials import auth
+from ..admin_tools.admin_url_prefix import admin_url_prefix
 
 admin_stats_bp = Blueprint('admin_stats', __name__, template_folder='')
 
@@ -21,7 +22,7 @@ month_lookup = {
 }
 
 
-@admin_stats_bp.route('/admin/stats/overview', methods=['GET'])
+@admin_stats_bp.route(f'{admin_url_prefix}/stats/overview', methods=['GET'])
 @auth.login_required
 def overview() -> Response:
     base_uri = get_base_uri(request.headers.environ)
@@ -35,7 +36,7 @@ def overview() -> Response:
 
 def get_base_uri(headers):
     # REQUEST_URI will look like "/admin/stats/overview"
-    url = headers.get('X-Original-URI') or headers.get('REQUEST_URI')
+    url = headers.get('REQUEST_URI')
     url = url.split('/stats/overview')[0]
     return url
 
