@@ -91,6 +91,7 @@ def main():
 
     folder_searches = [
         {"includes": ["src/**/*.py"], "excludes": ["tests"], "only_print_errors": False},
+        {"includes": ["src/**/*.html"], "excludes": ["tests"], "only_print_errors": False},
     ]
 
     successes = 0
@@ -115,6 +116,7 @@ def main():
     print("Finished copy all files.")
     print(f"Succesfully copied {successes} and failed to copy {fails}")
 
-
+# Test script:
+# python src\scripts\copy_files.py --target temp\scripts
 if __name__ == "__main__":
     main()
