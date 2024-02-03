@@ -60,7 +60,7 @@ export class ViewerSimplePanner {
     }
   }
 
-  handleClick(event: PointerEvent): void {
+  handleClick(event: MouseEvent): void {
     if (!this.isPanning || !this.hasMoved) {
       return;
     }
