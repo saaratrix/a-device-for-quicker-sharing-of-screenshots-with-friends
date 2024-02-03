@@ -7,6 +7,7 @@ import { dispatchFileInput } from "./events/file-events.js";
 import { canUseLocalStorage, HistoryHandler } from "./history-handler.js";
 import { SettingsHandler } from "./settings-handler.js";
 import { ViewerSimplePanner } from "./viewer-simple-panner.js";
+import { PersistentPositionOnZoom } from "./persistent-position-on-zoom.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
   const uploaderElement = document.getElementById('uploader');
@@ -52,6 +53,7 @@ function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
   fileViewer.viewFile();
 
   const panner = new ViewerSimplePanner();
+  const persistentPositionOnZoom = new PersistentPositionOnZoom();
 }
 
 function initUploader(uploaderElement: HTMLElement): void {
