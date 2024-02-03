@@ -8,21 +8,18 @@ export class ViewerSimplePanner {
   private readonly moveThreshold: number = 15;
 
   constructor() {
-    // Bind the methods to the instance to ensure correct 'this' context
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleClick = this.handleClick.bind(this);
 
-    // Add event listeners in the constructor
     window.addEventListener('mousedown', this.handleMouseDown);
     window.addEventListener('mouseup', this.handleMouseUp);
     window.addEventListener('mouseleave', this.handleMouseLeave);
     window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('click', this.handleClick, true);
 
-    // Initialize panning state
     this.isPanning = false;
     this.currentX = 0;
     this.currentY = 0;
@@ -57,6 +54,7 @@ export class ViewerSimplePanner {
       this.isPanning = false;
     }, 0);
 
+    // Middle mouse button
     if (event.button === 1) {
       event.preventDefault();
     }
@@ -68,7 +66,7 @@ export class ViewerSimplePanner {
     }
 
     const target = event.target as HTMLElement;
-    // So we don't do this if we click on video buttons etc.
+    // So we don't do this if we click on video buttons etc.  
     if (target?.matches('video')) {
       event.preventDefault();
     }

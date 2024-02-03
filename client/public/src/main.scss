@@ -34,6 +34,9 @@ body {
 
 .uploader-root {
   .container {
+    // We don't want to make the .container a display: flex; for the viewer.
+    // Because otherwise if you zoom in the <img> or <video> elements will be off screen to the left.
+    // And you can't scroll to the left so the item is cropped.
     display: flex ;
     flex-direction: column;
     justify-content: center;
@@ -106,7 +109,7 @@ body {
 
 #view-item {
   display: inline-block;
-  // Yes item is slightly off center if no scrollbar but that's ok, no one will know!
+  // Yes, item is slightly off center if no scrollbar but that's ok, no one will know!
   // And if they do, can fix it then!
   padding: 0.5rem;
 
