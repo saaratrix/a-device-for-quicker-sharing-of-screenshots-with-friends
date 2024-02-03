@@ -91,11 +91,12 @@ export class ViewerSimplePanner {
       }
     }
 
+    const coefficient = 2;
     this.currentX = event.clientX;
     this.currentY = event.clientY;
     document.scrollingElement?.scrollTo({
-      left: window.scrollX - dx,
-      top: window.scrollY - dy,
+      left: window.scrollX - dx * coefficient,
+      top: window.scrollY - dy * coefficient,
     });
   }
 
