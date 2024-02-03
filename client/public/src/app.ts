@@ -47,7 +47,7 @@ function isHashForItem(hash: string): boolean {
 
 function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
   viewerElement.hidden = false;
-
+  document.body.classList.add('viewer');
   fileViewer.viewFile();
 }
 
@@ -65,7 +65,9 @@ function initUploader(uploaderElement: HTMLElement): void {
     if (file) {
       dispatchFileInput(file);
     }
-  })
+  });
+
+  document.body.classList.add('uploader');
 
   const paster = new Paster();
   // When uploading or pasting files the file uploader listens for those events.

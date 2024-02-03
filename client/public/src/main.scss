@@ -15,6 +15,8 @@ body {
   color: $color-text;
   min-height: 100dvh;
   margin: 0;
+  // Display flex here to make sure children are 100% height as well
+  // And it also automatically vertically centers the view item.
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,14 +28,18 @@ body {
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width:100%;
   overflow: auto;
-  scrollbar-gutter: stable both-edges;
   text-align: center;
+}
+
+.uploader {
+  .container {
+    display: flex ;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .upload-inputs {
@@ -85,6 +91,8 @@ body {
   width: 400px;
   height: 400px;
   object-fit: contain;
+  // For that centering of video and img!
+  text-align: center;
 
   video, img {
     max-width: 100%;
@@ -93,12 +101,17 @@ body {
 }
 
 #viewer {
-  padding: 0.5rem;
+  // Removes white space below the item.
+  line-height: 0;
 }
 
 #view-item {
-  // To remove whitespace for scroll bars etc.
-  display: flex;
+  display: inline-block;
+  // Extra padding on the right because of potential scroll bar.
+  // Yes item is slightly off center if no scrollbar but that's ok, no one will know!
+  // And if they do, can fix it then!
+  // This also causes noticeable different padding if 800% zoomed in, which is also fine.
+  padding: 0.5rem 1.5rem 0.5rem 0.5rem;
 }
 
 .menu {

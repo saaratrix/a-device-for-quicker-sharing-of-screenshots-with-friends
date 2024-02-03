@@ -133,21 +133,21 @@ export class FileViewer {
 
   private setMaxDimensions(element: HTMLElement): void {
     const container = document.querySelector('.container') as HTMLElement;
-    const maxHeight = window.innerHeight - this.getOccupiedHeight();
+    const viewItem = document.getElementById('view-item')!;
+    const viewItemStyle = getComputedStyle(viewItem);
 
-    element.style.maxWidth = `${ container.clientWidth }px`;
+    const maxHeight = window.innerHeight - this.getOccupiedHeight(viewItemStyle);
+
+    const horizontalPadding = parseInt(viewItemStyle.paddingLeft) + parseInt(viewItemStyle.paddingRight);
+    element.style.maxWidth = `${ container.clientWidth - horizontalPadding }px`;
 
     if (Settings.getSettings().automaticallyAdjustHeight) {
       element.style.maxHeight = `${maxHeight}px`;
     }
   }
 
-  private getOccupiedHeight(): number {
-    const viewer = document.getElementById('viewer')!;
-    const viewerStyle = getComputedStyle(viewer);
-
-    const viewerPadding = parseInt(viewerStyle.paddingTop) + parseInt(viewerStyle.paddingBottom);
-    return viewerPadding;
+  private getOccupiedHeight(style: CSSStyleDeclaration): number {
+    return parseInt(style.paddingTop) + parseInt(style.paddingBottom);
   }
 
   private handleMediaError(url: string) {
