@@ -6,6 +6,7 @@ import { FilePreviewer } from "./file-previewer.js";
 import { dispatchFileInput } from "./events/file-events.js";
 import { canUseLocalStorage, HistoryHandler } from "./history-handler.js";
 import { SettingsHandler } from "./settings-handler.js";
+import { ViewerSimplePanner } from "./viewer-simple-panner.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
   const uploaderElement = document.getElementById('uploader');
@@ -47,8 +48,10 @@ function isHashForItem(hash: string): boolean {
 
 function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
   viewerElement.hidden = false;
-
+  document.body.classList.add('viewer-root');
   fileViewer.viewFile();
+
+  const panner = new ViewerSimplePanner();
 }
 
 function initUploader(uploaderElement: HTMLElement): void {
@@ -65,7 +68,9 @@ function initUploader(uploaderElement: HTMLElement): void {
     if (file) {
       dispatchFileInput(file);
     }
-  })
+  });
+
+  document.body.classList.add('uploader-root');
 
   const paster = new Paster();
   // When uploading or pasting files the file uploader listens for those events.
