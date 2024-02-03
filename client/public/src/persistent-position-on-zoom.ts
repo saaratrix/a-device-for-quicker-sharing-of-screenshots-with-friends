@@ -14,14 +14,12 @@ export class PersistentPositionOnZoom {
     this.currentWidth = scrollingElement.clientWidth;
     this.currentHeight = scrollingElement.clientHeight;
 
-    // Bind the event listeners
     window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('mouseleave', this.handleMouseLeave);
     window.addEventListener('resize', this.handleResize);
   }
 
   dispose(): void {
-    // Unbind the event listeners
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseleave', this.handleMouseLeave);
     window.removeEventListener('resize', this.handleResize);
