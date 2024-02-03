@@ -67,7 +67,7 @@ export class HistoryHandler extends DialogHandler {
   }
 
   private addItem(item: HistoryItem): void {
-    this.items.push(item);
+    this.items.unshift(item)
     this.onItemsChanged();
     this.updateLocalstorage();
   }
@@ -85,7 +85,7 @@ export class HistoryHandler extends DialogHandler {
 
   private onItemsChanged(): void {
     if (this.items.length > this.maxItems) {
-      this.items.shift();
+      this.items.pop();
     }
 
     const isEnabled = this.items.length > 0;
