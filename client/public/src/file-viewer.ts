@@ -103,6 +103,7 @@ export class FileViewer {
   private viewImage(url: string): void {
     const image = new Image();
     image.src = api + url;
+    image.draggable = false;
 
     this.setMaxDimensions(image);
     this.getViewerItem().appendChild(image);
@@ -111,7 +112,7 @@ export class FileViewer {
   private viewVideo(url: string, extension: string) {
     const mimeType = this.mimeTypes[extension];
     const fileUrl = api + url;
-    this.getViewerItem().innerHTML = `<video controls autoplay>
+    this.getViewerItem().innerHTML = `<video controls autoplay draggable="false">
         <source src="${ fileUrl }" type="${ mimeType }">
       </video>`;
 
@@ -139,7 +140,8 @@ export class FileViewer {
     const maxHeight = window.innerHeight - this.getOccupiedHeight(viewItemStyle);
 
     const horizontalPadding = parseInt(viewItemStyle.paddingLeft) + parseInt(viewItemStyle.paddingRight);
-    element.style.maxWidth = `${ container.clientWidth - horizontalPadding }px`;
+    const scrollbarWidth = 19;
+    element.style.maxWidth = `${ container.clientWidth - scrollbarWidth - horizontalPadding }px`;
 
     if (Settings.getSettings().automaticallyAdjustHeight) {
       element.style.maxHeight = `${maxHeight}px`;

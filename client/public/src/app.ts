@@ -6,6 +6,7 @@ import { FilePreviewer } from "./file-previewer.js";
 import { dispatchFileInput } from "./events/file-events.js";
 import { canUseLocalStorage, HistoryHandler } from "./history-handler.js";
 import { SettingsHandler } from "./settings-handler.js";
+import { ViewerSimplePanner } from "./viewer-simple-panner.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
   const uploaderElement = document.getElementById('uploader');
@@ -49,6 +50,8 @@ function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
   viewerElement.hidden = false;
   document.body.classList.add('viewer');
   fileViewer.viewFile();
+
+  const panner = new ViewerSimplePanner();
 }
 
 function initUploader(uploaderElement: HTMLElement): void {

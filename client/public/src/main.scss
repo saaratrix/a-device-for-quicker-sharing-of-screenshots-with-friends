@@ -29,7 +29,6 @@ body {
 
 .container {
   width:100%;
-  overflow: auto;
   text-align: center;
 }
 
@@ -107,11 +106,13 @@ body {
 
 #view-item {
   display: inline-block;
-  // Extra padding on the right because of potential scroll bar.
   // Yes item is slightly off center if no scrollbar but that's ok, no one will know!
   // And if they do, can fix it then!
-  // This also causes noticeable different padding if 800% zoomed in, which is also fine.
-  padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+  padding: 0.5rem;
+
+  img, video {
+    user-select: none;
+  }
 }
 
 .menu {
