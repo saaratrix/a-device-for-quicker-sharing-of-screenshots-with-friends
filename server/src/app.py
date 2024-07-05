@@ -15,7 +15,7 @@ def create_app(upload_folder='file_uploads', require_upload_folder=True):
 
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     # bytes * kb * mb * gb, so 1 GB is current maximum size.
-    app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024 * 1
+    app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024 * 2
 
     app.register_blueprint(file_sharing_bp)
     app.register_blueprint(admin_stats_bp)
