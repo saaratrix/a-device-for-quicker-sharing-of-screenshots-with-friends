@@ -9,6 +9,11 @@ export class DragAndDrop {
       event.preventDefault(); // Prevent default to allow drop
     });
 
+    // Failsafe if the state gets stuck, which has happened a few times.
+    dragAndDropELement.addEventListener('click', () => {
+      document.body.classList.remove('drag');
+    });
+
     dragAndDropELement.addEventListener('dragleave', (event) => {
         document.body.classList.remove('drag');
     });
@@ -31,11 +36,8 @@ export class DragAndDrop {
     });
     // Prevent file drops everywhere.
     window.addEventListener('drop', (event) => {
-
       event.preventDefault();
     });
-
-    // Add drop event listener
 
   }
 }

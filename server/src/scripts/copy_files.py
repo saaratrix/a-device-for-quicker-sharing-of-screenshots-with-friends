@@ -15,7 +15,7 @@ def ensure_directory_exists(file_path: str) -> None:
         os.makedirs(directory, 0o777, True)
 
 
-def copy_file(source: str, target: str, only_print_errors: bool) -> None:
+def copy_file(source: str, target: str, only_print_errors: bool) -> bool:
     source_abs = os.path.abspath(source)
     target_abs = os.path.abspath(target)
 
