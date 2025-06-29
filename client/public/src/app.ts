@@ -3,11 +3,13 @@ import { Paster } from './paster.js';
 import { FileUploader } from "./file-uploader.js";
 import { FileViewer } from "./file-viewer.js";
 import { FilePreviewer } from "./file-previewer.js";
-import { dispatchFileInput } from "./events/file-events.js";
+import { dispatchFileInput, dispatchFileUploaded, fileUploadedEvent } from "./events/file-events.js";
 import { canUseLocalStorage, HistoryHandler } from "./history-handler.js";
 import { SettingsHandler } from "./settings-handler.js";
 import { ViewerSimplePanner } from "./viewer-simple-panner.js";
 import { PersistentPositionOnZoom } from "./persistent-position-on-zoom.js";
+
+import './custom-components.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const uploaderElement = document.getElementById('uploader');
@@ -64,13 +66,24 @@ function initUploader(uploaderElement: HTMLElement): void {
   const dragAndDrop = new DragAndDrop();
   dragAndDrop.initialize();
 
-  document.getElementById('fileInput')?.addEventListener('change', (event) => {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (file) {
-      dispatchFileInput(file);
-    }
-  });
+  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.addEventListener('change', (event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (file) {
+        dispatchFileInput(file);
+      }
+    });
+
+    // Clear the file input after upload.
+    window.addEventListener(fileUploadedEvent, () => {
+      fileInput.value = '';
+      // This is to let others process fileUploadedEvent first.
+      setTimeout(() => dispatchFileInput(undefined));
+    });
+  }
+
 
   document.body.classList.add('uploader-root');
 

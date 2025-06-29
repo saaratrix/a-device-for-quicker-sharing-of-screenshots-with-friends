@@ -1,6 +1,7 @@
-import { dispatchFileUploaded, FileInputEvent, fileInputEvent } from "./events/file-events.js";
+import { dispatchFileUploaded, FileInputEvent, fileInputEvent, FileUploadedEvent, fileUploadedEvent } from "./events/file-events.js";
 import { api } from "./environment.js";
 import { copyUrlToClipboard } from "./utility/copy-url-to-clipboard.js";
+import { dispatchGetEditSettingsEvent, GetEditSettingsEvent } from './events/editing-events.js';
 
 export interface UploadInfo {
   extensions: string[];
@@ -20,8 +21,11 @@ export class FileUploader {
   selectedFile: File | undefined;
   selectedSecret: string = '';
 
+  canClearShareLinkTime = -1;
+
   constructor() {
     window.addEventListener(fileInputEvent, (event) => this.onFileInput(event as CustomEvent<FileInputEvent>));
+    window.addEventListener(fileUploadedEvent, (event) => this.onFileUpload(event as CustomEvent<FileUploadedEvent>));
     document.getElementById('upload-btn')?.addEventListener('click', () => this.onUploadClicked());
     document.getElementById('filename')!.addEventListener('input', (event) => this.onFilenameChange(event));
 
@@ -54,7 +58,7 @@ export class FileUploader {
   }
 
   initUploadingInfo(): void {
-    this.getUploadInfo(0).then((uploadInfo) => {
+    this.getUploadInfo().then((uploadInfo) => {
       this.uploadInfo = uploadInfo;
       this.canUpload = true;
       this.setUploadButtonStatus();
@@ -73,6 +77,7 @@ export class FileUploader {
     const uploadButton = document.getElementById('upload-btn') as HTMLButtonElement;
     if (!this.canUpload || !this.selectedFile) {
       uploadButton.disabled = true;
+      console.log('upload button disabled');
       return;
     }
 
@@ -86,20 +91,22 @@ export class FileUploader {
     }
 
     if (!found) {
+      console.log('upload button disabled');
       uploadButton.disabled = true;
       return;
     }
 
+    console.log('upload button enabled');
     uploadButton.disabled = false;
   }
 
-  async getUploadInfo(tries: number): Promise<UploadInfo> {
+  async getUploadInfo(): Promise<UploadInfo> {
     let promise = new Promise<UploadInfo>(async (res, rej) => {
       await tryFetchUploadInfo(1, res, rej);
     });
     return promise;
 
-    async function tryFetchUploadInfo(tries: number, res: (vaule: (UploadInfo | PromiseLike<UploadInfo>)) => void, rej: (reason: any) => void) {
+    async function tryFetchUploadInfo(tries: number, res: (value: (UploadInfo | PromiseLike<UploadInfo>)) => void, rej: (reason: any) => void) {
       const request = fetch(`${api}/upload-info`, {
         method: "GET",
         mode: "cors",
@@ -134,7 +141,10 @@ export class FileUploader {
     }
 
     this.setUploadButtonStatus();
-    this.onShareLinkChanged('');
+    // This is so that when the uploaded file is cleared we don't clear the shared link, timings ^.^
+    if (performance.now() > this.canClearShareLinkTime) {
+      this.onShareLinkChanged('');
+    }
   }
 
   private onShareLinkChanged(link: string): void {
@@ -154,15 +164,16 @@ export class FileUploader {
     const file = event.detail;
     this.selectedFile = file;
 
-    let filename = file.name;
-    if (this.uploadInfo) {
-      let end = file.name.length;
-      let start = file.name.length <= this.uploadInfo.maxlengthFile ? 0 : file.name.length - this.uploadInfo.maxlengthFile;
-      filename = file.name.substring(start, end);
+    let filename = '';
+    if (file) {
+      filename = file.name;
+      if (this.uploadInfo) {
+        let end = file.name.length;
+        let start = file.name.length <= this.uploadInfo.maxlengthFile ? 0 : file.name.length - this.uploadInfo.maxlengthFile;
+        filename = file.name.substring(start, end);
+      }
     }
-
     this.setFilename(filename, true);
-    this.setUploadButtonStatus();
   }
 
 
@@ -171,10 +182,17 @@ export class FileUploader {
       return;
     }
 
+    const getSettingsEvent: GetEditSettingsEvent = {};
+    dispatchGetEditSettingsEvent(getSettingsEvent);
+
     const formData = new FormData();
     formData.set('file', this.selectedFile);
     formData.set('filename', this.filename);
     formData.set('secret', this.selectedSecret);
+
+    if (getSettingsEvent.settings) {
+      formData.set('editSettings', JSON.stringify(getSettingsEvent.settings));
+    }
 
     const uploadButton = document.getElementById('upload-btn') as HTMLButtonElement;
     uploadButton.classList.add('spinner');
@@ -200,6 +218,10 @@ export class FileUploader {
   private copyLinkToClipboard() {
     const linkShareElement = document.getElementById('link-share') as HTMLElement;
     copyUrlToClipboard(linkShareElement, '.link-text');
+  }
+
+  private onFileUpload(_: CustomEvent<FileUploadedEvent>) {
+    this.canClearShareLinkTime = performance.now() + 100;
   }
 }
 

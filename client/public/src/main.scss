@@ -1,13 +1,30 @@
+$color-bg: #2c2c38;
+$color-bg-contrast: #4e4166; // Used firefox color contrast 7 tool to get these values.
+$color-text: #e1e1e8;
+$color-text-disabled: #6b6b7a;//hsl(240, 13%, 70%);
+$color-link: #a087d2;
+$color-link-hover: #c8acff;
+$color-link-contrast: #c8acff; // Used firefox color contrast 7 tool to get these values.
+$color-link-disabled: #5c5675;
+$color-link-disabled-bg: hsl(240, 12%, 18%);
+
 html, body {
   min-height: 100%;
 }
 
-$color-bg: #2c2c38;
-$color-bg-contrast: #4e4166; // Used firefox color contrast 7 tool to get these values.
-$color-text: #e1e1e8;
-$color-link: #a087d2;
-$color-link-hover: #c8acff;
-$color-link-contrast: #c8acff; // Used firefox color contrast 7 tool to get these values.
+:root {
+   --color-bg: #{$color-bg};
+  --color-bg-contrast: #{$color-bg-contrast};
+  --color-text: #{$color-text};
+  --color-text-disabled: #{$color-text-disabled};
+  --color-link: #{$color-link};
+  --color-link-hover: #{$color-link-hover};
+  --color-link-contrast: #{$color-link-contrast};
+  --color-link-disabled: #{$color-link-disabled};
+  --color-link-disabled-bg: #{$color-link-disabled-bg};
+
+}
+
 
 body {
   font-family: 'Arial', sans-serif;
@@ -102,6 +119,7 @@ body {
   }
 }
 
+
 #viewer {
   // Removes white space below the item.
   line-height: 0;
@@ -150,7 +168,7 @@ body {
   opacity: 0;
   cursor: default;
   user-select: none;
-  color: #5c5675;
+  color: $color-link-disabled;
   font-weight: normal;
 }
 
@@ -320,4 +338,10 @@ $dialog-animation: fadein $dialog-animation-type forwards;
   &:active {
     background-color: hsl(240, 13%, 70%);
   }
+}
+
+.icon-action {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: $color-link;
 }

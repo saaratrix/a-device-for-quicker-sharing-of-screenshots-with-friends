@@ -1,8 +1,8 @@
 export const fileInputEvent = 'file:input';
 export const fileUploadedEvent = 'file:uploaded';
 
-export type FileInputEvent = File;
-export function dispatchFileInput(file: File) {
+export type FileInputEvent = File | undefined;
+export function dispatchFileInput(file: FileInputEvent ) {
   window.dispatchEvent(new CustomEvent<FileInputEvent>(fileInputEvent, {
     detail: file,
   }));

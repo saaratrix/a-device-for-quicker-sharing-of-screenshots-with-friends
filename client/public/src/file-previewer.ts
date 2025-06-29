@@ -1,5 +1,12 @@
 import { FileInputEvent, fileInputEvent } from "./events/file-events.js";
+import { EditRotationEvent, editRotationEvent } from './events/editing-events.js';
 
+export const PreviewType = {
+  Unknown: 'unknown',
+  Image: 'image',
+  Video: 'video',
+  Audio: 'audio',
+} as const;
 
 /**
  * Updates the preview when a file is selected.
@@ -10,13 +17,36 @@ export class FilePreviewer {
 
   constructor() {
     window.addEventListener(fileInputEvent, (event) => this.onFileInput(event as CustomEvent<FileInputEvent>));
+    window.addEventListener(editRotationEvent, (event) => this.onRotationChanged(event as CustomEvent<EditRotationEvent>));
   }
 
-  onFileInput(event: CustomEvent<FileInputEvent>) {
+  static getPreviewType(file: File | undefined): typeof PreviewType[keyof typeof PreviewType] {
+    if (!file) {
+      return PreviewType.Unknown;
+    }
+
+    if (file.type.startsWith('image')) {
+      return PreviewType.Image;
+    } else if (file.type.startsWith('video')) {
+      return PreviewType.Video
+    } else if (file.type.startsWith('audio')) {
+      return PreviewType.Audio;
+    }
+
+    return PreviewType.Unknown;
+  }
+
+  onFileInput(event: CustomEvent<FileInputEvent>): void {
     const file = event.detail;
 
     if (this.currentObjectUrl) {
       URL.revokeObjectURL(this.currentObjectUrl);
+    }
+
+    if (!file) {
+      // This is bad to do here, then you can't see what you uploaded anymore.
+      // this.clearPreview();
+      return;
     }
 
     this.currentObjectUrl = URL.createObjectURL(file);
@@ -24,13 +54,25 @@ export class FilePreviewer {
     const previewElement = this.getPreviewElement();
     previewElement.innerHTML = '';
 
-    if (file.type.startsWith('image')) {
-      this.previewImage(file);
-    } else if (file.type.startsWith('video')) {
-      this.previewVideo(file);
-    } else if (file.type.startsWith('audio')) {
-      this.previewAudio(file);
+    const previewType = FilePreviewer.getPreviewType(file);
+    switch (previewType) {
+      case PreviewType.Image:
+        this.previewImage(file);
+        break;
+      case PreviewType.Video:
+        this.previewVideo(file);
+        break;
+      case PreviewType.Audio:
+        this.previewAudio(file);
+        break;
+      default:
+        break;
     }
+  }
+
+  public clearPreview(): void {
+    const previewElement = this.getPreviewElement();
+    previewElement.innerHTML = '';
   }
 
   public async getThumbnailAsBase64(): Promise<string> {
@@ -95,11 +137,22 @@ export class FilePreviewer {
     });
   }
 
-  private previewImage(file: File): void {
+  private previewImage(_: File): void {
     // Create a new image element
     const img = document.createElement('img');
     img.style.width = '300px';  // Set width for visualization, adjust as needed
     img.style.height = 'auto';
+    img.style.transition = `transform 100ms ease-in`;
+    img.style.position = 'relative';
+
+    img.addEventListener('load', () => {
+      const previewElement = this.getPreviewElement();
+      const previewWidth = previewElement.offsetWidth;
+      const imgWidth = img.offsetWidth;
+
+      const heightDifference = (previewWidth - imgWidth) / 2;
+      img.style.top = `-${heightDifference}px`;
+    }, { once: true });
 
     img.src = this.currentObjectUrl;
     this.getPreviewElement().appendChild(img);
@@ -134,5 +187,14 @@ export class FilePreviewer {
     this.previewElement = previewElement;
     document.body.appendChild(previewElement);
     return this.previewElement;
+  }
+
+  private onRotationChanged(event: CustomEvent<EditRotationEvent>) {
+    const img = this.getPreviewElement().querySelector('img') as HTMLImageElement;
+    if (!img) {
+      return;
+    }
+
+    img.style.transform = `rotate(${event.detail}deg)`;
   }
 }
