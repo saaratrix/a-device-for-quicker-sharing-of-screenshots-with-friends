@@ -37,7 +37,7 @@ class TestFileManager(unittest.TestCase):
         upload_path = os.path.join(self.test_folder, file_name)
 
         with self.assertRaises(ValueError):
-            FileManager.upload_file(None, upload_path)
+            FileManager.upload_file(None, upload_path, None)
 
     def test_upload_file_throws_if_file_exists(self):
         file_name = 'test.txt'
@@ -45,7 +45,7 @@ class TestFileManager(unittest.TestCase):
         self.create_test_file(file_name)
 
         with pytest.raises(FileExistsError):
-            FileManager.upload_file(None, upload_path)
+            FileManager.upload_file(None, upload_path, None)
 
     def test_upload_file_should_upload(self):
         mock_file_name = "mock.png"
@@ -58,7 +58,25 @@ class TestFileManager(unittest.TestCase):
             assert os.path.exists(mock_path)
             assert not os.path.exists(target_path)
 
-            FileManager.upload_file(mock_file, target_path)
+            FileManager.upload_file(mock_file, target_path, None)
+            handle.close()
+            assert os.path.exists(target_path)
+        except:
+            handle.close()
+            pytest.fail("not supposed to throw.")
+
+    def test_upload_file_should_upload_and_transform_image(self):
+        mock_file_name = "mock.png"
+        mock_path = os.path.join(self.test_folder, mock_file_name)
+        handle, mock_file = self.create_mock_upload_file(mock_file_name)
+
+        try:
+            target_path = os.path.join(self.test_folder, 'upload.txt')
+
+            assert os.path.exists(mock_path)
+            assert not os.path.exists(target_path)
+
+            FileManager.upload_file(mock_file, target_path, { "rotation": 90 })
             handle.close()
             assert os.path.exists(target_path)
         except:
