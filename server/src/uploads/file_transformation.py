@@ -64,7 +64,9 @@ class FileTransformation:
         rotation = transformation_options.get('rotation')
         if rotation is not None and rotation != 0:
             try:
-                rotation = rotation % 360
+                # We flip the rotation because of CSS vs Pillow rotations.
+                # 90 deg in CSS is -90 for Pillow.
+                rotation = -rotation % 360
                 # Pillow crashes on negative rotation.
                 if rotation < 0:
                     rotation = 360 + rotation
