@@ -7,11 +7,16 @@ $color-link-hover: #c8acff;
 $color-link-contrast: #c8acff; // Used firefox color contrast 7 tool to get these values.
 $color-link-disabled: #5c5675;
 $color-link-disabled-bg: hsl(240, 12%, 18%);
+$color-error: #a42929;
 
 $preview-size: 400px;
 
 html, body {
   min-height: 100%;
+}
+
+.error {
+  color: $color-error;
 }
 
 :root {

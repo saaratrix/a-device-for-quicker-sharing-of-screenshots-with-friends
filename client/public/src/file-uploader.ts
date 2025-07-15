@@ -64,7 +64,20 @@ export class FileUploader {
       this.setUploadButtonStatus();
       this.setupValidation();
     })
-      .catch(() => this.canUpload = false);
+      .catch(() => {
+        this.canUpload = false;
+        this.showOrHideError('Can\'t connect to server. Please try again or some other time.');
+      });
+  }
+
+  showOrHideError(error: string | false) {
+    const errorElement = document.getElementById('upload-error') as HTMLParagraphElement;
+    if (!errorElement) {
+      return;
+    }
+
+    errorElement.hidden = !error;
+    errorElement.innerText = error;
   }
 
   setupValidation(): void {
@@ -174,6 +187,7 @@ export class FileUploader {
       }
     }
     this.setFilename(filename, true);
+    this.showOrHideError(false);
   }
 
 
@@ -197,6 +211,8 @@ export class FileUploader {
     uploadButton.classList.add('spinner');
     uploadButton.disabled = true;
 
+    this.showOrHideError(false);
+
     const request = fetch(`${api}/upload`, {
       method: 'PUT',
       body: formData,
@@ -204,10 +220,18 @@ export class FileUploader {
 
     try {
       const response = await request;
-      const json = await response.json() as UploadResponse;
-      const url = getShareUrl(json.url);
-      this.onShareLinkChanged(url);
+      if (response.status !== 200) {
+        const text = await response.text();
+        this.showOrHideError(text);
+        return;
+      } else {
+        const json = await response.json() as UploadResponse;
+        const url = getShareUrl(json.url);
+        this.onShareLinkChanged(url);
+      }
       dispatchFileUploaded(url);
+    } catch (e) {
+      this.showOrHideError(e);
     } finally {
       uploadButton.classList.remove('spinner');
       uploadButton.disabled = false;

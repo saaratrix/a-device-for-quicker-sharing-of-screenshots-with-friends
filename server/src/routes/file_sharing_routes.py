@@ -58,7 +58,7 @@ def upload_file():
     except FileUploadException as e:
         return f"Failed uploading {e.upload_error}" , 500
     except Exception as e:
-        return f'Failed uploading {e}', 500
+        return f'Failed uploading', 500
 
     return jsonify(
         url=f"/v/{uri_path}"

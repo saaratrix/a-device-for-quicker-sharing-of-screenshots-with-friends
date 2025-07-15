@@ -25,7 +25,7 @@ class CropOptions(TypedDict):
 
 
 class FileTransformationOptions(TypedDict, total=False):
-    rotation: Literal[0, 90, 180, 270]
+    rotation: Literal[0, 90, 180, 270, 360, -90, -180, -270]
     size: CropSize
 
 
