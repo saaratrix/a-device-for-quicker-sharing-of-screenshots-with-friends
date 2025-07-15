@@ -50,9 +50,11 @@ class FileUtility:
         if match:
             raise ValueError(f"Invalid characters found. {path}")
 
+    IMAGE_EXTENSIONS = ['.bmp', '.gif', '.jpg', '.jpeg', '.png', '.tiff', '.webp']
+
     ALLOWED_EXTENSIONS = [
         # Images
-        '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.webp',
+        *IMAGE_EXTENSIONS,
         # Videos
         '.mp4', '.mkv', '.flv', '.webm', '.mov', '.avi', '.m4v',
         # Audio

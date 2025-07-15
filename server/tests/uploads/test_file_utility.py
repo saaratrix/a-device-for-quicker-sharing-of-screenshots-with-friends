@@ -2,7 +2,7 @@ import unittest
 from server.src.uploads.file_utility import FileUtility, FileValidation
 
 
-class MyTestCase(unittest.TestCase):
+class TestFileUtility(unittest.TestCase):
 
     def test_get_file_extension(self):
         self.assertEqual(FileUtility.get_file_extension("m333o3ou666666u.txt"), ".txt")

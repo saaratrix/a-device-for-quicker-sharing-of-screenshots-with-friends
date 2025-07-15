@@ -1,7 +1,8 @@
 import os
-from typing import TypedDict, Literal, Optional, TYPE_CHECKING
+from typing import TypedDict, Literal, TYPE_CHECKING
 from PIL import Image
 from .file_upload_exception import FileUploadException
+from .file_utility import FileUtility
 
 if TYPE_CHECKING:
     from werkzeug.datastructures import FileStorage
@@ -48,15 +49,10 @@ class FileTransformation:
 
         return None
 
-    IMAGE_EXTENSIONS = [
-        # Images
-        '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.webp',
-    ]
-
     @staticmethod
     def get_file_type(filename):
         base, ext = os.path.splitext(filename)
-        if ext.lower() in FileTransformation.IMAGE_EXTENSIONS:
+        if ext.lower() in FileUtility.IMAGE_EXTENSIONS:
             return "image"
 
         return "unknown"
