@@ -2,7 +2,7 @@ import os
 import shutil
 import unittest
 from PIL import Image
-from typing import Tuple, IO
+from typing import Tuple, IO, Literal
 from unittest.mock import Mock, patch
 
 import pytest
@@ -133,33 +133,38 @@ class TestFileTransformation(unittest.TestCase):
             pytest.fail("not supposed to throw.")
 
     def test_transform_image_should_rotate_image(self):
-        mock_file_name = "before.jpg"
-        transformed_name = "after.jpg"
-        mock_path = os.path.join(self.test_output_folder, mock_file_name)
-        input_path = os.path.join(self.test_input_folder, "mymmis.jpg")
-        handle, mock_file = self.create_mock_upload_file(mock_file_name, input_path)
+        test_cases = [90, -90]
 
-        before_dimensions = (128, 88)
-        after_dimensions = (before_dimensions[1], before_dimensions[0])
+        for rotation in test_cases:
+            mock_file_name = "before.jpg"
+            transformed_name = "after.jpg"
+            mock_path = os.path.join(self.test_output_folder, mock_file_name)
+            input_path = os.path.join(self.test_input_folder, "mymmis.jpg")
+            handle, mock_file = self.create_mock_upload_file(mock_file_name, input_path)
 
-        try:
+            before_dimensions = (128, 88)
+            after_dimensions = (before_dimensions[1], before_dimensions[0])
             target_path = os.path.join(self.test_output_folder, transformed_name)
 
-            assert os.path.exists(mock_path)
-            assert not os.path.exists(target_path)
+            try:
+                assert os.path.exists(mock_path)
+                assert not os.path.exists(target_path)
 
-            FileTransformation.transform_image(mock_file, { "rotation": 90 }, target_path)
-            handle.close()
-            # should not save as no transformation was done.
-            assert os.path.exists(target_path)
+                FileTransformation.transform_image(mock_file, { "rotation": rotation }, target_path)
+                handle.close()
 
-            with Image.open(mock_path) as before_img, Image.open(target_path) as after_img:
-                before_size = before_img.size
-                after_size = after_img.size
+                assert os.path.exists(target_path)
 
-                assert before_size == (before_size[0], before_size[1]), "Starting image was expected dimensions"
-                assert after_dimensions == (after_size[0], after_size[1]), f"Image should be rotated"
+                with Image.open(mock_path) as before_img, Image.open(target_path) as after_img:
+                    before_size = before_img.size
+                    after_size = after_img.size
 
-        except:
-            handle.close()
-            pytest.fail("not supposed to throw.")
+                    assert before_size == before_dimensions, "Starting image was expected dimensions"
+                    assert after_size == after_dimensions, f"Expected image to be rotated by {rotation}°"
+
+            except Exception as e:
+                handle.close()
+                pytest.fail(f"Unexpected error during rotation test ({rotation}°): {e}")
+            # Just extra cleanup as we are testing rotations.
+            if os.path.exists(self.test_output_folder):
+                shutil.rmtree(self.test_output_folder)

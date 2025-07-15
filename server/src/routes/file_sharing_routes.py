@@ -4,6 +4,7 @@ from typing import Dict, Optional
 from flask import Blueprint, request, send_from_directory, jsonify, current_app, Response
 from ..uploads.file_info_handler import FileInfoHandler
 from ..uploads.file_manager import FileManager
+from ..uploads.file_upload_exception import FileUploadException
 from ..uploads.file_utility import FileUtility, FileValidation
 from werkzeug.exceptions import RequestEntityTooLarge
 
@@ -54,8 +55,10 @@ def upload_file():
         transform_actions = get_transform_actions(request.form.get('transformActions'))
 
         FileManager.upload_file(file, upload_path, transform_actions)
+    except FileUploadException as e:
+        return f"Failed uploading {e.upload_error}" , 500
     except Exception as e:
-        return 'Failed uploading', 500
+        return f'Failed uploading {e}', 500
 
     return jsonify(
         url=f"/v/{uri_path}"

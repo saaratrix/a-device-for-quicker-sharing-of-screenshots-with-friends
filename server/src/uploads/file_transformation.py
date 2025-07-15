@@ -64,9 +64,12 @@ class FileTransformation:
         rotation = transformation_options.get('rotation')
         if rotation is not None and rotation != 0:
             try:
+                rotation = rotation % 360
+                # Pillow crashes on negative rotation.
+                if rotation < 0:
+                    rotation = 360 + rotation
                 img = img or Image.open(file)
-                # Flip rotation due to PIL using opposite rotation than CSS
-                img = img.rotate(-rotation, expand=True)
+                img = img.rotate(rotation, expand=True)
             except Exception as e:
                 raise FileUploadException(e, 'Failed to rotate image.')
 
