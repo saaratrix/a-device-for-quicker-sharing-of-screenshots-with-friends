@@ -8,6 +8,8 @@ $color-link-contrast: #c8acff; // Used firefox color contrast 7 tool to get thes
 $color-link-disabled: #5c5675;
 $color-link-disabled-bg: hsl(240, 12%, 18%);
 
+$preview-size: 400px;
+
 html, body {
   min-height: 100%;
 }
@@ -61,6 +63,12 @@ body {
   }
 }
 
+#uploader {
+    // Counter-acts <body> flex centering.
+    min-height: 100vh;
+    margin-top: 2rem;
+  }
+
 .upload-inputs {
   text-align: left;
 }
@@ -104,11 +112,19 @@ body {
   }
 }
 
+#preview-container {
+  display: flex;
+  justify-content: center;
+}
+
 .preview {
   margin-top: 1rem;
 
-  width: 400px;
-  height: 400px;
+  width: $preview-size;
+  max-width: 90vw;
+  height: $preview-size;
+  max-height: 90vw;
+  min-height: 200px;
   object-fit: contain;
   // For that centering of video and img!
   text-align: center;
@@ -116,6 +132,13 @@ body {
   video, img {
     max-width: 100%;
     max-height: 100%;
+  }
+  img {
+    // Need to vertically center the img in case we rotate a wider than tall image.
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 100ms ease-in;
   }
 }
 

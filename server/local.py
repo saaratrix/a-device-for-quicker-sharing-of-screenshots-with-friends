@@ -14,4 +14,5 @@ if __name__ == '__main__':
     origins = os.environ.get("ORIGINS", "http://localhost:63342,http://localhost:63343,http://localhost:63344,http://localhost:63345").split(",")
     CORS(app, origins=origins)
     # CORS(src, origins=["http://localhost:63342"])
-    app.run(debug=True, port=5001)
+    # pycharm professional crashes without use_reloader=False when it reloads.
+    app.run(debug=True, port=5001, use_reloader=False)

@@ -1,7 +1,6 @@
 import { type FileInputEvent, fileInputEvent } from '../events/file-events.js';
 import { uploadSharedCSS } from './styles/upload-shared.js';
-import { dispatchEditRotationEvent, getEditingSettingsEvent, GetEditSettingsEvent } from '../events/editing-events.js';
-import { EditingSettings } from './editing-settings.js';
+import { setTransformAction, TransformActions } from './transform-actions.js';
 import { FilePreviewer, PreviewType } from '../file-previewer.js';
 
 class UploadEditing extends HTMLElement {
@@ -51,7 +50,6 @@ class UploadEditing extends HTMLElement {
 
     connectedCallback () {
       window.addEventListener(fileInputEvent, this.onFileInput);
-      window.addEventListener(getEditingSettingsEvent, this.onGetEditSettingsEvent)
 
       this.rotateLeft = this.shadow.getElementById('rotateLeft') as HTMLButtonElement;
       this.rotateRight = this.shadow.getElementById('rotateRight') as HTMLButtonElement;
@@ -66,7 +64,6 @@ class UploadEditing extends HTMLElement {
 
     disconnectedCallback () {
       window.removeEventListener(fileInputEvent, this.onFileInput);
-      window.removeEventListener(getEditingSettingsEvent, this.onGetEditSettingsEvent);
 
       if (!this.rotateLeft || !this.rotateRight) {
         return;
@@ -76,29 +73,16 @@ class UploadEditing extends HTMLElement {
       this.rotateRight.removeEventListener('click', this.onRotateRight);
     }
 
-    private onGetEditSettingsEvent = (e: Event): void => {
-      const event = e as CustomEvent<GetEditSettingsEvent>;
-
-      const settings: EditingSettings = event.detail.settings ?? {};
-      if (this.rotation !== 0) {
-        settings.rotation = this.rotation % 360;
-      }
-
-      if (event.detail && Object.keys(settings).length > 0) {
-        event.detail.settings = settings;
-      }
-    }
-
     private onRotateLeft = () => {
       this.rotation -= 90;
-      dispatchEditRotationEvent(this.rotation);
+      setTransformAction('rotation', this.rotation);
       // Need to blur or the :active state gets stuck.
       this.rotateLeft!.blur();
     };
 
     private onRotateRight = () => {
       this.rotation += 90;
-      dispatchEditRotationEvent(this.rotation);
+      setTransformAction('rotation', this.rotation);
       // Need to blur or the :active state gets stuck.
       this.rotateRight!.blur();
     };

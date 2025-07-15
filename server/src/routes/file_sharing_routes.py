@@ -1,4 +1,6 @@
 import os.path
+import json
+from typing import Dict, Optional
 from flask import Blueprint, request, send_from_directory, jsonify, current_app, Response
 from ..uploads.file_info_handler import FileInfoHandler
 from ..uploads.file_manager import FileManager
@@ -49,7 +51,9 @@ def upload_file():
             request.form.get('secret'),
             current_app.config["UPLOAD_FOLDER"]
         )
-        FileManager.upload_file(file, upload_path)
+        transform_actions = get_transform_actions(request.form.get('transformActions'))
+
+        FileManager.upload_file(file, upload_path, transform_actions)
     except Exception as e:
         return 'Failed uploading', 500
 
@@ -81,6 +85,16 @@ def download_file_no_secret(year: str, month: str, day: str, prefix: str, filena
 @file_sharing_bp.errorhandler(RequestEntityTooLarge)
 def handle_file_too_large(e):
     return "File size exceeds the allowed limit.", 413
+
+
+# Convert the upload edit settings eg: rotation, crop etc.
+def get_transform_actions(transform_actions_json: Optional[str]) -> Dict | None:
+    try:
+        if transform_actions_json:
+            return json.loads(transform_actions_json)
+    except json.JSONDecodeError:
+        pass
+    return None
 
 
 def send_file(year: str, month: str, day: str, prefix: str, user_secret: str, filename: str, as_attachment):

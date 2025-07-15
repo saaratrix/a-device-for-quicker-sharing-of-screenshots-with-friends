@@ -1,5 +1,6 @@
 import { FileInputEvent, fileInputEvent } from "./events/file-events.js";
-import { EditRotationEvent, editRotationEvent } from './events/editing-events.js';
+import { EditTransformChangedEvent, editTransformChangedEvent } from './events/transform-events.js';
+import { currentTransformActions } from './editing/transform-actions.js';
 
 export const PreviewType = {
   Unknown: 'unknown',
@@ -17,7 +18,7 @@ export class FilePreviewer {
 
   constructor() {
     window.addEventListener(fileInputEvent, (event) => this.onFileInput(event as CustomEvent<FileInputEvent>));
-    window.addEventListener(editRotationEvent, (event) => this.onRotationChanged(event as CustomEvent<EditRotationEvent>));
+    window.addEventListener(editTransformChangedEvent, (event) => this.onRotationChanged(event as CustomEvent<EditTransformChangedEvent>));
   }
 
   static getPreviewType(file: File | undefined): typeof PreviewType[keyof typeof PreviewType] {
@@ -51,8 +52,7 @@ export class FilePreviewer {
 
     this.currentObjectUrl = URL.createObjectURL(file);
 
-    const previewElement = this.getPreviewElement();
-    previewElement.innerHTML = '';
+    this.clearPreview();
 
     const previewType = FilePreviewer.getPreviewType(file);
     switch (previewType) {
@@ -73,6 +73,8 @@ export class FilePreviewer {
   public clearPreview(): void {
     const previewElement = this.getPreviewElement();
     previewElement.innerHTML = '';
+    previewElement.style.maxWidth = '';
+    previewElement.style.maxHeight = '';
   }
 
   public async getThumbnailAsBase64(): Promise<string> {
@@ -138,24 +140,22 @@ export class FilePreviewer {
   }
 
   private previewImage(_: File): void {
-    // Create a new image element
+
     const img = document.createElement('img');
-    img.style.width = '300px';  // Set width for visualization, adjust as needed
-    img.style.height = 'auto';
-    img.style.transition = `transform 100ms ease-in`;
-    img.style.position = 'relative';
+    const previewElement = this.getPreviewElement();
 
     img.addEventListener('load', () => {
-      const previewElement = this.getPreviewElement();
-      const previewWidth = previewElement.offsetWidth;
-      const imgWidth = img.offsetWidth;
-
-      const heightDifference = (previewWidth - imgWidth) / 2;
-      img.style.top = `-${heightDifference}px`;
+      // Change the size of preview element to better vertically center the image so there is less padding from upload button and image if the image is smaller than preview.
+        img.addEventListener('load', () => {
+            const imageMax =  Math.max(img.naturalWidth, img.naturalHeight);
+            const max = Math.min(imageMax, previewElement.offsetWidth);
+            previewElement.style.maxWidth = `${max}px`;
+            previewElement.style.maxHeight = `${max}px`;
+        }, { once: true });
     }, { once: true });
 
     img.src = this.currentObjectUrl;
-    this.getPreviewElement().appendChild(img);
+    previewElement.appendChild(img);
   }
 
   private previewVideo(file: File): void {
@@ -182,19 +182,25 @@ export class FilePreviewer {
       return this.previewElement;
     }
 
+    const uploaderElement = document.getElementById('preview-container');
     const previewElement = document.createElement('div');
     previewElement.classList.add('preview');
     this.previewElement = previewElement;
-    document.body.appendChild(previewElement);
+
+    (uploaderElement ?? document.body).appendChild(previewElement);
     return this.previewElement;
   }
 
-  private onRotationChanged(event: CustomEvent<EditRotationEvent>) {
+  private onRotationChanged(event: CustomEvent<EditTransformChangedEvent>) {
+    if (event.detail !== 'rotation') {
+      return;
+    }
+
     const img = this.getPreviewElement().querySelector('img') as HTMLImageElement;
     if (!img) {
       return;
     }
 
-    img.style.transform = `rotate(${event.detail}deg)`;
+    img.style.transform = `translateY(-50%) rotate(${currentTransformActions.rotation}deg)`;
   }
 }

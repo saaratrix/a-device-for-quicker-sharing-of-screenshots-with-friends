@@ -2,6 +2,7 @@ import os.path
 import shutil
 from typing import TYPE_CHECKING
 
+from .file_transformation import FileTransformationOptions, FileTransformation
 from .file_utility import FileUtility
 
 if TYPE_CHECKING:
@@ -10,7 +11,7 @@ if TYPE_CHECKING:
 
 class FileManager:
     @staticmethod
-    def upload_file(file: 'FileStorage', upload_path: str):
+    def upload_file(file: 'FileStorage', upload_path: str, transform_actions: FileTransformationOptions):
         if not FileUtility.is_file_allowed(upload_path):
             raise ValueError(f"Fileformat is not allowed. {upload_path}")
 
@@ -18,7 +19,7 @@ class FileManager:
             raise FileExistsError(f"File already exists {upload_path}")
 
         FileManager.ensure_directory_exists(upload_path)
-        file.save(upload_path)
+        FileTransformation.try_transform(file, transform_actions, upload_path)
 
     @staticmethod
     def delete_file(path: str) -> bool:

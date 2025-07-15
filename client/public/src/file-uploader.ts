@@ -1,7 +1,7 @@
 import { dispatchFileUploaded, FileInputEvent, fileInputEvent, FileUploadedEvent, fileUploadedEvent } from "./events/file-events.js";
 import { api } from "./environment.js";
 import { copyUrlToClipboard } from "./utility/copy-url-to-clipboard.js";
-import { dispatchGetEditSettingsEvent, GetEditSettingsEvent } from './events/editing-events.js';
+import { currentTransformActions } from './editing/transform-actions.js';
 
 export interface UploadInfo {
   extensions: string[];
@@ -182,16 +182,15 @@ export class FileUploader {
       return;
     }
 
-    const getSettingsEvent: GetEditSettingsEvent = {};
-    dispatchGetEditSettingsEvent(getSettingsEvent);
-
     const formData = new FormData();
     formData.set('file', this.selectedFile);
     formData.set('filename', this.filename);
     formData.set('secret', this.selectedSecret);
 
-    if (getSettingsEvent.settings) {
-      formData.set('editSettings', JSON.stringify(getSettingsEvent.settings));
+
+    const transformActions = this.getTransformActionsJson();
+    if (transformActions) {
+      formData.set('transformActions', transformActions);
     }
 
     const uploadButton = document.getElementById('upload-btn') as HTMLButtonElement;
@@ -213,6 +212,22 @@ export class FileUploader {
       uploadButton.classList.remove('spinner');
       uploadButton.disabled = false;
     }
+  }
+
+  private getTransformActionsJson() {
+    const transformActions = { ...currentTransformActions };
+    const hasRotation = transformActions.rotation !== undefined && transformActions.rotation !== 0;
+    const shouldTransformFile = hasRotation;
+
+    if (!shouldTransformFile) {
+      return '';
+    }
+
+    if (hasRotation) {
+      transformActions.rotation = transformActions.rotation! % 360;
+    }
+
+    return JSON.stringify(transformActions);
   }
 
   private copyLinkToClipboard() {
