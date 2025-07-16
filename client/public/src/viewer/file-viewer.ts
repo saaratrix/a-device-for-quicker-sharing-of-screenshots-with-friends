@@ -42,6 +42,11 @@ export class FileViewer {
     return hashValue.startsWith('#/v/') || hashValue.startsWith('#/d/');
   }
 
+  isDeleteUrl(): boolean {
+    const hashValue = window.location.hash;
+    return hashValue.startsWith('#/delete/');
+  }
+
   viewFile(): void {
     const url = window.location.hash.substring(1);
     const [viewingType, extension] = this.getViewingType(url);

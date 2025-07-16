@@ -8,6 +8,7 @@ import { canUseLocalStorage, HistoryHandler } from "./history-handler.js";
 import { SettingsHandler } from "./settings-handler.js";
 import { ViewerSimplePanner } from "./viewer-simple-panner.js";
 import { PersistentPositionOnZoom } from "./persistent-position-on-zoom.js";
+import { api } from './environment.js';
 
 import './custom-components.js';
 
@@ -19,7 +20,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   initItemChange();
 
   const fileViewer = new FileViewer();
-  if (fileViewer.isViewUrl()) {
+
+  if (fileViewer.isDeleteUrl()) {
+    initDeleter();
+  } else if (fileViewer.isViewUrl()) {
     initViewer(viewerElement!, fileViewer);
   } else {
     initUploader(uploaderElement!);
@@ -47,6 +51,33 @@ function getHash(): string {
 
 function isHashForItem(hash: string): boolean {
   return hash.startsWith('/v/') || hash.startsWith('/d/');
+}
+
+function initDeleter() {
+  const url = window.location.hash.substring(1);
+
+  const baseUrl = window.location.origin + window.location.pathname;
+  const parts = url.split('/');
+  document.body.innerHTML = `Deleting ${parts[parts.length - 1]}...`;
+  const deleteUrl = api + url;
+  fetch(deleteUrl).then((response) => {
+    if (response.status === 200) {
+      document.body.innerHTML += `
+<p>Deleted the file from server.</p>
+<p><a class="url" href="${baseUrl}">Return</a></p>
+`
+    } else {
+      document.body.innerHTML += `
+<p class="error">Failed to delete item.</p>
+<p><a class="url" href="${baseUrl}">Return</a></p>
+`
+    }
+  }).catch(() => {
+    document.body.innerHTML += `
+<p class="error">Failed to delete item.</p>
+<p><a class="url" href="${baseUrl}">Return</a></p>
+`
+  })
 }
 
 function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {

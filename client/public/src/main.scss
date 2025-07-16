@@ -265,7 +265,13 @@ $dialog-animation: fadein $dialog-animation-type forwards;
     align-items: center;
   }
 
-  .url {
+  .link-copy-btn {
+    background-color: $color-bg;
+    color: $color-text;
+  }
+}
+
+.url {
     color: $color-link;
     text-align: left;
 
@@ -280,12 +286,6 @@ $dialog-animation: fadein $dialog-animation-type forwards;
       }
     }
   }
-
-  .link-copy-btn {
-    background-color: $color-bg;
-    color: $color-text;
-  }
-}
 
 .settings-list {
   display: flex;
