@@ -84,6 +84,15 @@ def download_file_with_secret(year: str, month: str, day: str, prefix: str, secr
 def download_file_no_secret(year: str, month: str, day: str, prefix: str, filename: str) -> tuple[str, int] | Response:
     return send_file(year, month, day, prefix, "", filename, True)
 
+@file_sharing_bp.route('/delete/<year>/<month>/<day>/<prefix>/<secret>/<filename>', methods=['GET'])
+def delete_file_with_secret(year: str, month: str, day: str, prefix: str, secret: str, filename: str) -> tuple[str, int] | Response:
+    return delete_file(year, month, day, prefix, secret, filename)
+
+
+@file_sharing_bp.route('/delete/<year>/<month>/<day>/<prefix>/<filename>', methods=['GET'])
+def delete_file_no_secret(year: str, month: str, day: str, prefix: str, filename: str) -> tuple[str, int] | Response:
+    return delete_file(year, month, day, prefix, "", filename)
+
 
 @file_sharing_bp.errorhandler(RequestEntityTooLarge)
 def handle_file_too_large(e):
@@ -109,6 +118,17 @@ def send_file(year: str, month: str, day: str, prefix: str, user_secret: str, fi
         return "Invalid uri.", 400
 
     return send_from_directory(path, full_filename, as_attachment=as_attachment)
+
+
+def delete_file(year: str, month: str, day: str, prefix: str, user_secret: str, filename: str):
+    try:
+        path, full_filename = get_file_path(year, month, day, prefix, user_secret, filename)
+        success = FileManager.delete_file(path, full_filename)
+        if not success:
+            return "Invalid uri.", 400
+        return "True", 200
+    except:
+        return "Invalid uri.", 400
 
 
 def get_file_path(year: str, month: str, day: str, prefix: str, user_secret: str, filename: str) -> str:

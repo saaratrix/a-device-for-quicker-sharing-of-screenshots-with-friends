@@ -22,11 +22,16 @@ class FileManager:
         FileTransformation.try_transform(file, transform_actions, upload_path)
 
     @staticmethod
-    def delete_file(path: str) -> bool:
+    def try_delete_file(path: str) -> bool:
         if not os.path.exists(path):
             return False
         os.remove(path)
         return True
+
+    @staticmethod
+    def delete_file(folder: str, filename: str) -> bool:
+        full_path = os.path.join(folder, filename)
+        return FileManager.try_delete_file(full_path)
 
     @staticmethod
     def delete_date_directory_recursively(path: str) -> bool:

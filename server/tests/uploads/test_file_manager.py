@@ -83,21 +83,21 @@ class TestFileManager(unittest.TestCase):
             handle.close()
             pytest.fail("not supposed to throw.")
 
-    def test_delete_existing_file(self):
+    def test_try_delete_existing_file(self):
         file_name = 'test.txt'
         self.create_test_file(file_name)
         file_path = os.path.join(self.test_folder, file_name)
 
         assert os.path.exists(file_path)
 
-        assert FileManager.delete_file(file_path)
+        assert FileManager.try_delete_file(file_path)
         assert not os.path.exists(file_path)
 
-    def test_delete_nonexistent_file(self):
+    def test_try_delete_nonexistent_file(self):
         file_name = 'nonexistent.txt'
         file_path = os.path.join(self.test_folder, file_name)
 
-        assert not FileManager.delete_file(file_path)
+        assert not FileManager.try_delete_file(file_path)
 
     def create_test_directory_structure(self):
         os.makedirs(os.path.join(self.test_folder, "23", "01", "01"), exist_ok=True)
