@@ -28,7 +28,7 @@ class ViewerControls extends HTMLElement {
             justify-content: center;
             padding: 0 0.5rem;
             
-            opacity: 0;
+            opacity: 0.1;
             transition: opacity 100ms ease-in;
           }
           
