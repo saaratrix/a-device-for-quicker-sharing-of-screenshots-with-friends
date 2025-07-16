@@ -1,4 +1,4 @@
-import { ViewingType } from '../viewer/file-viewer.js';
+import { ViewingType } from '../viewer/viewer-state.js';
 
 export const viewingItemChangedEvent = 'viewer:itemChanged';
 
