@@ -68,13 +68,13 @@ function initDeleter() {
 `
     } else {
       document.body.innerHTML += `
-<p class="error">Failed to delete item.</p>
+<p class="error">Failed to delete file.</p>
 <p><a class="url" href="${baseUrl}">Return</a></p>
 `
     }
   }).catch(() => {
     document.body.innerHTML += `
-<p class="error">Failed to delete item.</p>
+<p class="error">Failed to delete file.</p>
 <p><a class="url" href="${baseUrl}">Return</a></p>
 `
   })
