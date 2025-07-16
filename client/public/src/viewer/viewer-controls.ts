@@ -67,7 +67,7 @@ class ViewerControls extends HTMLElement {
           position = `position: fixed; top: 0;`;
           break;
         default:
-          position = 'position: absolute; top: 0.25rem;';
+          position = 'position: absolute; top: 0.5rem;';
       }
 
       switch (placement) {
@@ -83,8 +83,6 @@ class ViewerControls extends HTMLElement {
 
       return [position, side];
     }
-
-    private get
 
     private updateView(): void {
       // Conditionally add each feature.
