@@ -14,10 +14,12 @@ class ViewerControls extends HTMLElement {
       this.shadow.innerHTML = `
         <style>
           .viewer-controls {
-            position: absolute;
+            position: fixed;
             top: 0.5rem;
             left: 0.5rem;
             height: 65px;
+            /* In case a user zooms in a lot we don't want extra-space to take too much extra space. */
+            max-height: 7vh;
             width: calc(100% - 2rem);
             
             display: flex;
