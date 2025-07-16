@@ -77,7 +77,12 @@ export class FileUploader {
     }
 
     errorElement.hidden = !error;
-    errorElement.innerText = error;
+    // Typescript is complaining if we just for example do: errorElement.innerText = error || ''.
+    if (typeof error === 'string') {
+      errorElement.innerText = error;
+    } else {
+      errorElement.innerText = '';
+    }
   }
 
   setupValidation(): void {
@@ -191,7 +196,7 @@ export class FileUploader {
   }
 
 
-  private async onUploadClicked() {
+  private async onUploadClicked(): Promise<void> {
     if (!this.selectedFile || !this.canUpload) {
       return;
     }
@@ -228,10 +233,14 @@ export class FileUploader {
         const json = await response.json() as UploadResponse;
         const url = getShareUrl(json.url);
         this.onShareLinkChanged(url);
+        dispatchFileUploaded(url);
       }
-      dispatchFileUploaded(url);
     } catch (e) {
-      this.showOrHideError(e);
+      if (e instanceof Error) {
+        this.showOrHideError(e.message);
+      } else {
+        this.showOrHideError('Unknown error happened while uploading');
+      }
     } finally {
       uploadButton.classList.remove('spinner');
       uploadButton.disabled = false;

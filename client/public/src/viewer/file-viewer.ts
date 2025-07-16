@@ -1,13 +1,7 @@
-import { api } from './environment.js';
-import { getShareUrl } from "./file-uploader.js";
-import { Settings } from "./settings.js";
-
-enum ViewingType {
-  Download,
-  Image,
-  Video,
-  Audio,
-}
+import { api } from '../environment.js';
+import { getShareUrl } from "../file-uploader.js";
+import { Settings } from "../settings.js";
+import { viewerState, ViewingType } from './viewer-state.js';
 
 export class FileViewer {
 
@@ -65,6 +59,8 @@ export class FileViewer {
     } else if (viewingType === ViewingType.Audio) {
       this.viewAudio(url, extension); // Assuming you have a method viewAudio
     }
+
+    viewerState.viewingType = viewingType;
   }
 
   getViewingType(url: string): [ViewingType, string] {

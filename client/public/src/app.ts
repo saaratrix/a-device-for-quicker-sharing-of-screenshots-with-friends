@@ -1,9 +1,9 @@
 import { DragAndDrop } from './drag-and-drop.js';
 import { Paster } from './paster.js';
 import { FileUploader } from "./file-uploader.js";
-import { FileViewer } from "./file-viewer.js";
+import { FileViewer } from "./viewer/file-viewer.js";
 import { FilePreviewer } from "./file-previewer.js";
-import { dispatchFileInput, dispatchFileUploaded, fileUploadedEvent } from "./events/file-events.js";
+import { dispatchFileInput, fileUploadedEvent } from "./events/file-events.js";
 import { canUseLocalStorage, HistoryHandler } from "./history-handler.js";
 import { SettingsHandler } from "./settings-handler.js";
 import { ViewerSimplePanner } from "./viewer-simple-panner.js";

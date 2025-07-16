@@ -22,8 +22,6 @@ class UploadEditing extends HTMLElement {
       super();
       this.shadow = this.attachShadow({ mode: 'open' });
       this.shadow.adoptedStyleSheets = [uploadSharedCSS]
-
-      // Styles and layout
       this.shadow.innerHTML = `
         <style>
           .upload-editing {
