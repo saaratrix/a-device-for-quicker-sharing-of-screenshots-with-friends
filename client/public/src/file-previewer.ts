@@ -146,12 +146,10 @@ export class FilePreviewer {
 
     img.addEventListener('load', () => {
       // Change the size of preview element to better vertically center the image so there is less padding from upload button and image if the image is smaller than preview.
-        img.addEventListener('load', () => {
-            const imageMax =  Math.max(img.naturalWidth, img.naturalHeight);
-            const max = Math.min(imageMax, previewElement.offsetWidth);
-            previewElement.style.maxWidth = `${max}px`;
-            previewElement.style.maxHeight = `${max}px`;
-        }, { once: true });
+      const imageMax =  Math.max(img.naturalWidth, img.naturalHeight);
+      const max = Math.min(imageMax, previewElement.offsetWidth);
+      previewElement.style.maxWidth = `${max}px`;
+      previewElement.style.maxHeight = `${max}px`;
     }, { once: true });
 
     img.src = this.currentObjectUrl;
