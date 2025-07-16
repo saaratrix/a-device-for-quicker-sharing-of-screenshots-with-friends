@@ -5,7 +5,7 @@ type Feature = 'video:audio' | 'video:progress' | 'video:fullscreen' | 'rotate';
 
 class ViewerControls extends HTMLElement {
   shadow: ShadowRoot;
-  viewerControlsElement!: HTMLElement;
+  featuresElement!: HTMLElement;
   activeFeatures: Set<Feature> = new Set();
 
   constructor() {
@@ -17,22 +17,42 @@ class ViewerControls extends HTMLElement {
             position: absolute;
             top: 0.5rem;
             left: 0.5rem;
-            height: 40px;
+            height: 65px;
             width: calc(100% - 2rem);
             
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            justify-content: center;
             padding: 0 0.5rem;
+            
+            opacity: 0;
+            transition: opacity 100ms ease-in;
           }
+          
+          .viewer-controls:hover {
+            opacity: 0.7
+          }
+          
+          .features {
+            text-align: start;
+          }
+          
+          .extra-space {
+            width: 100%;
+            height: 25px;
+          }
+          
         </style>
         <div class="viewer-controls">
+            <div class="features"></div>
+            <div class="extra-space"></div>
         </div>
       `;
     }
 
     private updateView(): void {
       // Conditionally add each feature.
-      this.viewerControlsElement.innerHTML = `
+      this.featuresElement.innerHTML = `
         ${this.activeFeatures.has('video:audio') ? `<viewer-controls-audio />` : ''}
         ${this.activeFeatures.has('video:progress') ? `<viewer-controls-progress />` : ''}
         ${this.activeFeatures.has('video:fullscreen') ? `<viewer-controls-fullscreen />` : ''}
@@ -41,8 +61,8 @@ class ViewerControls extends HTMLElement {
     }
 
     connectedCallback () {
-       this.viewerControlsElement = this.shadow.querySelector('.viewer-controls') as HTMLElement;
-       if (!this.viewerControlsElement) {
+       this.featuresElement = this.shadow.querySelector('.features') as HTMLElement;
+       if (!this.featuresElement) {
          throw new Error("Viewer Controls failed to initialize, bad bad!");
        }
 
