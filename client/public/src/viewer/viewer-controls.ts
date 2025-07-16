@@ -1,5 +1,6 @@
 import { viewerState, ViewingType } from './viewer-state.js';
 import { viewingItemChangedEvent } from '../events/viewer-events.js';
+import { Settings } from '../settings.js';
 
 type Feature = 'video:audio' | 'video:progress' | 'video:fullscreen' | 'rotate';
 
@@ -11,15 +12,15 @@ class ViewerControls extends HTMLElement {
   constructor() {
       super();
       this.shadow = this.attachShadow({ mode: 'open' });
+
+      const [controlsCSS, featuresCSS] = this.getPositionCSS();
+
       this.shadow.innerHTML = `
         <style>
           .viewer-controls {
-            position: fixed;
-            top: 0.5rem;
+            ${controlsCSS}            
             left: 0.5rem;
-            height: 65px;
-            /* In case a user zooms in a lot we don't want extra-space to take too much extra space. */
-            max-height: 7vh;
+            height: 55px;
             width: calc(100% - 2rem);
             
             display: flex;
@@ -36,12 +37,13 @@ class ViewerControls extends HTMLElement {
           }
           
           .features {
-            text-align: start;
+            display: flex;
+            ${featuresCSS}
           }
           
           .extra-space {
             width: 100%;
-            height: 25px;
+            height: 15px;
           }
           
         </style>
@@ -51,6 +53,38 @@ class ViewerControls extends HTMLElement {
         </div>
       `;
     }
+
+    private getPositionCSS(): [controlCSS: string, featuresCSS: string | '']  {
+      const settings = Settings.getSettings();
+      const placement = settings.viewerControlsPlacement ?? 'page:left';
+
+      let position: string;
+      let side: string;
+
+      switch (placement) {
+        case 'page:left':
+        case 'page:right':
+          position = `position: fixed; top: 0;`;
+          break;
+        default:
+          position = 'position: absolute; top: 0.25rem;';
+      }
+
+      switch (placement) {
+        case 'item:right':
+        case 'page:right':
+          side = 'justify-content: flex-end;';
+          break;
+        // No need to do anything if left align as it's default.
+        default:
+          side = '';
+          break;
+      }
+
+      return [position, side];
+    }
+
+    private get
 
     private updateView(): void {
       // Conditionally add each feature.

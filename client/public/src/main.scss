@@ -289,11 +289,14 @@ $dialog-animation: fadein $dialog-animation-type forwards;
 
 .settings-list {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: start;
 }
 
 .settings-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 @keyframes fadein{

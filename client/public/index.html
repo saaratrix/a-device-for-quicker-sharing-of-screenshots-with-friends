@@ -74,7 +74,16 @@
       <div class="settings-list">
         <div class="settings-adapt-height settings-row" title="If checked it will limit the height of the image, video to the height of your browser.">
           <label for="automaticallyAdjustHeight">Automatically adjust height:</label>
-          <input type="checkbox" id="automaticallyAdjustHeight">
+          <div><input type="checkbox" id="automaticallyAdjustHeight"></div>
+        </div>
+        <div class="settingss-viewer-controls-placement settings-row">
+          <label for="viewerControlsPlacement">Settings position:</label>
+          <select id="viewerControlsPlacement">
+            <option value="page:left">Page Top Left</option>
+            <option value="page:right">Page Top Right</option>
+            <option value="item:left">Image Top Left</option>
+            <option value="item:right">Image Top Right</option>
+          </select>
         </div>
       </div>
     </div>

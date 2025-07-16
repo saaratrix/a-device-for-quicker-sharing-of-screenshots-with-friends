@@ -1,5 +1,8 @@
+export type ViewerControlsPlacement = 'page:left' | 'page:right' | 'item:left' | 'item:right';
+
 export interface SettingsConfig {
   automaticallyAdjustHeight?: boolean;
+  viewerControlsPlacement?: ViewerControlsPlacement;
 }
 
 export class Settings {
@@ -21,8 +24,9 @@ export class Settings {
     }
   }
 
-  public static saveSettings(): void {
-    const json = JSON.stringify(this.getSettings());
+  public static saveSettings(settings?: SettingsConfig): void {
+    settings ??= this.getSettings();
+    const json = JSON.stringify(settings);
     localStorage.setItem(Settings.settingsStorageKey, json);
   }
 
