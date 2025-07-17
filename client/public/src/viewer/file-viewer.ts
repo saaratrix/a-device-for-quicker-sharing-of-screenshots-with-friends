@@ -2,6 +2,7 @@ import { api } from '../environment.js';
 import { getShareUrl } from "../file-uploader.js";
 import { Settings } from "../settings.js";
 import { viewerState, ViewingType } from './viewer-state.js';
+import { dispatchViewingFailedToLoadEvent } from '../events/viewer-events.js';
 
 export class FileViewer {
 
@@ -106,6 +107,10 @@ export class FileViewer {
     image.src = api + url;
     image.draggable = false;
 
+    image.onerror = () => {
+      dispatchViewingFailedToLoadEvent();
+    }
+
     this.setMaxDimensions(image);
     this.getViewerItem().appendChild(image);
   }
@@ -158,7 +163,8 @@ export class FileViewer {
     const downloadUrl = getShareUrl(url);
 
     const errorMessage = "Failed to load, here is download link: ";
-    this.getViewerItem().innerHTML += `<p style="color: #a42929">${ errorMessage } <a href="${ downloadUrl }">${ downloadUrl }</a></p>`;
+    this.getViewerItem().innerHTML += `<p class="error">${ errorMessage } <a href="${ downloadUrl }">${ downloadUrl }</a></p>`;
+    dispatchViewingFailedToLoadEvent();
   }
 
 }
