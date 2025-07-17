@@ -51,6 +51,10 @@ body {
   visibility: hidden;
 }
 
+.no-margin {
+  margin: 0;
+}
+
 .container {
   width:100%;
   text-align: center;
@@ -71,7 +75,8 @@ body {
 #uploader {
     // Counter-acts <body> flex centering.
     min-height: 100vh;
-    margin-top: 2rem;
+    margin-top: 1rem;
+    padding: 0 0.5rem;
   }
 
 .upload-inputs {
