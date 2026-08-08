@@ -7,7 +7,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start:dev": "start npm run tsc:watch && start npm run sass:watch",
+    "start:dev:windows": "start npm run tsc:watch && start npm run sass:watch",
+    "start:dev:linux": "npm run tsc:watch & npm run sass:watch",
     "build:production": "npm run build:clean && npm run tsc:build && npm run build:copy-assets && npm run sass:production",
     "build:clean": "node scripts/clean-build.js",
     "build:copy-assets": "node scripts/copy-assets.js",
@@ -19,7 +20,7 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "sass": "^1.89.2",
-    "typescript": "^5.8.3"
+    "sass": "1.102.0",
+    "typescript": "7.0.2"
   }
 }
