@@ -11,6 +11,8 @@ $color-error: #a42929;
 
 $preview-size: 400px;
 
+@import './redesign.scss';
+
 html, body {
   min-height: 100%;
 }
@@ -20,7 +22,7 @@ html, body {
 }
 
 :root {
-   --color-bg: #{$color-bg};
+  --color-bg: #{$color-bg};
   --color-bg-contrast: #{$color-bg-contrast};
   --color-text: #{$color-text};
   --color-text-disabled: #{$color-text-disabled};
@@ -32,10 +34,11 @@ html, body {
 
 }
 
-
 body {
   font-family: 'Arial', sans-serif;
-  background-color: $color-bg;
+  background: url('../bg.60.webp') no-repeat;
+  background-size: cover;
+  //background-color: $color-bg;
   color: $color-text;
   min-height: 100dvh;
   margin: 0;
@@ -74,9 +77,9 @@ body {
 
 #uploader {
     // Counter-acts <body> flex centering.
-    min-height: 100vh;
-    margin-top: 1rem;
-    padding: 0 0.5rem;
+    //min-height: 100vh;
+    //margin-top: 1rem;
+    //padding: 0 0.5rem;
   }
 
 .upload-inputs {
@@ -84,12 +87,12 @@ body {
 }
 
 #filename {
-  width: 20rem;
+  //width: 20rem;
 }
 
 #upload-btn {
-  position: relative;
-  font-size: 2.5rem;
+  //position: relative;
+  //font-size: 2.5rem;
 
   &.spinner {
     color: #0000;
@@ -204,10 +207,10 @@ body {
 }
 
 .history-disabled {
-  opacity: 0;
+//  //opacity: 0;
   cursor: default;
   user-select: none;
-  color: $color-link-disabled;
+//  color: $color-link-disabled;
   font-weight: normal;
 }
 
@@ -347,6 +350,7 @@ $dialog-animation: fadein $dialog-animation-type forwards;
   background-color: $color-text;
   color: $color-bg;
   border-radius: 5px;
+  padding: 0.75rem 0;
 }
 
 .link-text {
@@ -386,4 +390,8 @@ $dialog-animation: fadein $dialog-animation-type forwards;
   padding: 8px 12px;
   cursor: pointer;
   color: $color-link;
+}
+
+[hidden] {
+  display: none !important;
 }

@@ -22,28 +22,66 @@ class UploadEditing extends HTMLElement {
       super();
       this.shadow = this.attachShadow({ mode: 'open' });
       this.shadow.adoptedStyleSheets = [uploadSharedCSS]
-      this.shadow.innerHTML = `
+      // language=HTML
+    this.shadow.innerHTML = `
         <style>
-          .upload-editing {
-          }
-          p {
-            text-align: left;
-            margin: 0;
-          }
-          .editor-buttons {
-            display: flex;
-            gap: 10px;
-          }         
-    
+            .upload-editing {
+                color: var(--text);
+                display: flex;
+                /* Temporary until there are 2 actions. */
+                flex-direction: row-reverse;
+            }
+
+            .editor-row {
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.25em;
+                /*color: var(--muted);*/
+            }
+
+            .editor-row label {
+                display: block;
+                width: 100%;
+                font-size: 0.85em;
+                /*text-align: right;*/
+            }
+
+            .editor-buttons {
+                display: flex;
+                gap: 10px;
+            }
+
+            .editor-buttons button {
+                padding: 0.33em 0.66em;
+                border: 1px solid rgba(124, 135, 174, .45);
+                border-radius: 10px;
+                background: var(--button-base-bg-muted);
+                color: var(--muted);
+                cursor: pointer;
+            }
+            
+            .editor-buttons button[disabled] {
+                cursor: default;
+            }
+
+            .editor-buttons button:hover:not([disabled]) {
+                background: var(--button-base-bg);
+                color: var(--text);
+            }
+
         </style>
         <div class="upload-editing">
-          <div class="editor-buttons">
-            <button class="icon-action" id="rotateLeft" title="Rotate 90° left." disabled>⟲ 90°</button>
-            <button class="icon-action" id="rotateRight" title="Rotate 90° right." disabled>⟳ 90°</button>
-          </div>
+            <div class="editor-row">
+                <label>Rotation</label>
+                <div class="editor-buttons">
+                    <button class="button-base" id="rotateLeft" title="Rotate 90° left." disabled>↶ 90°</button>
+                    <button class="button-base" id="rotateRight" title="Rotate 90° right." disabled>↷ 90°</button>
+                </div>
+            </div>
+
         </div>
-        
-      `;
+    `;
     }
 
     connectedCallback () {

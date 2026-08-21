@@ -115,12 +115,12 @@ export class HistoryHandler extends DialogHandler {
   }
 
   private enable() {
-    this.historyButton.classList.remove('history-disabled');
+    this.historyButton.removeAttribute('disabled');
     this.historyButton.addEventListener('click', this.openDialog);
   }
 
   private disable() {
-    this.historyButton.classList.add('history-disabled');
+    this.historyButton.setAttribute('disabled', '');
     this.historyButton.removeEventListener('click', this.openDialog);
   }
 }

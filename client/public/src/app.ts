@@ -90,7 +90,6 @@ function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
 }
 
 function initUploader(uploaderElement: HTMLElement): void {
-  uploaderElement.hidden = false;
 
   document.title = 'upload a file';
 
@@ -116,7 +115,6 @@ function initUploader(uploaderElement: HTMLElement): void {
   }
 
 
-  document.body.classList.add('uploader-root');
 
   const paster = new Paster();
   // When uploading or pasting files the file uploader listens for those events.
@@ -126,6 +124,9 @@ function initUploader(uploaderElement: HTMLElement): void {
   if (canUseLocalStorage()) {
     const historyHandler = new HistoryHandler(filePreviewer);
   }
+
+  document.body.classList.add('uploader-root');
+  uploaderElement.hidden = false;
 }
 
 
