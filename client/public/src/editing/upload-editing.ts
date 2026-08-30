@@ -15,6 +15,7 @@ class UploadEditing extends HTMLElement {
     this._rotation = value;
   };
 
+  rotateLabel: HTMLElement | null = null;
   rotateLeft: HTMLButtonElement | null = null;
   rotateRight: HTMLButtonElement | null = null;
 
@@ -51,13 +52,17 @@ class UploadEditing extends HTMLElement {
                 display: flex;
                 gap: 10px;
             }
+            
+            .disabled {
+                color: var(--color-disabled);
+            }
 
             .editor-buttons button {
                 padding: 0.33em 0.66em;
                 border: 1px solid rgba(124, 135, 174, .45);
                 border-radius: 10px;
                 background: var(--button-base-bg-muted);
-                color: var(--muted);
+                color: var(--color-disabled);
                 cursor: pointer;
             }
             
@@ -73,7 +78,7 @@ class UploadEditing extends HTMLElement {
         </style>
         <div class="upload-editing">
             <div class="editor-row">
-                <label>Rotation</label>
+                <label class="rotation-label disabled">Rotation</label>
                 <div class="editor-buttons">
                     <button class="button-base" id="rotateLeft" title="Rotate 90° left." disabled>↶ 90°</button>
                     <button class="button-base" id="rotateRight" title="Rotate 90° right." disabled>↷ 90°</button>
@@ -89,6 +94,7 @@ class UploadEditing extends HTMLElement {
 
       this.rotateLeft = this.shadow.getElementById('rotateLeft') as HTMLButtonElement;
       this.rotateRight = this.shadow.getElementById('rotateRight') as HTMLButtonElement;
+      this.rotateLabel = this.shadow.querySelector('.rotation-label') as HTMLElement;
 
       if (!this.rotateLeft || !this.rotateRight) {
         return;
@@ -133,6 +139,7 @@ class UploadEditing extends HTMLElement {
 
       this.rotateRight && (this.rotateRight.disabled = !supportsRotation);
       this.rotateLeft && (this.rotateLeft.disabled = !supportsRotation);
+      this.rotateLabel?.classList.toggle('disabled', !supportsRotation);
       this.rotation = 0;
     }
 

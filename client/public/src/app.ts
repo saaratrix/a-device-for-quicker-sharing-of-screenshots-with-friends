@@ -1,8 +1,8 @@
-import { DragAndDrop } from './drag-and-drop.js';
-import { Paster } from './paster.js';
+// import { DragAndDrop } from './drag-and-drop.js';
+// import { Paster } from './paster.js';
 import { FileUploader } from "./file-uploader.js";
 import { FileViewer } from "./viewer/file-viewer.js";
-import { FilePreviewer } from "./file-previewer.js";
+// import { FilePreviewer } from "./file-previewer.js";
 import { dispatchFileInput, fileUploadedEvent } from "./events/file-events.js";
 import { canUseLocalStorage, HistoryHandler } from "./history-handler.js";
 import { SettingsHandler } from "./settings-handler.js";
@@ -11,6 +11,7 @@ import { PersistentPositionOnZoom } from "./persistent-position-on-zoom.js";
 import { api } from './environment.js';
 
 import './custom-components.js';
+import { SingleFilePicker } from './vendor/nui/file-picker/single-file-picker';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const uploaderElement = document.getElementById('uploader');
@@ -93,10 +94,10 @@ function initUploader(uploaderElement: HTMLElement): void {
 
   document.title = 'upload a file';
 
-  const dragAndDrop = new DragAndDrop();
-  dragAndDrop.initialize();
+  // const dragAndDrop = new DragAndDrop();
+  // dragAndDrop.initialize();
 
-  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  const fileInput = document.getElementById('fileInput') as SingleFilePicker;
   if (fileInput) {
     fileInput.addEventListener('change', (event) => {
       const target = event.target as HTMLInputElement;
@@ -114,15 +115,13 @@ function initUploader(uploaderElement: HTMLElement): void {
     });
   }
 
-
-
-  const paster = new Paster();
+  // const paster = new Paster();
   // When uploading or pasting files the file uploader listens for those events.
   const fileUploader = new FileUploader();
-  const filePreviewer = new FilePreviewer();
+  // const filePreviewer = new FilePreviewer();
   const settingsHandler = new SettingsHandler();
   if (canUseLocalStorage()) {
-    const historyHandler = new HistoryHandler(filePreviewer);
+    const historyHandler = new HistoryHandler(fileInput.pickerPreview);
   }
 
   document.body.classList.add('uploader-root');

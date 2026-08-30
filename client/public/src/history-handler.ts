@@ -1,8 +1,9 @@
 import { FileUploadedEvent, fileUploadedEvent } from "./events/file-events.js";
-import { FilePreviewer } from "./file-previewer.js";
+// import { FilePreviewer } from "./file-previewer.js";
 import { HistoryListHandler } from "./history-list-handler.js";
 import { historyRemoveItemEvent } from "./events/history-events.js";
 import { DialogHandler } from './dialog-handler.js';
+import { FilePickerPreview } from './vendor/nui/file-picker/file-picker-preview';
 
 export interface HistoryItem {
   date: Date;
@@ -39,7 +40,7 @@ export class HistoryHandler extends DialogHandler {
 
   private historyListHandler: HistoryListHandler;
 
-  constructor(public filePreviewer: FilePreviewer) {
+  constructor(public filePreviewer: FilePickerPreview) {
     const dialogElement = document.querySelector('.history-dialog') as HTMLDialogElement;
     super(dialogElement);
 

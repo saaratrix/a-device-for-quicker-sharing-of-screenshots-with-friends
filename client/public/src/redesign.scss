@@ -35,6 +35,7 @@ $color4: #00d9d5;
   --card: rgba(8, 12, 24, 0.88);
   --text: #f4f5fb;
   --muted: #9da5bb;
+  --color-disabled: #777e8e;
   --line: rgba(127, 139, 177, 0.45);
 
   --color1: #{$color1};
@@ -160,6 +161,7 @@ hr {
     transform 160ms ease;
 
   &[disabled] {
+    color: var(--color-disabled);
     cursor: default;
   }
 
@@ -258,10 +260,26 @@ input::placeholder {
   color: #778099;
 }
 
+single-file-picker {
+  width: 100%;
+  max-width: 100%;
+  align-self: stretch;
+  --remove-btn-color: var(--text);
+  --remove-btn-bg: #{bg-gradient-padding-box()}, #{bg-gradient-border-box-transparent(100deg, 35%)};
+  --remove-btn-hover-bg: #{bg-gradient-padding-box()}, #{bg-gradient-border-box(100deg)};
+  --remove-btn-hover-color: var(--text);
+  --remove-btn-active-bg: var(--remove-btn-hover-bg);
+  --remove-btn-bg-border: 1px solid transparent;
+
+  &::part(file-picker-container) {
+    height: 100%;
+    padding: 1rem;
+  }
+}
 
 .file-area {
   min-height: 110px;
-  padding: 22px;
+  //padding: 1rem;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -284,7 +302,6 @@ input::placeholder {
     filter 180ms ease;
 }
 
-
 /* File input itself can remain invisible */
 .file-area input[type="file"] {
   position: absolute;
@@ -296,7 +313,7 @@ input::placeholder {
 
 
 /* Hover */
-.file-area:hover {
+.file-area:hover, .file-area:has(single-file-picker.has-selection) {
   background:
     bg-gradient-padding-box(),
     bg-gradient-border-box(100deg);
