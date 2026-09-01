@@ -76,24 +76,14 @@ body {
 }
 
 #uploader {
-    // Counter-acts <body> flex centering.
-    //min-height: 100vh;
-    //margin-top: 1rem;
-    //padding: 0 0.5rem;
   }
 
 .upload-inputs {
   text-align: left;
 }
 
-#filename {
-  //width: 20rem;
-}
 
 #upload-btn {
-  //position: relative;
-  //font-size: 2.5rem;
-
   &.spinner {
     color: #0000;
   }
