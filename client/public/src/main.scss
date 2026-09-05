@@ -109,6 +109,8 @@ $dialog-animation: fadein $dialog-animation-type forwards;
   max-height: 75dvh;
   max-width: 95dvw;
   z-index: 10;
+  // Restore margin that was removed from * { margin: 0; } or dialog will be left aligned.
+  margin: 0 auto;
 
   color: $color-text;
   background-color: $color-bg;
