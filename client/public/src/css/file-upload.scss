@@ -1,0 +1,58 @@
+@use 'core' as *;
+
+single-file-picker {
+  width: 100%;
+  max-width: 100%;
+  align-self: stretch;
+  --remove-btn-color: var(--text);
+  --remove-btn-bg: #{bg-gradient-padding-box()}, #{bg-gradient-border-box-transparent(100deg, 35%)};
+  --remove-btn-hover-bg: #{bg-gradient-padding-box()}, #{bg-gradient-border-box(100deg)};
+  --remove-btn-hover-color: var(--text);
+  --remove-btn-active-bg: var(--remove-btn-hover-bg);
+  --remove-btn-bg-border: 1px solid transparent;
+
+  &::part(file-picker-container) {
+    height: 100%;
+    padding: 1rem;
+  }
+
+  &::part(preview-item) {
+    transition: transform 0.1s linear;
+  }
+}
+
+.file-area {
+  display: flex;
+  align-items: center;
+  min-height: 110px;
+
+  border: 1px solid transparent;
+  border-radius: 1rem;
+
+  background:
+    linear-gradient(
+      rgba(7, 13, 27, 0.94),
+      rgba(7, 17, 27, 0.94)
+    ) padding-box,
+    bg-gradient-border-box-transparent(100deg, 45%);
+
+  cursor: pointer;
+
+  transition: box-shadow 100ms ease;
+}
+
+.file-area:hover, .file-area:has(single-file-picker.has-selection) {
+  background:
+    bg-gradient-padding-box(),
+    bg-gradient-border-box(100deg);
+}
+
+.file-area:focus-within {
+  background:
+    bg-gradient-padding-box(),
+    bg-gradient-border-box(100deg);
+
+  box-shadow:
+    0 0 0 3px $box-shadow-color3,
+    0 0 22px $box-shadow-color4;
+}

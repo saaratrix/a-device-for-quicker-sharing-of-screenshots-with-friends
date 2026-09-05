@@ -1,7 +1,7 @@
 import { type FileInputEvent, fileInputEvent } from '../events/file-events.js';
 import { uploadSharedCSS } from './styles/upload-shared.js';
-import { setTransformAction, TransformActions } from './transform-actions.js';
-import { FilePreviewer, PreviewType } from '../file-previewer.js';
+import { setTransformAction } from './transform-actions.js';
+import { FilePickerPreview, PreviewType } from '../vendor/nui/file-picker/file-picker-preview.js';
 
 class UploadEditing extends HTMLElement {
   shadow: ShadowRoot;
@@ -27,7 +27,7 @@ class UploadEditing extends HTMLElement {
     this.shadow.innerHTML = `
         <style>
             .upload-editing {
-                color: var(--text);
+                color: var(--color-text);
                 display: flex;
                 /* Temporary until there are 2 actions. */
                 flex-direction: row-reverse;
@@ -54,7 +54,7 @@ class UploadEditing extends HTMLElement {
             }
             
             .disabled {
-                color: var(--color-disabled);
+                color: var(--color-text-disabled);
             }
 
             .editor-buttons button {
@@ -62,7 +62,7 @@ class UploadEditing extends HTMLElement {
                 border: 1px solid rgba(124, 135, 174, .45);
                 border-radius: 10px;
                 background: var(--button-base-bg-muted);
-                color: var(--color-disabled);
+                color: var(--color-text-disabled);
                 cursor: pointer;
             }
             
@@ -72,7 +72,7 @@ class UploadEditing extends HTMLElement {
 
             .editor-buttons button:hover:not([disabled]) {
                 background: var(--button-base-bg);
-                color: var(--text);
+                color: var(--color-text);
             }
 
         </style>
@@ -133,7 +133,7 @@ class UploadEditing extends HTMLElement {
       const event = e as CustomEvent<FileInputEvent>;
 
       const hasFile = !!event.detail;
-      const previewType = FilePreviewer.getPreviewType(event.detail);
+      const previewType = FilePickerPreview.getPreviewType(event.detail);
 
       const supportsRotation = hasFile && previewType === PreviewType.Image;
 

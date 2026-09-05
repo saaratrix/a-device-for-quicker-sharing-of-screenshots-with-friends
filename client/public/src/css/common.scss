@@ -1,0 +1,49 @@
+.invisible {
+  visibility: hidden;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.strip-button {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+// Spinner source: https://stackoverflow.com/questions/64608661/add-loader-spinner-at-center-of-a-button
+.spinner {
+  &::after {
+    border: 3px solid #008ad6;
+    border-radius: 50%;
+    border-top: 3px solid #f3f3f3;
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: absolute;
+    top: calc(50% - 13px);
+    left: calc(50% - 13px);
+    animation: ic2-spin 2s linear infinite;
+    content: "";
+  }
+}
+
+@keyframes ic2-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

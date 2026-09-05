@@ -1,0 +1,49 @@
+$border-color1: #d16cff;
+$border-color2: #735cff;
+$border-color3: #3289d8;
+$border-color4: #00d9d5;
+
+$box-shadow-color1: rgba(196, 48, 235, 0.08);
+$box-shadow-color2: rgba(66, 64, 220, 0.25);
+$box-shadow-color3: rgba(80, 91, 220, 0.08);
+$box-shadow-color4: rgba(0, 217, 213, 0.08);
+
+$color-bg: #2c2c38;
+$color-bg-contrast: #4e4166; // Used firefox color contrast 7 tool to get these values.
+$color-text: #e1e1e8;
+$color-text-faded: #9da5bb;
+$color-text-disabled: #6b6b7a;//hsl(240, 13%, 70%);
+$color-link: #a087d2;
+$color-link-hover: #c8acff;
+$color-link-contrast: #c8acff; // Used firefox color contrast 7 tool to get these values.
+$color-link-disabled: #5c5675;
+$color-link-disabled-bg: hsl(240, 12%, 18%);
+$color-error: #a42929;
+
+@function bg-gradient-padding-box($deg: to bottom) {
+  @return linear-gradient(
+    $deg,
+    rgba(16, 17, 35, 0.97),
+    rgba(4, 20, 28, 0.97)
+  ) padding-box;
+}
+
+@function bg-gradient-border-box($deg, $type: border-box) {
+  @return linear-gradient(
+    $deg,
+    var(--border-color1) 0%,
+    var(--border-color2) 35%,
+    var(--border-color3) 65%,
+    var(--border-color4) 100%
+  ) $type;
+}
+
+@function bg-gradient-border-box-transparent($deg, $percent, $type: border-box, $mix-type: transparent, $color-mix-space: in srgb) {
+  @return linear-gradient(
+    $deg,
+    color-mix($color-mix-space, var(--border-color1) $percent, $mix-type) 0%,
+    color-mix($color-mix-space, var(--border-color2) $percent, $mix-type) 35%,
+    color-mix($color-mix-space, var(--border-color3) $percent, $mix-type) 65%,
+    color-mix($color-mix-space, var(--border-color4) $percent, $mix-type) 100%
+  ) $type;
+}

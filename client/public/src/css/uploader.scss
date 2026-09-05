@@ -1,0 +1,311 @@
+@use 'core' as *;
+@use 'file-upload';
+
+:root {
+  --border-color1: #{$border-color1};
+  --border-color2: #{$border-color2};
+  --border-color3: #{$border-color3};
+  --border-color4: #{$border-color4};
+
+  --button-base-bg:
+    #{bg-gradient-padding-box()},
+    #{bg-gradient-border-box(155deg)};
+
+  --button-base-bg-muted:  #{bg-gradient-padding-box()},
+    #{bg-gradient-border-box-transparent(100deg, 35%)};
+}
+
+.uploader-root {
+  .container {
+    // We don't want to make the .container a display: flex; for the viewer.
+    // Because otherwise if you zoom in the <img> or <video> elements will be off screen to the left.
+    // And you can't scroll to the left so the item is cropped.
+    display: flex ;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  h1 {
+    font-weight: 500;
+  }
+
+  p {
+    color: var(--color-text-faded);
+  }
+}
+
+hr.header-divisor {
+  margin: 10px 0 30px 0;
+  padding: 0 1rem;
+  background: bg-gradient-border-box-transparent(90deg, 25%, null);
+  border: none;
+  height: 1px;
+}
+
+#uploader {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 20px;
+}
+
+.settings {
+  stroke: $color-link;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    stroke: $color-link-hover;
+  }
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: start;
+}
+
+.settings-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.history-disabled {
+  cursor: default;
+  user-select: none;
+  font-weight: normal;
+}
+
+.history-dialog-content {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.history-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.history-item  {
+  display: grid;
+  grid-template-columns: 64px auto 36px 128px 128px;
+  grid-gap: 0.5rem;
+  align-items: center;
+
+  .thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .link-copy-btn {
+    background-color: $color-bg;
+    color: $color-text;
+  }
+}
+
+.upload-inputs {
+  text-align: left;
+}
+
+.uploader-contents {
+  width: 100%;
+  padding: 38px;
+
+  border: 1px solid transparent;
+  border-radius: 1.5rem;
+
+  background:
+    bg-gradient-padding-box(145deg),
+    bg-gradient-border-box(135deg);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.4),
+    -18px 0 60px $box-shadow-color1,
+    18px 0 60px $box-shadow-color4;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  height: 34px;
+  padding: 0 0.75rem;
+
+  /* Required for the gradient-border technique */
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  /* Subtle border in normal state */
+  background:
+    bg-gradient-padding-box(),
+    bg-gradient-border-box-transparent(100deg, 35%);
+
+  color: var(--color-text-faded);
+
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    color 100ms ease,
+    background 100ms ease,
+    box-shadow 100ms ease,
+    transform 100ms ease;
+
+  &[disabled] {
+    color: var(--color-text-disabled);
+    cursor: no-drop;
+  }
+
+  &:hover:not([disabled]) {
+    color: var(--color-text);
+
+    background:
+    bg-gradient-padding-box(),
+    bg-gradient-border-box(100deg);
+
+    box-shadow:
+    0 0 1rem $box-shadow-color4;
+  }
+
+  &:focus-visible {
+    color: #ffffff;
+    outline: none;
+
+    background:
+      bg-gradient-padding-box(),
+      bg-gradient-border-box(100deg);
+
+    box-shadow:
+      0 0 0 3px $box-shadow-color3,
+      0 0 18px $box-shadow-color4;
+  }
+}
+
+.menu-button svg {
+  width: 1rem;
+  height: 1rem;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+
+  flex-shrink: 0;
+}
+
+.form-field {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.125rem;
+  font-size: 0.85em;
+}
+
+input[type="text"] {
+  width: 100%;
+  height: 42px;
+  padding: 0 1rem;
+  font: inherit;
+}
+
+/* Normal input */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  border: 1px solid transparent;
+  border-radius: 12px;
+
+  background:
+    bg-gradient-padding-box(),
+    bg-gradient-border-box-transparent(100deg, 35%);
+
+  color: var(--color-text);
+  outline: none;
+
+  transition:
+    box-shadow 100ms ease,
+    filter 100ms ease;
+}
+
+
+/* Selected / active input */
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  background:
+    bg-gradient-padding-box(),
+    bg-gradient-border-box(155deg);
+
+  box-shadow:
+    0 0 0 3px $box-shadow-color3,
+    0 0 18px $box-shadow-color4;
+}
+
+#upload-btn {
+  width: 100%;
+  height: 50px;
+  color: var(--color-text);
+
+  border: 1px solid transparent;
+  border-radius: 1rem;
+
+  background:
+    bg-gradient-border-box-transparent(100deg, 40%, padding-box, #000, in oklch),
+    bg-gradient-border-box(100deg);
+
+  font-size: 1.1em;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5em;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 30px $box-shadow-color2,
+    0 0 25px $box-shadow-color4;
+
+  transition:
+    transform 100ms ease,
+    filter 100ms ease,
+    box-shadow 100ms ease;
+
+  &:hover {
+    filter: brightness(1.05);
+
+    box-shadow:
+      0 14px 35px $box-shadow-color2,
+      0 0 32px $box-shadow-color4;
+  }
+
+  &.spinner {
+    color: #0000;
+  }
+}

@@ -12,6 +12,7 @@ import { api } from './environment.js';
 
 import './custom-components.js';
 import { SingleFilePicker } from './vendor/nui/file-picker/single-file-picker';
+import { initializeFilePreviewEvents } from './file-preview-events.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const uploaderElement = document.getElementById('uploader');
@@ -97,9 +98,9 @@ function initUploader(uploaderElement: HTMLElement): void {
   // const dragAndDrop = new DragAndDrop();
   // dragAndDrop.initialize();
 
-  const fileInput = document.getElementById('fileInput') as SingleFilePicker;
-  if (fileInput) {
-    fileInput.addEventListener('change', (event) => {
+  const filePicker = document.getElementById('fileInput') as SingleFilePicker;
+  if (filePicker) {
+    filePicker.addEventListener('change', (event) => {
       const target = event.target as HTMLInputElement;
       const file = target.files?.[0];
       if (file) {
@@ -107,9 +108,11 @@ function initUploader(uploaderElement: HTMLElement): void {
       }
     });
 
+    initializeFilePreviewEvents(filePicker);
+
     // Clear the file input after upload.
     window.addEventListener(fileUploadedEvent, () => {
-      fileInput.value = '';
+      filePicker.value = '';
       // This is to let others process fileUploadedEvent first.
       setTimeout(() => dispatchFileInput(undefined));
     });
@@ -121,7 +124,7 @@ function initUploader(uploaderElement: HTMLElement): void {
   // const filePreviewer = new FilePreviewer();
   const settingsHandler = new SettingsHandler();
   if (canUseLocalStorage()) {
-    const historyHandler = new HistoryHandler(fileInput.pickerPreview);
+    const historyHandler = new HistoryHandler(filePicker.pickerPreview);
   }
 
   document.body.classList.add('uploader-root');

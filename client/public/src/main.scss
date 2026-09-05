@@ -1,17 +1,13 @@
-$color-bg: #2c2c38;
-$color-bg-contrast: #4e4166; // Used firefox color contrast 7 tool to get these values.
-$color-text: #e1e1e8;
-$color-text-disabled: #6b6b7a;//hsl(240, 13%, 70%);
-$color-link: #a087d2;
-$color-link-hover: #c8acff;
-$color-link-contrast: #c8acff; // Used firefox color contrast 7 tool to get these values.
-$color-link-disabled: #5c5675;
-$color-link-disabled-bg: hsl(240, 12%, 18%);
-$color-error: #a42929;
-
 $preview-size: 400px;
 
-@import './redesign.scss';
+@use 'css/core' as *;
+@use 'css/common';
+@use 'css/uploader';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
 
 html, body {
   min-height: 100%;
@@ -26,18 +22,17 @@ html, body {
   --color-bg-contrast: #{$color-bg-contrast};
   --color-text: #{$color-text};
   --color-text-disabled: #{$color-text-disabled};
+  --color-text-faded: #{$color-text-faded};
   --color-link: #{$color-link};
   --color-link-hover: #{$color-link-hover};
   --color-link-contrast: #{$color-link-contrast};
   --color-link-disabled: #{$color-link-disabled};
   --color-link-disabled-bg: #{$color-link-disabled-bg};
-
 }
 
 body {
   font-family: 'Arial', sans-serif;
-  background: url('../bg.60.webp') no-repeat;
-  background-size: cover;
+
   //background-color: $color-bg;
   color: $color-text;
   min-height: 100dvh;
@@ -50,99 +45,18 @@ body {
   align-items: center;
 }
 
-.invisible {
-  visibility: hidden;
+body.viewer-root {
+  background-color: var(--color-bg);
 }
 
-.no-margin {
-  margin: 0;
+body.uploader-root {
+  background: url('../bg.60.webp') no-repeat;
+  background-size: cover;
 }
 
 .container {
   width:100%;
   text-align: center;
-}
-
-.uploader-root {
-  .container {
-    // We don't want to make the .container a display: flex; for the viewer.
-    // Because otherwise if you zoom in the <img> or <video> elements will be off screen to the left.
-    // And you can't scroll to the left so the item is cropped.
-    display: flex ;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-#uploader {
-  }
-
-.upload-inputs {
-  text-align: left;
-}
-
-
-#upload-btn {
-  &.spinner {
-    color: #0000;
-  }
-}
-
-// Spinner source: https://stackoverflow.com/questions/64608661/add-loader-spinner-at-center-of-a-button
-.spinner {
-  &::after {
-    border: 3px solid #008ad6;
-    border-radius: 50%;
-    border-top: 3px solid #f3f3f3;
-    width: 20px;
-    height: 20px;
-    display: block;
-    position: absolute;
-    top: calc(50% - 13px);
-    left: calc(50% - 13px);
-    animation: ic2-spin 2s linear infinite;
-    content: "";
-  }
-}
-
-@keyframes ic2-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-#preview-container {
-  display: flex;
-  justify-content: center;
-}
-
-.preview {
-  margin-top: 1rem;
-
-  width: $preview-size;
-  max-width: 90vw;
-  height: $preview-size;
-  max-height: 90vw;
-  min-height: 200px;
-  object-fit: contain;
-  // For that centering of video and img!
-  text-align: center;
-
-  video, img {
-    max-width: 100%;
-    max-height: 100%;
-  }
-  img {
-    // Need to vertically center the img in case we rotate a wider than tall image.
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 100ms ease-in;
-  }
 }
 
 
@@ -166,42 +80,6 @@ body {
 .view-item-container {
   position: relative;
   display: inline-block;
-}
-
-.menu {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.menu-action {
-  cursor: pointer;
-  color: $color-link;
-  font-weight: bold;
-  transition: opacity 0.3s ease-in;
-
-  &:hover {
-    color: $color-link-hover;
-  }
-}
-
-.settings {
-  stroke: $color-link;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &:hover {
-    stroke: $color-link-hover;
-  }
-}
-
-.history-disabled {
-//  //opacity: 0;
-  cursor: default;
-  user-select: none;
-//  color: $color-link-disabled;
-  font-weight: normal;
 }
 
 $dialog-animation-type: 0.15s ease-in;
@@ -240,35 +118,6 @@ $dialog-animation: fadein $dialog-animation-type forwards;
   }
 }
 
-.history-dialog-content {
-  max-height: 100%;
-  overflow-y: auto;
-}
-
-.history-items {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.history-item  {
-  display: grid;
-  grid-template-columns: 64px auto 36px 128px 128px;
-  grid-gap: 0.5rem;
-  align-items: center;
-
-  .thumbnail {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .link-copy-btn {
-    background-color: $color-bg;
-    color: $color-text;
-  }
-}
-
 .url {
     color: $color-link;
     text-align: left;
@@ -285,17 +134,7 @@ $dialog-animation: fadein $dialog-animation-type forwards;
     }
   }
 
-.settings-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  text-align: start;
-}
 
-.settings-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
 
 @keyframes fadein{
   0%{
@@ -382,6 +221,4 @@ $dialog-animation: fadein $dialog-animation-type forwards;
   color: $color-link;
 }
 
-[hidden] {
-  display: none !important;
-}
+

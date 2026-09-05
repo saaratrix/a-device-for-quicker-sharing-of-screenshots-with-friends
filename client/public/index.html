@@ -10,11 +10,11 @@
 <body>
 <div class="container">
   <div id="uploader" hidden="hidden">
-    <div class="upload-details">
+    <div class="uploader-contents">
       <div class="upload-inputs">
         <header>
           <div>
-            <h1 class="no-margin">Luniebox</h1>
+            <h1>Luniebox</h1>
             <p>Upload and share files.</p>
           </div>
           <div class="menu">
@@ -51,7 +51,7 @@
             </button>
           </div>
         </header>
-        <hr>
+        <hr class="header-divisor">
         <div class="form-field">
           <div class="file-area">
             <single-file-picker id="fileInput" preview-max-size="200" fullpage-dnd fullpage-paste ></single-file-picker>
@@ -90,6 +90,7 @@
         Upload
       </button>
       <p id="upload-error" class="error" hidden="hidden"></p>
+    <!-- end of uploader-contents -->
     </div>
     <div id="link-share" class="invisible">
       <div class="link-container">
@@ -104,7 +105,6 @@
       <div id="view-item"></div>
       <viewer-controls />
     </div>
-
   </div>
   <div class="dialog-backdrop"></div>
   <dialog class="history-dialog dialog">
