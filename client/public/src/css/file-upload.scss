@@ -46,13 +46,3 @@ single-file-picker {
     bg-gradient-padding-box(),
     bg-gradient-border-box(100deg);
 }
-
-.file-area:focus-within {
-  background:
-    bg-gradient-padding-box(),
-    bg-gradient-border-box(100deg);
-
-  box-shadow:
-    0 0 0 3px $box-shadow-color3,
-    0 0 22px $box-shadow-color4;
-}

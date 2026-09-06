@@ -38,14 +38,12 @@ class UploadEditing extends HTMLElement {
                 flex-direction: column;
                 align-items: center;
                 gap: 0.25em;
-                /*color: var(--muted);*/
             }
 
             .editor-row label {
                 display: block;
                 width: 100%;
                 font-size: 0.85em;
-                /*text-align: right;*/
             }
 
             .editor-buttons {

@@ -1,8 +1,5 @@
-// import { DragAndDrop } from './drag-and-drop.js';
-// import { Paster } from './paster.js';
 import { FileUploader } from "./file-uploader.js";
 import { FileViewer } from "./viewer/file-viewer.js";
-// import { FilePreviewer } from "./file-previewer.js";
 import { dispatchFileInput, fileUploadedEvent } from "./events/file-events.js";
 import { canUseLocalStorage, HistoryHandler } from "./history-handler.js";
 import { SettingsHandler } from "./settings-handler.js";
@@ -94,10 +91,6 @@ function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
 function initUploader(uploaderElement: HTMLElement): void {
 
   document.title = 'upload a file';
-
-  // const dragAndDrop = new DragAndDrop();
-  // dragAndDrop.initialize();
-
   const filePicker = document.getElementById('fileInput') as SingleFilePicker;
   if (filePicker) {
     filePicker.addEventListener('change', (event) => {
@@ -116,10 +109,8 @@ function initUploader(uploaderElement: HTMLElement): void {
     });
   }
 
-  // const paster = new Paster();
   // When uploading or pasting files the file uploader listens for those events.
   const fileUploader = new FileUploader();
-  // const filePreviewer = new FilePreviewer();
   const settingsHandler = new SettingsHandler();
   if (canUseLocalStorage()) {
     const historyHandler = new HistoryHandler(filePicker.pickerPreview);

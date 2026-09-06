@@ -14,7 +14,6 @@ export function initializeFilePreviewEvents(filePicker: SingleFilePicker) {
       return;
     }
 
-    // item.style.transform = `translateY(-50%) rotate(${currentTransformActions.rotation}deg)`;
     item.style.transform = `rotate(${currentTransformActions.rotation}deg)`;
   });
 }
