@@ -33,7 +33,7 @@ html, body {
 body {
   font-family: 'Arial', sans-serif;
 
-  //background-color: $color-bg;
+  background-color: var(--color-bg);
   color: $color-text;
   min-height: 100dvh;
   margin: 0;
