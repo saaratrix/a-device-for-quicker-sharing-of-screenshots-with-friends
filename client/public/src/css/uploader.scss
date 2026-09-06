@@ -145,6 +145,9 @@ hr.header-divisor {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  min-width: 0;
+  // So settings button is on top.
+  flex-wrap: wrap-reverse;
 }
 
 .menu-button {
