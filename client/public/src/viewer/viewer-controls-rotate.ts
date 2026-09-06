@@ -35,8 +35,7 @@ export class ViewerControlsRotate extends HTMLElement {
                 gap: 0.5rem;
             }
             
-            .icon-action {
-            
+            .icon-action[disabled] {
             }
         </style>
         <div class="viewer-controls-rotate">

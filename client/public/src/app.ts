@@ -1,8 +1,5 @@
-import { DragAndDrop } from './drag-and-drop.js';
-import { Paster } from './paster.js';
 import { FileUploader } from "./file-uploader.js";
 import { FileViewer } from "./viewer/file-viewer.js";
-import { FilePreviewer } from "./file-previewer.js";
 import { dispatchFileInput, fileUploadedEvent } from "./events/file-events.js";
 import { canUseLocalStorage, HistoryHandler } from "./history-handler.js";
 import { SettingsHandler } from "./settings-handler.js";
@@ -11,6 +8,8 @@ import { PersistentPositionOnZoom } from "./persistent-position-on-zoom.js";
 import { api } from './environment.js';
 
 import './custom-components.js';
+import { SingleFilePicker } from './vendor/nui/file-picker/single-file-picker';
+import { initializeFilePreviewEvents } from './file-preview-events.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const uploaderElement = document.getElementById('uploader');
@@ -90,42 +89,35 @@ function initViewer(viewerElement: HTMLElement, fileViewer: FileViewer): void {
 }
 
 function initUploader(uploaderElement: HTMLElement): void {
-  uploaderElement.hidden = false;
 
   document.title = 'upload a file';
-
-  const dragAndDrop = new DragAndDrop();
-  dragAndDrop.initialize();
-
-  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-  if (fileInput) {
-    fileInput.addEventListener('change', (event) => {
+  const filePicker = document.getElementById('fileInput') as SingleFilePicker;
+  if (filePicker) {
+    filePicker.addEventListener('change', (event) => {
       const target = event.target as HTMLInputElement;
       const file = target.files?.[0];
-      if (file) {
-        dispatchFileInput(file);
-      }
+      dispatchFileInput(file);
     });
+
+    initializeFilePreviewEvents(filePicker);
 
     // Clear the file input after upload.
     window.addEventListener(fileUploadedEvent, () => {
-      fileInput.value = '';
+      filePicker.value = '';
       // This is to let others process fileUploadedEvent first.
       setTimeout(() => dispatchFileInput(undefined));
     });
   }
 
-
-  document.body.classList.add('uploader-root');
-
-  const paster = new Paster();
   // When uploading or pasting files the file uploader listens for those events.
   const fileUploader = new FileUploader();
-  const filePreviewer = new FilePreviewer();
   const settingsHandler = new SettingsHandler();
   if (canUseLocalStorage()) {
-    const historyHandler = new HistoryHandler(filePreviewer);
+    const historyHandler = new HistoryHandler(filePicker.pickerPreview);
   }
+
+  document.body.classList.add('uploader-root');
+  uploaderElement.hidden = false;
 }
 
 
