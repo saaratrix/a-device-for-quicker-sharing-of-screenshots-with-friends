@@ -70,7 +70,7 @@ body.uploader-root {
   // Yes, item is slightly off center if no scrollbar but that's ok, no one will know!
   // And if they do, can fix it then!
   padding: 0.5rem;
-  transition: transform 100ms ease-in-out;
+  transition: transform 0.1s ease-in-out;
 
   img, video {
     user-select: none;

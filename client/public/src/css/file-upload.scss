@@ -38,7 +38,7 @@ single-file-picker {
 
   cursor: pointer;
 
-  transition: box-shadow 100ms ease;
+  transition: box-shadow 0.1s ease;
 }
 
 .file-area:hover, .file-area:has(single-file-picker.has-selection) {

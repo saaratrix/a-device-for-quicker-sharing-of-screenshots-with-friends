@@ -67,7 +67,7 @@ class UploadEditing extends HTMLElement {
             }
             
             .editor-buttons button[disabled] {
-                cursor: default;
+                cursor: no-drop;
             }
 
             .editor-buttons button:hover:not([disabled]) {

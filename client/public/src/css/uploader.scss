@@ -115,6 +115,10 @@ hr.header-divisor {
     background-color: $color-bg;
     color: $color-text;
   }
+
+  img {
+    max-width: 100%;
+  }
 }
 
 .upload-inputs {
@@ -171,10 +175,10 @@ hr.header-divisor {
   cursor: pointer;
 
   transition:
-    color 100ms ease,
-    background 100ms ease,
-    box-shadow 100ms ease,
-    transform 100ms ease;
+    color 0.1s ease,
+    background 0.1s ease,
+    box-shadow 0.1s ease,
+    transform 0.1s ease;
 
   &[disabled] {
     color: var(--color-text-disabled);
@@ -249,8 +253,8 @@ input[type="email"] {
   outline: none;
 
   transition:
-    box-shadow 100ms ease,
-    filter 100ms ease;
+    box-shadow 0.1s ease,
+    filter 0.1s ease;
 }
 
 
@@ -288,21 +292,30 @@ input[type="email"]:focus {
 
   cursor: pointer;
 
-  box-shadow:
-    0 10px 30px $box-shadow-color2,
-    0 0 25px $box-shadow-color4;
-
   transition:
-    transform 100ms ease,
-    filter 100ms ease,
-    box-shadow 100ms ease;
+    transform 0.1s ease,
+    filter 0.1s ease,
+    box-shadow 0.1s ease;
 
-  &:hover {
+  &:hover:not([disabled]) {
     filter: brightness(1.05);
 
     box-shadow:
-      0 14px 35px $box-shadow-color2,
-      0 0 32px $box-shadow-color4;
+      0 0.5rem 1rem $box-shadow-color2,
+      0 0 1rem $box-shadow-color4;
+  }
+
+  &[disabled] {
+    cursor: no-drop;
+    background:
+    bg-gradient-padding-box(),
+    bg-gradient-border-box-transparent(100deg, 35%);
+  }
+
+  &:active:not([disabled]), &:focus {
+    background:
+    bg-gradient-border-box-transparent(100deg, 50%, padding-box, #000, in oklch),
+    bg-gradient-border-box(100deg);
   }
 
   &.spinner {

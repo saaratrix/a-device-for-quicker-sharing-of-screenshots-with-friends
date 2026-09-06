@@ -106,7 +106,7 @@ export class HistoryHandler extends DialogHandler {
   }
 
   private async onFileUploaded(event: CustomEvent<FileUploadedEvent>) {
-    const thumbnail = await this.filePreviewer.getThumbnailAsBase64();
+    const thumbnail = await this.filePreviewer.getThumbnailAsBase64(64);
     const item: HistoryItem = {
       date: new Date(),
       url: event.detail,

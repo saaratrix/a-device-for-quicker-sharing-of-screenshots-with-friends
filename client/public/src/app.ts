@@ -103,9 +103,7 @@ function initUploader(uploaderElement: HTMLElement): void {
     filePicker.addEventListener('change', (event) => {
       const target = event.target as HTMLInputElement;
       const file = target.files?.[0];
-      if (file) {
-        dispatchFileInput(file);
-      }
+      dispatchFileInput(file);
     });
 
     initializeFilePreviewEvents(filePicker);

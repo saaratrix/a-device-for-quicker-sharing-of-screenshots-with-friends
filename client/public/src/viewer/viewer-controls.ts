@@ -29,7 +29,7 @@ class ViewerControls extends HTMLElement {
           padding: 0 0.5rem;
           
           opacity: 0.1;
-          transition: opacity 100ms ease-in;
+          transition: opacity 0.1s ease-in;
         }
         
         .viewer-controls:hover {
